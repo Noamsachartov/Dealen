@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View,TextInput,TouchableOpacity } from 'react-native';
 import UserList from './UserList';
-
+import TabControler from '../MainTab/TabControler'
+import Aa from './Aa'
 export default class LogIn extends React.Component {
 
     state={
@@ -28,11 +29,8 @@ export default class LogIn extends React.Component {
   render(){
 
     if(this.state.CurrentUser.length > 0){
-      // console.log(this.state.CurrentUser)
       return(
-        <View style={{backgroundColor:  "red"}}>
-          <Text style={{color: "black"}} >Welcome Back {this.state.CurrentUser}</Text>
-        </View>
+        <TabControler>{console.log("Inside Tabs")}</TabControler>
       )
     }else {
 
