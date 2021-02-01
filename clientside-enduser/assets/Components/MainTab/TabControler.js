@@ -21,14 +21,25 @@ function MyTabs() {
       labelStyle={{ fontSize: 12 }}
       style={{ backgroundColor: 'tomato' }}
     >
-      <Tab.Screen
-        name="Recommendation"
-        component={Recommendation}
+    <Tab.Screen
+        name="Profile"
+        component={Profile}
         options={{
-          tabBarLabel: 'מומלצים',
+          tabBarLabel: 'אזור אישי',
           tabBarColor: '#158bd4',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
+            <MaterialCommunityIcons name="account" color={color} size={26} />
+          ),
+        }}
+      />
+       <Tab.Screen
+        name="Map"
+        component={Map}
+        options={{
+          tabBarLabel: 'מפה',
+          tabBarColor: '#158bd4',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="google-maps" color={color} size={26} />
           ),
         }}
       />
@@ -43,25 +54,14 @@ function MyTabs() {
           ),
         }}
       />
-      <Tab.Screen
-        name="Map"
-        component={Map}
+       <Tab.Screen
+        name="Recommendation"
+        component={Recommendation}
         options={{
-          tabBarLabel: 'מפה',
+          tabBarLabel: 'מומלצים',
           tabBarColor: '#158bd4',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="google-maps" color={color} size={26} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          tabBarLabel: 'אזור אישי',
-          tabBarColor: '#158bd4',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account" color={color} size={26} />
+            <MaterialCommunityIcons name="home" color={color} size={26} />
           ),
         }}
       />
