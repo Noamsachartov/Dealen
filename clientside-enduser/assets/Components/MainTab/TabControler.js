@@ -26,7 +26,8 @@ function MyTabs() {
         component={Profile}
         options={{
           tabBarLabel: 'אזור אישי',
-          tabBarColor: '#158bd4',
+          tabBarColor: '#003f5c',
+          // #158bd4
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="account" color={color} size={26} />
           ),
@@ -37,7 +38,7 @@ function MyTabs() {
         component={Map}
         options={{
           tabBarLabel: 'מפה',
-          tabBarColor: '#158bd4',
+          tabBarColor: '#003f5c',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="google-maps" color={color} size={26} />
           ),
@@ -48,7 +49,7 @@ function MyTabs() {
         component={Search}
         options={{
           tabBarLabel: 'חיפוש',
-          tabBarColor: '#158bd4',
+          tabBarColor: '#003f5c',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="card-search-outline" color={color} size={26} />
           ),
@@ -59,7 +60,7 @@ function MyTabs() {
         component={Recommendation}
         options={{
           tabBarLabel: 'מומלצים',
-          tabBarColor: '#158bd4',
+          tabBarColor: '#003f5c',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
           ),

@@ -1,14 +1,14 @@
 var UserList = [
     {
-        "name":"noam",
+        "name":"Noam",
         "password":"123"
     },
     {
-        "name":"mali",
+        "name":"Mali",
         "password":"123"
     },
     {
-        "name":"uri",
+        "name":"Uri",
         "password":"123"
     }
 ];

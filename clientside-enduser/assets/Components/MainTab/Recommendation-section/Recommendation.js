@@ -1,10 +1,14 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
+import Carousel from './Carousel/Carousel';
+import { dummyData } from './Carousel/DataForCarousel';
+
+
 export default function Recommendation() {
   console.log("inside recommendation")
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>Recommendation!</Text>
+      <View style={{marginTop: 25}}>
+        <Carousel data = {dummyData}/>
       </View>
     );
   }
