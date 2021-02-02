@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View,TextInput,TouchableOpacity } from 'react-native';
 import UserList from './UserList';
 import TabControler from '../MainTab/TabControler'
-import Aa from './Aa'
 export default class LogIn extends React.Component {
 
     state={

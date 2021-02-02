@@ -1,4 +1,4 @@
-export const dummyData =
+export const DataForCarousel =
         [{
                 title: 'תבלינים עם ריחות של שבת', url: 'https://i.ibb.co/hYjK44F/anise-aroma-art-bazaar-277253.jpg',
                 description: "בואו לאכול אצלנו בשוק ותקבלו מתנה תבלינים",
