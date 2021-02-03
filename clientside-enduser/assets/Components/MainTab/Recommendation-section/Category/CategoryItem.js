@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     cardView: {
         flex: 1,
         width: width/3,
-        height: height / 4,
+        height: height / 4.2,
         backgroundColor: 'white',
         margin: 10,
         borderRadius: 10,

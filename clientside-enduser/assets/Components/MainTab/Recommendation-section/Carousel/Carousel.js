@@ -47,7 +47,7 @@ const Carousel = ({ data }) => {
                     pagingEnabled
                     scrollEnabled
                     snapToAlignment="center"
-                    scrollEventThrottle={16}
+                    scrollEventThrottle={8}
                     decelerationRate={"fast"}
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item }) => {
