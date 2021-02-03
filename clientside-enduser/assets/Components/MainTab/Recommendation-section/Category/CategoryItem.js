@@ -1,17 +1,19 @@
 import React from 'react'
-import { View, StyleSheet, Text, Image, Dimensions } from 'react-native'
-
+import { View, StyleSheet, Text, Image, Dimensions, Button } from 'react-native'
+import { TouchableHighlight, TouchableWithoutFeedback  } from 'react-native-gesture-handler';
+import CategoryFullView from './CategoryFullView'
 const { width, height } = Dimensions.get('window')
 
 
-const CategoryItem = ({ item }) => {
-    console.log("itemmm")
+const CategoryItem = ({ item, navigation }) => {
     return (
         <View style={styles.cardView}>
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('CategoryFullView')} >
             <Image style={styles.image} source={{ uri: item.url }} />
             <View style={styles.textView}>
                 <Text style={styles.itemTitle}> {item.title}</Text>
             </View>
+            </TouchableWithoutFeedback>
         </View>
     )
 }

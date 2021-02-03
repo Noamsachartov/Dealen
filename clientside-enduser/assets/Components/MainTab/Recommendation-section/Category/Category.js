@@ -27,7 +27,7 @@ export default class Category extends React.Component {
              <FlatList
                 data={this.state.Data}
                 renderItem={({ item }) => {
-                    return <CategoryItem item={item} />
+                    return <CategoryItem item={item} navigation={this.props.navigation}  />
                 }}
                 keyExtractor={(item, index) => 'key' + index}
                 horizontal
