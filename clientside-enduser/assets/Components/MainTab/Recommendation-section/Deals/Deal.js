@@ -29,10 +29,8 @@ export default class Deal extends React.Component {
                     return <DealItem item={item} />
                 }}
                 keyExtractor={(item, index) => 'key' + index}
-                // horizontal
                 scrollEventThrottle={16}
                 decelerationRate={"fast"}
-                // showsHorizontalScrollIndicator={false}
             />
         </View>
       )
