@@ -8,7 +8,6 @@ import Recommendation from './Recommendation-section/Recommendation';
 import Search from './Search-section/Search';
 import Map from './Map-section/Map';
 import Profile from './Profile-section/Profile';
-import { DealNavigator } from './Recommendation-section/Deals/DealNavigator';
 import { ScrollView } from 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import FullDealView from './Recommendation-section/Deals/FullDealView';
@@ -78,9 +77,13 @@ function MyTabs() {
 export default function TabControler() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="MyTabs" >
+      <Stack.Navigator initialRouteName="MyTabs"       
+        screenOptions={{
+        headerShown: false
+     }}>
+
         <Stack.Screen name="MyTabs" options={{ title: 'Mytabs'}} component={MyTabs} />
-        <Stack.Screen name="FullDealView" component={FullDealView}  />
+        <Stack.Screen name="FullDealView" options={{ title: ''}} component={FullDealView}  />
         <Stack.Screen name="CategoryFullView" component={CategoryFullView}  />
       </Stack.Navigator>
     </NavigationContainer>

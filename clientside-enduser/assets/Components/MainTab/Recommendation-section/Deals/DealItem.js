@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, Text, Image, Dimensions, Button } from 'react-native'
-import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableHighlight, TouchableWithoutFeedback  } from 'react-native-gesture-handler';
 import TimerIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DiscountIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import FullDealView from './FullDealView'
@@ -10,28 +10,26 @@ const { width, height } = Dimensions.get('window')
 const DealItem = ({ item,navigation }) => {
     console.log("DealItem Component")
     return (
-        <View style={styles.cardView}  >
-            <Image style={styles.image} source={{ uri: item.url }} />
-            <View style={styles.textView}>
-                <Text style={styles.itemTitle}> {item.title}</Text>
-                <Text style={styles.itemDescription}>{item.description}</Text>
-                <Text style={styles.itemBusinessName}> {item.BusinessName}</Text>
-                <Button
-                    title="Go to FullDealView"
-                    onPress={() => navigation.navigate('FullDealView')}
-                />
-                <View style={styles.IconView}>
-                    <View style={styles.TimerView}>
-                        <TimerIcon style={styles.TimerIcon} name="timer-sand-empty" size={20} />
-                        <Text >{item.TimeLeft}</Text>
-                    </View>
-                    <View>
-                        <DiscountIcon style={styles.DiscountIcon} name="ticket-percent-outline" size={20} />
-                        <Text>{item.DiscountDescription}</Text>
+        <TouchableWithoutFeedback  onPress={() => navigation.navigate('FullDealView')} >
+            <View style={styles.cardView}  >
+                <Image style={styles.image} source={{ uri: item.url }} />
+                <View style={styles.textView}>
+                    <Text style={styles.itemTitle}> {item.title}</Text>
+                    <Text style={styles.itemDescription}>{item.description}</Text>
+                    <Text style={styles.itemBusinessName}> {item.BusinessName}</Text>
+                    <View style={styles.IconView}>
+                        <View style={styles.TimerView}>
+                            <TimerIcon style={styles.TimerIcon} name="timer-sand-empty" size={20} />
+                            <Text >{item.TimeLeft}</Text>
+                        </View>
+                        <View>
+                            <DiscountIcon style={styles.DiscountIcon} name="ticket-percent-outline" size={20} />
+                            <Text>{item.DiscountDescription}</Text>
+                        </View>
                     </View>
                 </View>
             </View>
-        </View>
+        </TouchableWithoutFeedback >
     )
 }
 
