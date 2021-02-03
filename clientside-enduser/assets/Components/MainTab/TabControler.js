@@ -8,8 +8,13 @@ import Recommendation from './Recommendation-section/Recommendation';
 import Search from './Search-section/Search';
 import Map from './Map-section/Map';
 import Profile from './Profile-section/Profile';
+import { DealNavigator } from './Recommendation-section/Deals/DealNavigator';
 import { ScrollView } from 'react-native-gesture-handler';
+import { createStackNavigator } from '@react-navigation/stack';
+import FullDealView from './Recommendation-section/Deals/FullDealView';
+import CategoryFullView from './Recommendation-section/Category/CategoryFullView'
 
+const Stack = createStackNavigator();
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -73,7 +78,11 @@ function MyTabs() {
 export default function TabControler() {
   return (
     <NavigationContainer>
-      <MyTabs />  
+      <Stack.Navigator initialRouteName="MyTabs" >
+        <Stack.Screen name="MyTabs" options={{ title: 'Mytabs'}} component={MyTabs} />
+        <Stack.Screen name="FullDealView" component={FullDealView}  />
+        <Stack.Screen name="CategoryFullView" component={CategoryFullView}  />
+      </Stack.Navigator>
     </NavigationContainer>
     
   );
