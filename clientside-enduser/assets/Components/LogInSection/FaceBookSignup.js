@@ -5,7 +5,7 @@ import TabControler from '../MainTab/TabControler'
 // import { useNavigation } from '@react-navigation/native';
 
 
-export default class LogIn extends React.Component {
+export default class FaceBookSignUp extends React.Component {
 
     state={
         email:"",
@@ -47,7 +47,7 @@ export default class LogIn extends React.Component {
                 placeholderTextColor="#003f5c"
                 onChangeText={text => this.setState({email:text})}/>
             </View>
-            <View style={styles.inputView}>
+            {/* <View style={styles.inputView}>
             <TextInput  
                 style={styles.inputText}
                 placeholder="password..." 
@@ -65,7 +65,7 @@ export default class LogIn extends React.Component {
               onPress={() => navigation.navigate('Signup')}
               >
               <Text style={styles.loginText}>Signup</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
       </View>
     );
   }

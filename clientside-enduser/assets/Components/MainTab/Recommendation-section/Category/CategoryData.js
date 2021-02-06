@@ -15,11 +15,11 @@ export const CategoryData =
                 description: "האוכל הטבעוני שלנו מפוצץ חלבון וטעים, בואו במקום האימון עכשיו ב 30 % הנחה",
                 id: 3
         },{
-                title: 'אוכל טבעוני', url: 'https://i.ibb.co/JxykVBt/flat-lay-photography-of-vegetable-salad-on-plate-1640777.jpg',
+                title: 'בירה', url: 'https://i.ibb.co/JxykVBt/flat-lay-photography-of-vegetable-salad-on-plate-1640777.jpg',
                 description: "האוכל הטבעוני שלנו מפוצץ חלבון וטעים, בואו במקום האימון עכשיו ב 30 % הנחה",
                 id: 4
         },{
-                title: 'אוכל טבעוני', url: 'https://i.ibb.co/JxykVBt/flat-lay-photography-of-vegetable-salad-on-plate-1640777.jpg',
+                title: 'יין', url: 'https://i.ibb.co/JxykVBt/flat-lay-photography-of-vegetable-salad-on-plate-1640777.jpg',
                 description: "האוכל הטבעוני שלנו מפוצץ חלבון וטעים, בואו במקום האימון עכשיו ב 30 % הנחה",
                 id: 5
         },{

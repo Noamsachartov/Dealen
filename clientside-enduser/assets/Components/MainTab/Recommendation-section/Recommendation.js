@@ -13,7 +13,7 @@ export default function Recommendation() {
   const navigation = useNavigation(); 
     return (
       <View style={{marginTop: 25}}>
-          <ScrollView   showsVerticalScrollIndicator={false} >
+          <ScrollView showsVerticalScrollIndicator={false} >
             <Carousel data = {DataForCarousel}/>
             <Category navigation={navigation}  />  
             <Deal navigation={navigation} />   

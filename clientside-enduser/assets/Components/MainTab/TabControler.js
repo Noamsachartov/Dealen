@@ -76,7 +76,6 @@ function MyTabs() {
 
 export default function TabControler() {
   return (
-    <NavigationContainer>
       <Stack.Navigator initialRouteName="MyTabs"       
         screenOptions={{
         headerShown: false
@@ -85,9 +84,7 @@ export default function TabControler() {
         <Stack.Screen name="MyTabs" options={{ title: 'Mytabs'}} component={MyTabs} />
         <Stack.Screen name="FullDealView" options={{ title: ''}} component={FullDealView}  />
         <Stack.Screen name="CategoryFullView" component={CategoryFullView}  />
-      </Stack.Navigator>
-    </NavigationContainer>
-    
+      </Stack.Navigator>    
   );
 }
 
