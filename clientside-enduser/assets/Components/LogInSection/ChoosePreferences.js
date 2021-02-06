@@ -57,40 +57,51 @@ export default class ChoosePreferences extends React.Component {
             numColumns={4}
             showsHorizontalScrollIndicator={false}
             />
-            <View style={{flex:1, flexDirection: 'row'}}>
-                <View>
-                    <Text style={styles.inputText}>מסעדה</Text>
+            <View style={{flex:1,width: width, flexDirection: 'row-reverse'}}>
+                <View style={{flex:1, flexDirection: 'row', justifyContent: 'flex-end'}}>
+                    <View >
+                        <Text style={styles.inputText}>מסעדה</Text>
+                    </View>
+                    <View>
+                        <CheckBox
+                            disabled={false}
+                            value={this.state.toggleCheckBox_Resturant}
+                            onValueChange={(newValue) => this.setState({toggleCheckBox_Resturant: newValue})}
+                            tintColors={{ true: '#fb5b5a', false: 'whitesmoke' }}
+                        />
+                    </View>
                 </View>
-                <View>
-                    <CheckBox
-                        disabled={false}
-                        value={this.state.toggleCheckBox_Resturant}
-                        onValueChange={(newValue) => this.setState({toggleCheckBox_Resturant: newValue})}
-                        tintColors={{ true: '#fb5b5a', false: 'whitesmoke' }}
-                    />
-                </View>
-                <View>
-                    <Text style={styles.inputText}>פאב</Text>
-                </View>
-                <View>
-                    <CheckBox
-                        disabled={false}
-                        value={this.state.toggleCheckBox_Bar}
-                        onValueChange={(newValue) => this.setState({toggleCheckBox_Bar: newValue})}
-                        tintColors={{ true: '#fb5b5a', false: 'whitesmoke' }}
-                    />
-                </View>
-                <View>
-                    <Text style={styles.inputText}>בית קפה</Text>
-                </View>
-                <View>
-                    <CheckBox
-                        disabled={false}
-                        value={this.state.toggleCheckBox_Caffe}
-                        onValueChange={(newValue) => this.setState({toggleCheckBox_Caffe: newValue})}
-                        tintColors={{ true: '#fb5b5a', false: 'whitesmoke' }}
-                    />
-                </View>
+               <View style={{flex:1, flexDirection: 'row',justifyContent: 'flex-end'}}>
+                    <View>
+                        <Text style={styles.inputText}>פאב</Text>
+                    </View>
+                    <View>
+                        <CheckBox
+                            disabled={false}
+                            value={this.state.toggleCheckBox_Bar}
+                            onValueChange={(newValue) => this.setState({toggleCheckBox_Bar: newValue})}
+                            tintColors={{ true: '#fb5b5a', false: 'whitesmoke' }}
+                        />
+                    </View>
+               </View>
+               <View  style={{flex:1, flexDirection: 'row',justifyContent: 'flex-end'}}>
+                    <View>
+                        <Text style={styles.inputText}>בית קפה</Text>
+                    </View>
+                    <View>
+                        <CheckBox
+                            disabled={false}
+                            value={this.state.toggleCheckBox_Caffe}
+                            onValueChange={(newValue) => this.setState({toggleCheckBox_Caffe: newValue})}
+                            tintColors={{ true: '#fb5b5a', false: 'whitesmoke' }}
+                        />
+                    </View>
+               </View>
+            </View>
+            <View>
+                <Button 
+                title="דלג"
+                />
             </View>
         </View>
       )
@@ -107,8 +118,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#003f5c',
         alignItems: 'center',
-        justifyContent:  'flex-start',
-        width: "100%"
+        
+        width: width
       },
       inputView:{
         // width:"20%",
