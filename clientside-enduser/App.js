@@ -5,6 +5,7 @@ import LogIn from './assets/Components/LogInSection/LogIn';
 import Signup from './assets/Components/LogInSection/SignUp';
 import FaceBookSignup from './assets/Components/LogInSection/FaceBookSignup';
 import ChoosePreferences from './assets/Components/LogInSection/ChoosePreferences';
+import Bylaws from './assets/Components/LogInSection/Bylaws'
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -21,6 +22,7 @@ export default function App() {
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="FaceBookSignup" component={FaceBookSignup} />
         <Stack.Screen name="ChoosePreferences" component={ChoosePreferences} />
+        <Stack.Screen name="Bylaws" component={Bylaws}  initialParams={{ aprrove: false }} />
       </Stack.Navigator>
     </NavigationContainer>
       // <LogIn/>

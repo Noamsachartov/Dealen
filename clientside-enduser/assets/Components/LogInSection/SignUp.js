@@ -3,7 +3,13 @@ import { StyleSheet, Text, View,TextInput,TouchableOpacity, Button } from 'react
 import UserList from './UserList';
 import TabControler from '../MainTab/TabControler';
 import ImagesPicker from './ImagePicker';
+import CheckBox from '@react-native-community/checkbox';
+import { useIsFocused } from '@react-navigation/native'
+import { LogBox } from 'react-native';
 
+LogBox.ignoreLogs([
+ 'Non-serializable values were found in the navigation state',
+]);
 export default class SignUp extends React.Component {
 
     state={
@@ -12,7 +18,8 @@ export default class SignUp extends React.Component {
         Fname: "",
         Lname: "",
         CurrentUser: "",
-        Img: ''
+        Img: '',
+        toggleCheckBox_Resturant: false
       }
 
 
@@ -26,13 +33,19 @@ export default class SignUp extends React.Component {
       }
 
       
-        getId2RemoveFromChild = (url) => {
+        getImgUrl = (url) => {
             this.setState({ Img: [url] })
         }
 
 
+        refresh = () => {
+              this.setState({toggleCheckBox_Resturant: true}) 
+        }
+
+
   render(){
-    const { navigation } = this.props;
+    const { navigation, route } = this.props;
+
     return (
       <View style={styles.container}>
         <Text style={styles.Logo}>Welcome</Text>
@@ -68,10 +81,24 @@ export default class SignUp extends React.Component {
                 />
             </View>
             <View style={styles.ImagesPickerView}>
-                <ImagesPicker func = {this.getId2RemoveFromChild} /> 
+                <ImagesPicker func = {this.getImgUrl} /> 
+            </View>
+            <View style={styles.checkView}>
+              <View style={{marginTop: -5}} >
+                <CheckBox
+                              disabled={false}
+                              value={this.state.toggleCheckBox_Resturant}
+                              onValueChange={(newValue) => this.setState({toggleCheckBox_Resturant: newValue})}
+                              tintColors={{ true: '#fb5b5a', false: 'whitesmoke' }}
+                              
+                          />
+              </View>   
+              <TouchableOpacity  onPress={() => navigation.navigate('Bylaws', {onGoBack: () => this.refresh()})}>
+                  <Text style={{color: 'whitesmoke'}}>I read and confirm The bylaws</Text>
+            </TouchableOpacity>         
             </View>
             <TouchableOpacity style={styles.loginBtn} onPress={this.handleSignUp}>
-              <Text style={styles.loginText}  >Sign Up</Text>
+              <Text style={styles.loginText} >Sign Up</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.FaceBook} onPress={() => navigation.navigate('FaceBookSignup')}>
               <Text style={styles.loginText}>Signup with facebook</Text>
@@ -113,7 +140,7 @@ const styles = StyleSheet.create({
         height:50,
         alignItems:"center",
         justifyContent:"center",
-        marginTop:20,
+        marginTop:40,
         marginBottom:25
       },
       loginText:{
@@ -123,19 +150,19 @@ const styles = StyleSheet.create({
         fontWeight:"bold",
         fontSize:50,
         color:"#fb5b5a",
-        marginVertical: 40
+        marginVertical: 20
       },
       ImagesPickerView :{ width:"50%",
       height:40,
-      marginBottom:20,
-      marginTop: 10,
+      marginBottom:40,
+      marginTop: 20,
       justifyContent:"center",
-      padding:20,
       flex: 1,
       flexDirection: 'column',
       justifyContent: 'space-between'
     },
     pictureText: {color: 'white'},
-    FaceBook: {marginBottom: 30}
+    FaceBook: {marginBottom: 30},
+    checkView: {flex: 1, flexDirection: 'row'}
 });
 

@@ -69,22 +69,24 @@ export default class ChoosePreferences extends React.Component {
                <Text style={styles.Logo}>נשמח להכיר אותך</Text>
              </View>  
             </View>
-          
-            <FlatList
-              style={styles.categoryList}
-              data={this.state.CategoryDatas}
-              renderItem={({ item }) => {
-                  return (<View style={styles.inputView} >
-                              <TouchableOpacity onPress={() => this.newCategoryPreferences(item)}>
-                                  <Text style={styles.inputText}>{item.title}</Text>
-                              </TouchableOpacity>
-                          </View>)
-            }}
-            keyExtractor={(item, index) => 'key' + index}
-            horizontal={false}
-            numColumns={4}
-            showsHorizontalScrollIndicator={false}
-            />
+            <View style={{flex:1.5}}>
+              <FlatList
+                style={styles.categoryList}
+                data={this.state.CategoryDatas}
+                renderItem={({ item }) => {
+                    return (<View style={styles.inputView} >
+                                <TouchableOpacity onPress={() => this.newCategoryPreferences(item)}>
+                                    <Text style={styles.inputText}>{item.title}</Text>
+                                </TouchableOpacity>
+                            </View>)
+              }}
+              keyExtractor={(item, index) => 'key' + index}
+              horizontal={false}
+              numColumns={4}
+              showsHorizontalScrollIndicator={false}
+              />
+            </View>
+            
             <View style={styles.checkboxView}>
                 <View style={styles.checkrowview}>
                     <View >
@@ -181,14 +183,14 @@ const styles = StyleSheet.create({
         fontSize:40,
         color:"#fb5b5a",
       },
-      headerView: {flex:1.2, flexDirection:'column' , alignItems: 'flex-end', marginTop: 15},
+      headerView: {flex:1, flexDirection:'column' , alignItems: 'flex-end', marginTop: 15},
       skipText: {color: 'whitesmoke', marginHorizontal: 4},
       categoryList: {color: 'whitesmoke', marginHorizontal: 4},
-      checkboxView: {flex:0.6,width: width, flexDirection: 'row-reverse'},
+      checkboxView: {flex:1,width: width, flexDirection: 'row-reverse'},
       checkrowview: {flex:1, flexDirection: 'row', justifyContent: 'flex-end'}, 
-      sliderView: {flex: 0.6},
+      sliderView: {flex: 0.4},
       radiosText: {flex:1, alignSelf: 'center', fontSize: 20, fontWeight: 'bold', color: 'whitesmoke' },
-      postButton: {flex: 0.24, backgroundColor: "#465881", borderRadius: 10, width: width/2, justifyContent: 'center', alignItems: 'center', marginTop: 30},
+      postButton: {flex: 0.25, backgroundColor: "#465881", borderRadius: 10, width: width/2, justifyContent: 'center', alignItems: 'center', marginTop: 30},
       signText: {color: 'white', fontWeight: 'bold', fontSize: 20}
 });
 

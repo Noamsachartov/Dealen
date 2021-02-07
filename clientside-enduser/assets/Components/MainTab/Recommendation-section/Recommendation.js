@@ -6,7 +6,11 @@ import Deal from './Deals/Deal';
 import { DataForCarousel } from './Carousel/DataForCarousel';
 import { FlatList } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import { LogBox } from 'react-native';
 
+LogBox.ignoreLogs([
+ 'VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead',
+]);
 
 export default function Recommendation() {
   console.log("inside recommendation")
