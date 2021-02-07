@@ -15,14 +15,16 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{
-        headerShown: false
-     }}>
-        <Stack.Screen name="Login" component={LogIn} />
-        <Stack.Screen name="Signup" component={Signup} />
+      <Stack.Navigator 
+    //   screenOptions={{
+    //     headerShown: false
+    //  }}
+     >
+        <Stack.Screen name="Login" component={LogIn} options={{headerShown: false}} />
+        <Stack.Screen name="Signup" component={Signup} options={{headerShown: false}} />
         <Stack.Screen name="FaceBookSignup" component={FaceBookSignup} />
-        <Stack.Screen name="ChoosePreferences" component={ChoosePreferences} />
-        <Stack.Screen name="Bylaws" component={Bylaws}  initialParams={{ aprrove: false }} />
+        <Stack.Screen name="ChoosePreferences" component={ChoosePreferences} options={{title: '',headerTintColor:'whitesmoke',headerStyle: {height: 60, backgroundColor:'#003f5c'}}} />
+        <Stack.Screen name="Bylaws" component={Bylaws}  initialParams={{ aprrove: false }}  options={{title: '',headerTintColor:'whitesmoke',headerStyle: {height: 60, backgroundColor:'#003f5c'}}}/>
       </Stack.Navigator>
     </NavigationContainer>
       // <LogIn/>
