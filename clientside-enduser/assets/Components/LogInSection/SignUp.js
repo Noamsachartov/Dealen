@@ -1,42 +1,54 @@
 import React from 'react';
-import { StyleSheet, Text, View,TextInput,TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View,TextInput,TouchableOpacity, Button } from 'react-native';
 import UserList from './UserList';
-import TabControler from '../MainTab/TabControler'
-export default class LogIn extends React.Component {
+import TabControler from '../MainTab/TabControler';
+import ImagesPicker from './ImagePicker';
+import CheckBox from '@react-native-community/checkbox';
+import { useIsFocused } from '@react-navigation/native'
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs([
+ 'Non-serializable values were found in the navigation state',
+]);
+export default class SignUp extends React.Component {
 
     state={
         email:"",
         password:"",
         Fname: "",
-        CurrentUser: ""
+        Lname: "",
+        CurrentUser: "",
+        Img: '',
+        toggleCheckBox_Resturant: false
       }
 
 
-      handlePassword = () =>{
-        console.log("presd",UserList);
-        for (let i = 0; i < UserList.length; i++) {
-          let item = UserList[i];
-          if(this.state.email == item.name && this.state.password == item.password){
-            this.setState({
-              CurrentUser: [item.name,item.password]
-            })
-          }
+      handleSignUp = () =>{    
+        const { navigation } = this.props;
+        if (this.state.email.length > 1){
+            navigation.navigate('ChoosePreferences')
+        }else{
+            alert("Make sure you fill everything")
+        }
+      }
+
+      
+        getImgUrl = (url) => {
+            this.setState({ Img: [url] })
         }
 
-        console.log("welcome back", this.state.CurrentUser.length);
-      }
+
+        refresh = () => {
+              this.setState({toggleCheckBox_Resturant: true}) 
+        }
+
 
   render(){
-
-    if(this.state.CurrentUser.length > 0){
-      return(
-        <TabControler>{console.log("Inside Tabs")}</TabControler>
-      )
-    }else {
+    const { navigation, route } = this.props;
 
     return (
       <View style={styles.container}>
-        <Text style={styles.Logo}>DEALEN</Text>
+        <Text style={styles.Logo}>Welcome</Text>
          <View style={styles.inputView} >
             <TextInput  
                 style={styles.inputText}
@@ -51,6 +63,8 @@ export default class LogIn extends React.Component {
                 placeholderTextColor="#003f5c"
                 onChangeText={text => this.setState({password:text})}
                 />
+            </View>
+            <View style={styles.inputView}>
             <TextInput  
                 style={styles.inputText}
                 placeholder="First Name" 
@@ -58,18 +72,39 @@ export default class LogIn extends React.Component {
                 onChangeText={text => this.setState({Fname:text})}
                 />
             </View>
-            <TouchableOpacity>
-              <Text style={styles.forgot}>Forgot Password?</Text>
+            <View style={styles.inputView}>
+            <TextInput  
+                style={styles.inputText}
+                placeholder="Last Name" 
+                placeholderTextColor="#003f5c"
+                onChangeText={text => this.setState({Lname:text})}
+                />
+            </View>
+            <View style={styles.ImagesPickerView}>
+                <ImagesPicker func = {this.getImgUrl} /> 
+            </View>
+            <View style={styles.checkView}>
+              <View style={{marginTop: -5}} >
+                <CheckBox
+                              disabled={false}
+                              value={this.state.toggleCheckBox_Resturant}
+                              onValueChange={(newValue) => this.setState({toggleCheckBox_Resturant: newValue})}
+                              tintColors={{ true: '#fb5b5a', false: 'whitesmoke' }}
+                              
+                          />
+              </View>   
+              <TouchableOpacity  onPress={() => navigation.navigate('Bylaws', {onGoBack: () => this.refresh()})}>
+                  <Text style={{color: 'whitesmoke'}}>I read and confirm The bylaws</Text>
+            </TouchableOpacity>         
+            </View>
+            <TouchableOpacity style={styles.loginBtn} onPress={this.handleSignUp}>
+              <Text style={styles.loginText} >Sign Up</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.loginBtn} onPress={this.handlePassword}>
-              <Text style={styles.loginText}  >LOGIN</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text style={styles.loginText}>Signup</Text>
+            <TouchableOpacity style={styles.FaceBook} onPress={() => navigation.navigate('FaceBookSignup')}>
+              <Text style={styles.loginText}>Signup with facebook</Text>
             </TouchableOpacity>
       </View>
     );
-  }
   }
 }
 
@@ -106,7 +141,7 @@ const styles = StyleSheet.create({
         alignItems:"center",
         justifyContent:"center",
         marginTop:40,
-        marginBottom:10
+        marginBottom:25
       },
       loginText:{
           color: "white"
@@ -115,6 +150,19 @@ const styles = StyleSheet.create({
         fontWeight:"bold",
         fontSize:50,
         color:"#fb5b5a",
-        marginBottom:40
-      }
+        marginVertical: 20
+      },
+      ImagesPickerView :{ width:"50%",
+      height:40,
+      marginBottom:40,
+      marginTop: 20,
+      justifyContent:"center",
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'space-between'
+    },
+    pictureText: {color: 'white'},
+    FaceBook: {marginBottom: 30},
+    checkView: {flex: 1, flexDirection: 'row'}
 });
+

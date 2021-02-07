@@ -2,6 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, View,TextInput,TouchableOpacity } from 'react-native';
 import UserList from './UserList';
 import TabControler from '../MainTab/TabControler'
+// import { useNavigation } from '@react-navigation/native';
+
+
 export default class LogIn extends React.Component {
 
     state={
@@ -26,6 +29,7 @@ export default class LogIn extends React.Component {
       }
 
   render(){
+    const { navigation } = this.props;
 
     if(this.state.CurrentUser.length > 0){
       return(
@@ -57,7 +61,9 @@ export default class LogIn extends React.Component {
             <TouchableOpacity style={styles.loginBtn} onPress={this.handlePassword}>
               <Text style={styles.loginText}  >LOGIN</Text>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Signup')}
+              >
               <Text style={styles.loginText}>Signup</Text>
             </TouchableOpacity>
       </View>
