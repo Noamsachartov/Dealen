@@ -41,6 +41,12 @@ export default class ChoosePreferences extends React.Component {
         this.setState({ radios: value });
       }
 
+      handlePostPreferences = ()=>{
+        console.log("post")
+        const { navigation } = this.props;
+        navigation.navigate('Login')
+      }
+
     componentDidMount =() => {
       this.setState({CategoryDatas: CategoryData})
      }
@@ -51,12 +57,12 @@ export default class ChoosePreferences extends React.Component {
     if(this.state.CategoryDatas){
       return(
         <View style={styles.container}>
-             <View style={{flex:1, flexDirection:'column' , alignItems: 'flex-end', marginTop: 15}}>
+             <View style={styles.headerView}>
                  <View>
                    <TouchableWithoutFeedback onPress={this.handleSkip}>
                     <SkipIcon size={30} name="arrowright" color="whitesmoke"/>
                     </TouchableWithoutFeedback>
-                    <Text style={{color: 'whitesmoke', marginHorizontal: 4}}>דלג</Text>
+                    <Text style={styles.skipText}>דלג</Text>
                     
                  </View> 
                  <View style={{flex:1}}>
@@ -65,7 +71,7 @@ export default class ChoosePreferences extends React.Component {
             </View>
           
             <FlatList
-              style={{width: width,  maxHeight: 200}}
+              style={styles.categoryList}
               data={this.state.CategoryDatas}
               renderItem={({ item }) => {
                   return (<View style={styles.inputView} >
@@ -79,8 +85,8 @@ export default class ChoosePreferences extends React.Component {
             numColumns={4}
             showsHorizontalScrollIndicator={false}
             />
-            <View style={{flex:0.6,width: width, flexDirection: 'row-reverse'}}>
-                <View style={{flex:1, flexDirection: 'row', justifyContent: 'flex-end'}}>
+            <View style={styles.checkboxView}>
+                <View style={styles.checkrowview}>
                     <View >
                         <Text style={styles.inputText}>מסעדה</Text>
                     </View>
@@ -93,7 +99,7 @@ export default class ChoosePreferences extends React.Component {
                         />
                     </View>
                 </View>
-               <View style={{flex:1, flexDirection: 'row',justifyContent: 'flex-end'}}>
+               <View style={styles.checkrowview}>
                     <View>
                         <Text style={styles.inputText}>פאב</Text>
                     </View>
@@ -106,7 +112,7 @@ export default class ChoosePreferences extends React.Component {
                         />
                     </View>
                </View>
-               <View  style={{flex:1, flexDirection: 'row',justifyContent: 'flex-end'}}>
+               <View  style={styles.checkrowview}>
                     <View>
                         <Text style={styles.inputText}>בית קפה</Text>
                     </View>
@@ -120,7 +126,8 @@ export default class ChoosePreferences extends React.Component {
                     </View>
                </View>
             </View>
-            <View style={{flex:0.4}}>
+            <View style={styles.sliderView}>
+            <Text style={styles.radiosText}>{this.state.radios} רדיוס</Text>
                  <Slider 
                   minimumValue={1}
                   maximumValue={100}
@@ -131,10 +138,11 @@ export default class ChoosePreferences extends React.Component {
                   value={50}
                   onValueChange={value => this.onValueChange(value)}
                  />
+                 
             </View>
             <View>
-              <TouchableOpacity style={{flex: 0.24, backgroundColor: "#465881", borderRadius: 10, width: width/2, justifyContent: 'center', alignItems: 'center'}}>
-                 <Text>להתחברות</Text>
+              <TouchableOpacity onPress={this.handlePostPreferences} style={styles.postButton}>
+                 <Text style={styles.signText}>להתחברות</Text>
               </TouchableOpacity>
             </View>
         </View>
@@ -173,7 +181,15 @@ const styles = StyleSheet.create({
         fontSize:40,
         color:"#fb5b5a",
       },
-
+      headerView: {flex:1.2, flexDirection:'column' , alignItems: 'flex-end', marginTop: 15},
+      skipText: {color: 'whitesmoke', marginHorizontal: 4},
+      categoryList: {color: 'whitesmoke', marginHorizontal: 4},
+      checkboxView: {flex:0.6,width: width, flexDirection: 'row-reverse'},
+      checkrowview: {flex:1, flexDirection: 'row', justifyContent: 'flex-end'}, 
+      sliderView: {flex: 0.6},
+      radiosText: {flex:1, alignSelf: 'center', fontSize: 20, fontWeight: 'bold', color: 'whitesmoke' },
+      postButton: {flex: 0.24, backgroundColor: "#465881", borderRadius: 10, width: width/2, justifyContent: 'center', alignItems: 'center', marginTop: 30},
+      signText: {color: 'white', fontWeight: 'bold', fontSize: 20}
 });
 
 
