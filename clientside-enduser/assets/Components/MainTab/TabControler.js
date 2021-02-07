@@ -77,12 +77,12 @@ function MyTabs() {
 export default function TabControler() {
   return (
       <Stack.Navigator initialRouteName="MyTabs"       
-        screenOptions={{
-        headerShown: false
-     }}>
-
-        <Stack.Screen name="MyTabs" options={{ title: 'Mytabs'}} component={MyTabs} />
-        <Stack.Screen name="FullDealView" options={{ title: ''}} component={FullDealView}  />
+    //     screenOptions={{
+    //     headerShown: false
+    //  }}
+     >
+        <Stack.Screen name="MyTabs" options={{ headerShown: false}} component={MyTabs} />
+        <Stack.Screen name="FullDealView" options={{ title: '', headerTintColor:'whitesmoke',headerStyle: {height: 60, backgroundColor:'#003f5c'}}} component={FullDealView}  />
         <Stack.Screen name="CategoryFullView" component={CategoryFullView}  />
       </Stack.Navigator>    
   );
