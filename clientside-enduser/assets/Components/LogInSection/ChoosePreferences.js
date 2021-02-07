@@ -32,11 +32,6 @@ export default class ChoosePreferences extends React.Component {
         console.log(item.title,"added")
       }
 
-      handleSkip = () => {
-        const { navigation } = this.props;
-        navigation.navigate('Login')
-      }
-
       onValueChange(value) {
         this.setState({ radios: value });
       }
@@ -58,13 +53,6 @@ export default class ChoosePreferences extends React.Component {
       return(
         <View style={styles.container}>
              <View style={styles.headerView}>
-                 {/* <View>
-                   <TouchableWithoutFeedback onPress={this.handleSkip}>
-                    <SkipIcon size={30} name="arrowright" color="whitesmoke"/>
-                    </TouchableWithoutFeedback>
-                    <Text style={styles.skipText}>דלג</Text>
-                    
-                 </View>  */}
                  <View style={{flex:1}}>
                <Text style={styles.Logo}>נשמח להכיר אותך</Text>
              </View>  
