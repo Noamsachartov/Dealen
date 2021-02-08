@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-namespace cuisin.Models
+
+namespace DealenServerSide.Models
 {
     public class Businesses
     {
@@ -69,19 +70,19 @@ namespace cuisin.Models
             return bList;
         }
 
-        public List<Businesses> ReadByUser(int[] att_id)
-        {
-            DBServices dbs = new DBServices();
-            List<Businesses> bList = dbs.getBusinessesByUser(att_id);
-            return bList;
-        }
+        //public List<Businesses> ReadByUser(int[] att_id)
+        //{
+        //    DBServices dbs = new DBServices();
+        //    List<Businesses> bList = dbs.getBusinessesByUser(att_id);
+        //    return bList;
+        //}
 
-        public List<Businesses> ReadByUser(int[] att_id, string category)
-        {
-            DBServices dbs = new DBServices();
-            List<Businesses> bList = dbs.getBusinessesByUser(att_id, category);
-            return bList;
-        }
+        //public List<Businesses> ReadByUser(int[] att_id, string category)
+        //{
+        //    DBServices dbs = new DBServices();
+        //    List<Businesses> bList = dbs.getBusinessesByUser(att_id, category);
+        //    return bList;
+        //}
 
         public List<Businesses> ReadPromotByUser(int[] att_id, string category)
         {

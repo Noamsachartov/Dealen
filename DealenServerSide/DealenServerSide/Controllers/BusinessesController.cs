@@ -1,4 +1,4 @@
-﻿using cuisin.Models;
+﻿using DealenServerSide.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace cuisin.Controllers
+namespace DealenServerSide.Controllers
 {
     public class BusinessesController : ApiController
     {
@@ -89,55 +89,55 @@ namespace cuisin.Controllers
 
         [HttpGet]
         [Route("api/Businesses/Byuser")]
-        public IHttpActionResult GetByuser([FromUri] int[] att_id)
-        {
+        //public IHttpActionResult GetByuser([FromUri] int[] att_id)
+        //{
 
-            try
-            {
-                Businesses businesses = new Businesses();
-                List<Businesses> bList = businesses.ReadByUser(att_id);
-                return Ok(bList);
-            }
-            catch (Exception e)
-            {
-                return Content(HttpStatusCode.BadRequest, e);
-            }
-        }
+        //    try
+        //    {
+        //        Businesses businesses = new Businesses();
+        //        List<Businesses> bList = businesses.ReadByUser(att_id);
+        //        return Ok(bList);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return Content(HttpStatusCode.BadRequest, e);
+        //    }
+        //}
 
 
-        [HttpGet]
-        [Route("api/Businesses/Byuser/{category}")]
-        public IHttpActionResult Get([FromUri] int[] att_id, string category)
-        {
-            try
-            {
-                Businesses businesses = new Businesses();
-                List<Businesses> bList = businesses.ReadByUser(att_id, category);
-                return Ok(bList);
-            }
-            catch (Exception e)
-            {
-                return Content(HttpStatusCode.BadRequest, e);
-            }
+        //[HttpGet]
+        //[Route("api/Businesses/Byuser/{category}")]
+        //public IHttpActionResult Get([FromUri] int[] att_id, string category)
+        //{
+        //    try
+        //    {
+        //        Businesses businesses = new Businesses();
+        //        List<Businesses> bList = businesses.ReadByUser(att_id, category);
+        //        return Ok(bList);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return Content(HttpStatusCode.BadRequest, e);
+        //    }
            
-        }
+        //}
 
 
-        [HttpGet]
-        [Route("api/Businesses/GetPromotByUser/{category}")]
-        public IHttpActionResult GetPromotByUser([FromUri] int[] att_id, string category)
-        {
-            try
-            {
-                Businesses businesses = new Businesses();
-                List<Businesses> bList = businesses.ReadPromotByUser(att_id, category);
-                return Ok(bList);
-            }
-            catch (Exception e)
-            {
-                return Content(HttpStatusCode.BadRequest, e);
-            }
-        }
+        //[HttpGet]
+        //[Route("api/Businesses/GetPromotByUser/{category}")]
+        //public IHttpActionResult GetPromotByUser([FromUri] int[] att_id, string category)
+        //{
+        //    try
+        //    {
+        //        Businesses businesses = new Businesses();
+        //        List<Businesses> bList = businesses.ReadPromotByUser(att_id, category);
+        //        return Ok(bList);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return Content(HttpStatusCode.BadRequest, e);
+        //    }
+        //}
 
 
 

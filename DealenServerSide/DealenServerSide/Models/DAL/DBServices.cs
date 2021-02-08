@@ -4,12 +4,8 @@ using System.Web.Configuration;
 using System.Data;
 using System.Text;
 using System.Collections.Generic;
+using DealenServerSide.Models;
 
-
-using cuisin.Models;
-using resturantwebApp.Models.DAL;
-using Web_Exe.Models;
-using System.Linq;
 
 public class DBServices
 {
@@ -102,8 +98,8 @@ public class DBServices
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', '{4}', '{5}');", customer.Fname, customer.Lname, customer.Mail, customer.Phone, customer.Password, customer.Image);
-        String prefixc = "INSERT INTO [Customers_2021] " + "([name],[lastname],[email],[phone],[password],[image])";
+        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', '{4}', '{5}','{6}');", customer.Cust_name, customer.Cust_address, customer.Cust_phone, customer.Cust_mail, customer.Birthdate, customer.Password, customer.Image);
+        String prefixc = "INSERT INTO [Customer_2021] " + "([cust_name],[cust_address],[cust_phone],[cust_mail],[birthdate],[password],[image])";
         String get_id = "SELECT SCOPE_IDENTITY();";
         command = prefixc + sb.ToString() + get_id;
 
@@ -112,410 +108,341 @@ public class DBServices
 
 
 
-
     //Insert New Campaingn
-    public int Insert(Campaign campaign)
-    {
-
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
-        {
-            con = connect("DBConnectionString"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-
-        String cStr = BuildInsertCommand(campaign);      // helper method to build the insert string
-
-        cmd = CreateCommand(cStr, con);             // create the command
-
-        try
-        {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
-        }
-        catch (Exception ex)
-        {
-
-            try
-            {
-                String cStr2 = BuildUpdateStatusCommand(campaign);
-
-                cmd = CreateCommand(cStr2, con);
-                int numEffected = cmd.ExecuteNonQuery(); // execute the command
-                return numEffected;
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            // write to log
-            throw (ex);
-        }
-
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
-
-    }
     //--------------------------------------------------------------------
-    private String BuildInsertCommand(Campaign campaign)
-    {
-        String command;
-
-        StringBuilder sb = new StringBuilder();
-        // use a string builder to create the dynamic string
-        sb.AppendFormat("Values({0}, {1}, {2}, {3}, {4}, '{5}')", campaign.Id_rest, campaign.Budget, campaign.Balance, campaign.Num_clicks, campaign.Num_views, campaign.Status);
-        String prefixc = "INSERT INTO [campaingn_2021] " + "([id_rest],[budget],[balance],[num_clicks],[num_views],[status])";
-        command = prefixc + sb.ToString();
-
-        return command;
-    }
 
 
     //Insert Insert_Att_In_Rest
-    public int Insert_Att_In_Rest(Attribute_In_rest attribute_In_Rest)
-    {
+    //public int Insert_Att_In_Rest(Attribute_In_rest attribute_In_Rest)
+    //{
 
-        SqlConnection con;
-        SqlCommand cmd;
+    //    SqlConnection con;
+    //    SqlCommand cmd;
 
-        try
-        {
-            con = connect("DBConnectionString"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
+    //    try
+    //    {
+    //        con = connect("DBConnectionString"); // create the connection
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
 
-        String cStr = BuildInsertCommand(attribute_In_Rest);      // helper method to build the insert string
+    //    String cStr = BuildInsertCommand(attribute_In_Rest);      // helper method to build the insert string
 
-        cmd = CreateCommand(cStr, con);             // create the command
+    //    cmd = CreateCommand(cStr, con);             // create the command
 
-        try
-        {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
+    //    try
+    //    {
+    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
+    //        return numEffected;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
 
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
+    //    finally
+    //    {
+    //        if (con != null)
+    //        {
+    //            // close the db connection
+    //            con.Close();
+    //        }
+    //    }
 
-    }
+    //}
     //--------------------------------------------------------------------
-    private String BuildInsertCommand(Attribute_In_rest attribute_In_Rest)
-    {
-        String command;
+    //private String BuildInsertCommand(Attribute_In_rest attribute_In_Rest)
+    //{
+    //    String command;
 
-        StringBuilder sb = new StringBuilder();
-        // use a string builder to create the dynamic string
-        sb.AppendFormat("Values({0}, {1})", attribute_In_Rest.Id_attr, attribute_In_Rest.Id_rest);
-        String prefixc = "INSERT INTO [Attribute_rest_2021] " + "([Id_attribute],[Id_rest])";
-        command = prefixc + sb.ToString();
+    //    StringBuilder sb = new StringBuilder();
+    //    // use a string builder to create the dynamic string
+    //    sb.AppendFormat("Values({0}, {1})", attribute_In_Rest.Id_attr, attribute_In_Rest.Id_rest);
+    //    String prefixc = "INSERT INTO [Attribute_rest_2021] " + "([Id_attribute],[Id_rest])";
+    //    command = prefixc + sb.ToString();
 
-        return command;
-    }
+    //    return command;
+    //}
 
 
     //Insert Attribute_att_In_cust
-    public int Attribute_att_In_cust(Attribute_In_cust attribute_In_cust)
-    {
+    //public int Attribute_att_In_cust(Attribute_In_cust attribute_In_cust)
+    //{
 
-        SqlConnection con;
-        SqlCommand cmd;
+    //    SqlConnection con;
+    //    SqlCommand cmd;
 
-        try
-        {
-            con = connect("DBConnectionString"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
+    //    try
+    //    {
+    //        con = connect("DBConnectionString"); // create the connection
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
 
-        String cStr = BuildInsertCommand(attribute_In_cust);      // helper method to build the insert string
+    //    String cStr = BuildInsertCommand(attribute_In_cust);      // helper method to build the insert string
 
-        cmd = CreateCommand(cStr, con);             // create the command
+    //    cmd = CreateCommand(cStr, con);             // create the command
 
-        try
-        {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
+    //    try
+    //    {
+    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
+    //        return numEffected;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
 
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
+    //    finally
+    //    {
+    //        if (con != null)
+    //        {
+    //            // close the db connection
+    //            con.Close();
+    //        }
+    //    }
 
-    }
+    //}
     //--------------------------------------------------------------------
-    private String BuildInsertCommand(Attribute_In_cust attribute_In_cust)
-    {
-        String command;
+    //private String BuildInsertCommand(Attribute_In_cust attribute_In_cust)
+    //{
+    //    String command;
 
-        StringBuilder sb = new StringBuilder();
-        // use a string builder to create the dynamic string
-        sb.AppendFormat("Values({0}, {1})", attribute_In_cust.Id_att, attribute_In_cust.Id_cust);
-        String prefixc = "INSERT INTO [Attribute_Cust_2021] " + "([Id_attribute],[Id_cust])";
-        command = prefixc + sb.ToString();
+    //    StringBuilder sb = new StringBuilder();
+    //    // use a string builder to create the dynamic string
+    //    sb.AppendFormat("Values({0}, {1})", attribute_In_cust.Id_att, attribute_In_cust.Id_cust);
+    //    String prefixc = "INSERT INTO [Attribute_Cust_2021] " + "([Id_attribute],[Id_cust])";
+    //    command = prefixc + sb.ToString();
 
-        return command;
-    }
+    //    return command;
+    //}
     //Delete Attribute_att_In_cust
-    public int Attribute_att_In_cust_Delete(int id)
-    {
+    //public int Attribute_att_In_cust_Delete(int id)
+    //{
 
-        SqlConnection con;
-        SqlCommand cmd;
+    //    SqlConnection con;
+    //    SqlCommand cmd;
 
-        try
-        {
-            con = connect("DBConnectionString"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
+    //    try
+    //    {
+    //        con = connect("DBConnectionString"); // create the connection
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
 
-        String cStr = BuildInsertCommand(id);      // helper method to build the insert string
+    //    String cStr = BuildInsertCommand(id);      // helper method to build the insert string
 
-        cmd = CreateCommand(cStr, con);             // create the command
+    //    cmd = CreateCommand(cStr, con);             // create the command
 
-        try
-        {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
+    //    try
+    //    {
+    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
+    //        return numEffected;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
 
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
+    //    finally
+    //    {
+    //        if (con != null)
+    //        {
+    //            // close the db connection
+    //            con.Close();
+    //        }
+    //    }
 
-    }
+    //}
     //--------------------------------------------------------------------
-    private String BuildInsertCommand(int id)
-    {
-        String command;
+    //private String BuildInsertCommand(int id)
+    //{
+    //    String command;
 
-        StringBuilder sb = new StringBuilder();
-        // use a string builder to create the dynamic string
-        sb.AppendFormat("{0}", id);
-        String prefixc = "DELETE FROM Attribute_Cust_2021 WHERE Id_cust=";
-        command = prefixc + sb.ToString();
+    //    StringBuilder sb = new StringBuilder();
+    //    // use a string builder to create the dynamic string
+    //    sb.AppendFormat("{0}", id);
+    //    String prefixc = "DELETE FROM Attribute_Cust_2021 WHERE Id_cust=";
+    //    command = prefixc + sb.ToString();
 
-        return command;
-    }
+    //    return command;
+    //}
 
     //update Attribute_att_In_cust_Update
 
-    public int Attribute_att_In_cust_Update(Attribute_In_cust attribute_In_cust)
-    {
-        SqlConnection con;
-        SqlCommand cmd;
+    //public int Attribute_att_In_cust_Update(Attribute_In_cust attribute_In_cust)
+    //{
+    //    SqlConnection con;
+    //    SqlCommand cmd;
 
-        try
-        {
-            con = connect("DBConnectionString"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
+    //    try
+    //    {
+    //        con = connect("DBConnectionString"); // create the connection
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
 
-        String cStr = BuildInsertCommand2(attribute_In_cust);      // helper method to build the insert string
-        cmd = CreateCommand(cStr, con);             // create the command
+    //    String cStr = BuildInsertCommand2(attribute_In_cust);      // helper method to build the insert string
+    //    cmd = CreateCommand(cStr, con);             // create the command
 
-        try
-        {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
+    //    try
+    //    {
+    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
+    //        return numEffected;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
 
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
+    //    finally
+    //    {
+    //        if (con != null)
+    //        {
+    //            // close the db connection
+    //            con.Close();
+    //        }
+    //    }
 
-    }
+    //}
     //--------------------------------------------------------------------
-    private String BuildInsertCommand2(Attribute_In_cust attribute_In_cust)
-    {
-        String command;
+    //private String BuildInsertCommand2(Attribute_In_cust attribute_In_cust)
+    //{
+    //    String command;
 
-        StringBuilder sb = new StringBuilder();
-        // use a string builder to create the dynamic string
-        sb.AppendFormat("Values({0}, {1})", attribute_In_cust.Id_att, attribute_In_cust.Id_cust);
-        String prefixc = "INSERT INTO Attribute_Cust_2021 " + "(Id_attribute, Id_cust) ";
-        command = prefixc + sb.ToString();
+    //    StringBuilder sb = new StringBuilder();
+    //    // use a string builder to create the dynamic string
+    //    sb.AppendFormat("Values({0}, {1})", attribute_In_cust.Id_att, attribute_In_cust.Id_cust);
+    //    String prefixc = "INSERT INTO Attribute_Cust_2021 " + "(Id_attribute, Id_cust) ";
+    //    command = prefixc + sb.ToString();
  
-        return command;
-    }
+    //    return command;
+    //}
 
 
 
 
     //Update Budget of Campaign by id
-    public int Update_Budget(int id, int budget)
-    {
+    //public int Update_Budget(int id, int budget)
+    //{
 
-        SqlConnection con;
-        SqlCommand cmd;
+    //    SqlConnection con;
+    //    SqlCommand cmd;
 
-        try
-        {
-            con = connect("DBConnectionString"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
+    //    try
+    //    {
+    //        con = connect("DBConnectionString"); // create the connection
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
 
-        String cStr = BuildUpdateCommand(id, budget);      // helper method to build the insert string
+    //    String cStr = BuildUpdateCommand(id, budget);      // helper method to build the insert string
 
-        cmd = CreateCommand(cStr, con);             // create the command
+    //    cmd = CreateCommand(cStr, con);             // create the command
 
-        try
-        {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
+    //    try
+    //    {
+    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
+    //        return numEffected;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
 
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
+    //    finally
+    //    {
+    //        if (con != null)
+    //        {
+    //            // close the db connection
+    //            con.Close();
+    //        }
+    //    }
 
-    }
+    //}
     //--------------------------------------------------------------------
-    private String BuildUpdateCommand(int id, int difference)
-    {
-        String command;
-        command = "UPDATE campaingn_2021 SET budget = budget + " + difference + " ,balance = balance + " + difference + " WHERE id = " + id + "; ";
-        return command;
-    }
+    //private String BuildUpdateCommand(int id, int difference)
+    //{
+    //    String command;
+    //    command = "UPDATE campaingn_2021 SET budget = budget + " + difference + " ,balance = balance + " + difference + " WHERE id = " + id + "; ";
+    //    return command;
+    //}
 
-    //Delete Campaign by id - change status to false
-    public int DeleteCampain(int id)
-    {
+    ////Delete Campaign by id - change status to false
+    //public int DeleteCampain(int id)
+    //{
 
-        SqlConnection con;
-        SqlCommand cmd;
+    //    SqlConnection con;
+    //    SqlCommand cmd;
 
-        try
-        {
-            con = connect("DBConnectionString"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
+    //    try
+    //    {
+    //        con = connect("DBConnectionString"); // create the connection
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
 
-        String cStr = BuildUpdateCommand(id);      // helper method to build the insert string
+    //    String cStr = BuildUpdateCommand(id);      // helper method to build the insert string
 
-        cmd = CreateCommand(cStr, con);             // create the command
+    //    cmd = CreateCommand(cStr, con);             // create the command
 
-        try
-        {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
+    //    try
+    //    {
+    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
+    //        return numEffected;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
 
-        finally
-        {
-            if (con != null)
-            {
-                // close the db connection
-                con.Close();
-            }
-        }
+    //    finally
+    //    {
+    //        if (con != null)
+    //        {
+    //            // close the db connection
+    //            con.Close();
+    //        }
+    //    }
 
-    }
-    //--------------------------------------------------------------------
-    private String BuildUpdateCommand(int id)
-    {
-        String command;
-        command = "UPDATE campaingn_2021 SET status = 'False',balance = budget, num_clicks = 0,num_views=0 WHERE id = " + id + "; ";
-        return command;
-    }
-    private String BuildUpdateStatusCommand(Campaign c)
-    { 
-        String command;
-        command = "UPDATE campaingn_2021 SET status = 'True',budget = " + c.Budget+ ",balance = " + c.Budget + ", num_clicks = 0,num_views=0 WHERE id_rest = " + c.Id_rest + "; ";
-        return command;
-    }
+    //}
+    ////--------------------------------------------------------------------
+    //private String BuildUpdateCommand(int id)
+    //{
+    //    String command;
+    //    command = "UPDATE campaingn_2021 SET status = 'False',balance = budget, num_clicks = 0,num_views=0 WHERE id = " + id + "; ";
+    //    return command;
+    //}
+    //private String BuildUpdateStatusCommand(Campaign c)
+    //{ 
+    //    String command;
+    //    command = "UPDATE campaingn_2021 SET status = 'True',budget = " + c.Budget+ ",balance = " + c.Budget + ", num_clicks = 0,num_views=0 WHERE id_rest = " + c.Id_rest + "; ";
+    //    return command;
+    //}
 
 
 
@@ -531,7 +458,7 @@ public List<Customer> CheckIfExits(string mail, string password)
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-            String selectSTR = "select id,[name],lastname,email,phone,password,[image] from Customers_2021 where email = '" + mail.ToString()+ "' and [password] = '" +password.ToString() + "'";
+            String selectSTR = "select cust_id,[cust_name],cust_address,cust_phone,birthdate,cust_mail, password,[image] from Customer_2021 where cust_mail = '" + mail.ToString()+ "' and [password] = '" +password.ToString() + "'";
             SqlCommand cmd = new SqlCommand(selectSTR, con);
 
             // get a reader
@@ -541,11 +468,11 @@ public List<Customer> CheckIfExits(string mail, string password)
             {   // Read till the end of the data into a row
                 Customer c = new Customer();
                 
-                    c.Id= Convert.ToInt32(dr["id"]);
-                    c.Fname = (string)dr["name"];
-                    c.Lname = (string)dr["lastname"];
-                    c.Mail = (string)dr["email"];
-                    c.Phone = (string)dr["phone"];
+                    c.Cust_id = Convert.ToInt32(dr["cust_id"]);
+                    c.Cust_name = (string)dr["cust_name"];
+                    c.Cust_address = (string)dr["cust_address"];
+                    c.Cust_mail = (string)dr["cust_mail"];
+                    c.Cust_phone = (string)dr["cust_phone"];
                     c.Password = (string)dr["password"];
 
                 if (!dr.IsDBNull(6))
@@ -580,7 +507,7 @@ public List<Customer> CheckIfExits(string mail, string password)
 
 
     //Get all resturant Data for unknown user
-    public List<Businesses> getBusinesses(string category = null)
+public List<Businesses> getBusinesses(string category = null)
     {
         SqlConnection con = null;
         List<Businesses> bList = new List<Businesses>();
@@ -807,188 +734,188 @@ public List<Customer> CheckIfExits(string mail, string password)
     }
 
     //Get all Campaingns Data
-    public List<Campaign> getcampaingns()
-    {
-        SqlConnection con = null;
-        List<Campaign> campaignsList = new List<Campaign>();
+    //public List<Campaign> getcampaingns()
+    //{
+    //    SqlConnection con = null;
+    //    List<Campaign> campaignsList = new List<Campaign>();
 
-        try
-        {
-            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+    //    try
+    //    {
+    //        con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-            String selectSTR = "select ca.id,id_rest,[name],budget,Balance,num_clicks,num_views,[status] from campaingn_2021 as ca inner join Restaurants_2021 as re on ca.id_rest = re.id where[status] = 'true'";
-            SqlCommand cmd = new SqlCommand(selectSTR, con);
+    //        String selectSTR = "select ca.id,id_rest,[name],budget,Balance,num_clicks,num_views,[status] from campaingn_2021 as ca inner join Restaurants_2021 as re on ca.id_rest = re.id where[status] = 'true'";
+    //        SqlCommand cmd = new SqlCommand(selectSTR, con);
 
-            // get a reader
-            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+    //        // get a reader
+    //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
 
-            while (dr.Read())
-            {   // Read till the end of the data into a row
-                Campaign C = new Campaign();
+    //        while (dr.Read())
+    //        {   // Read till the end of the data into a row
+    //            Campaign C = new Campaign();
 
-                C.Id = Convert.ToInt32(dr["id"]);
-                C.Id_rest = Convert.ToInt32(dr["id_rest"]);
-                C.Rest_name = (string)(dr["name"]);
-                C.Budget = Convert.ToInt32(dr["budget"]);
-                C.Balance = Convert.ToDouble((dr["balance"]));
-                C.Num_clicks = Convert.ToInt32(dr["num_clicks"]);
-                C.Num_views = Convert.ToInt32(dr["num_views"]);
-                C.Status = Convert.ToBoolean(dr["status"]);
-                campaignsList.Add(C);
-            }
+    //            C.Id = Convert.ToInt32(dr["id"]);
+    //            C.Id_rest = Convert.ToInt32(dr["id_rest"]);
+    //            C.Rest_name = (string)(dr["name"]);
+    //            C.Budget = Convert.ToInt32(dr["budget"]);
+    //            C.Balance = Convert.ToDouble((dr["balance"]));
+    //            C.Num_clicks = Convert.ToInt32(dr["num_clicks"]);
+    //            C.Num_views = Convert.ToInt32(dr["num_views"]);
+    //            C.Status = Convert.ToBoolean(dr["status"]);
+    //            campaignsList.Add(C);
+    //        }
 
-            return campaignsList;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-        finally
-        {
-            if (con != null)
-            {
-                con.Close();
-            }
+    //        return campaignsList;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
+    //    finally
+    //    {
+    //        if (con != null)
+    //        {
+    //            con.Close();
+    //        }
 
-        }
+    //    }
 
-    }
+    //}
 
     //Get attribute by customer id - getattribute_In_Custs
-    public List<Attribute_In_cust> getattribute_In_Custs(int id)
-    {
-        SqlConnection con = null;
-        List<Attribute_In_cust> attribute_In_cust = new List<Attribute_In_cust>();
+    //public List<Attribute_In_cust> getattribute_In_Custs(int id)
+    //{
+    //    SqlConnection con = null;
+    //    List<Attribute_In_cust> attribute_In_cust = new List<Attribute_In_cust>();
 
-        try
-        {
-            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+    //    try
+    //    {
+    //        con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-            String selectSTR = "select Id_attribute from Attribute_Cust_2021 where id_cust = " + id.ToString();
-            SqlCommand cmd = new SqlCommand(selectSTR, con);
+    //        String selectSTR = "select Id_attribute from Attribute_Cust_2021 where id_cust = " + id.ToString();
+    //        SqlCommand cmd = new SqlCommand(selectSTR, con);
 
-            // get a reader
-            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+    //        // get a reader
+    //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
 
-            while (dr.Read())
-            {   // Read till the end of the data into a row
-                Attribute_In_cust C = new Attribute_In_cust();
+    //        while (dr.Read())
+    //        {   // Read till the end of the data into a row
+    //            Attribute_In_cust C = new Attribute_In_cust();
 
-                C.Id_att = Convert.ToInt32(dr["Id_attribute"]);
-                attribute_In_cust.Add(C);
-            }
+    //            C.Id_att = Convert.ToInt32(dr["Id_attribute"]);
+    //            attribute_In_cust.Add(C);
+    //        }
 
-            return attribute_In_cust;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-        finally
-        {
-            if (con != null)
-            {
-                con.Close();
-            }
+    //        return attribute_In_cust;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
+    //    finally
+    //    {
+    //        if (con != null)
+    //        {
+    //            con.Close();
+    //        }
 
-        }
+    //    }
 
-    }
+    //}
 
-    //Get all resturant data for relevant user getBusinessesByUser
-    public List<Businesses> getBusinessesByUser(int[] att_id, string category = null)
-    {
-        SqlConnection con = null;
-        List<Businesses> bList = new List<Businesses>();
-        string selectSTR = null;
-        string select_att_case = "";
-        foreach (int element in att_id)
-        {
-            select_att_case += "case when Att.Id = " + element.ToString() + " then 0 else 1 end,";
-        }
+    ////Get all resturant data for relevant user getBusinessesByUser
+    //public List<Businesses> getBusinessesByUser(int[] att_id, string category = null)
+    //{
+    //    SqlConnection con = null;
+    //    List<Businesses> bList = new List<Businesses>();
+    //    string selectSTR = null;
+    //    string select_att_case = "";
+    //    foreach (int element in att_id)
+    //    {
+    //        select_att_case += "case when Att.Id = " + element.ToString() + " then 0 else 1 end,";
+    //    }
 
-        select_att_case = select_att_case.Remove(select_att_case.Length - 1);
-        try
-        {
-            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
-            if (category == null)
-            {
-                StringBuilder sb = new StringBuilder();
+    //    select_att_case = select_att_case.Remove(select_att_case.Length - 1);
+    //    try
+    //    {
+    //        con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+    //        if (category == null)
+    //        {
+    //            StringBuilder sb = new StringBuilder();
 
-                sb.AppendFormat("select Re.id, Re.[name], Re.user_rating, Re.category, Re.price_range, Re.[location],Re.phone_numbers,Re.featured_image " +
-                        "from Restaurants_2021 as Re " +
-                        "inner join Attribute_rest_2021 as AtR on Re.id = AtR.Id_rest " +
-                        "inner join Attribute_2021 as Att on AtR.Id_attribute = Att.Id " +
-                        "group by  Re.id, Att.Id,Re.[name], Re.user_rating, Re.category, Re.price_range, Re.[location],Re.phone_numbers,Re.featured_image " +
-                        "order by {0}" , select_att_case);
-                selectSTR = sb.ToString();
-            }
-            else
-            {
-                StringBuilder sb = new StringBuilder();
+    //            sb.AppendFormat("select Re.id, Re.[name], Re.user_rating, Re.category, Re.price_range, Re.[location],Re.phone_numbers,Re.featured_image " +
+    //                    "from Restaurants_2021 as Re " +
+    //                    "inner join Attribute_rest_2021 as AtR on Re.id = AtR.Id_rest " +
+    //                    "inner join Attribute_2021 as Att on AtR.Id_attribute = Att.Id " +
+    //                    "group by  Re.id, Att.Id,Re.[name], Re.user_rating, Re.category, Re.price_range, Re.[location],Re.phone_numbers,Re.featured_image " +
+    //                    "order by {0}" , select_att_case);
+    //            selectSTR = sb.ToString();
+    //        }
+    //        else
+    //        {
+    //            StringBuilder sb = new StringBuilder();
 
-                sb.AppendFormat("select Re.id, Re.[name], Re.user_rating, Re.category, Re.price_range, Re.[location],Re.phone_numbers,Re.featured_image " +
-                        "from Restaurants_2021 as Re " +
-                        "inner join Attribute_rest_2021 as AtR on Re.id = AtR.Id_rest " +
-                        "inner join Attribute_2021 as Att on AtR.Id_attribute = Att.Id " +
-                        "where category like '%{0}%' and Re.id not in( select id_rest from campaingn_2021 where status= 'True') " +
-                        "group by  Re.id, Att.Id,Re.[name], Re.user_rating, Re.category, Re.price_range, Re.[location],Re.phone_numbers,Re.featured_image " +
-                        "order by {1}", category, select_att_case);
-                selectSTR = sb.ToString();
-            }
-
-
-            SqlCommand cmd = new SqlCommand(selectSTR, con);
-
-            // get a reader
-            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
-            List<Businesses> Unique_list = new List<Businesses>();
-            List<int> Id_list = new List<int>();
-            while (dr.Read())
-            {   // Read till the end of the data into a row
-                Businesses B = new Businesses();
-                B.Id = Convert.ToInt32(dr["id"]);
-                B.Name = (string)dr["name"];
-                B.User_rating = Convert.ToDouble(dr["user_rating"]);
-                B.Category = (string)dr["category"];
-                B.Price_range = Convert.ToInt32(dr["price_range"]);
-                B.Location = (string)dr["location"];
-                B.Phone_numbers = (string)dr["phone_numbers"];
-                B.Featured_image = (string)dr["featured_image"];
-
-                bList.Add(B);
+    //            sb.AppendFormat("select Re.id, Re.[name], Re.user_rating, Re.category, Re.price_range, Re.[location],Re.phone_numbers,Re.featured_image " +
+    //                    "from Restaurants_2021 as Re " +
+    //                    "inner join Attribute_rest_2021 as AtR on Re.id = AtR.Id_rest " +
+    //                    "inner join Attribute_2021 as Att on AtR.Id_attribute = Att.Id " +
+    //                    "where category like '%{0}%' and Re.id not in( select id_rest from campaingn_2021 where status= 'True') " +
+    //                    "group by  Re.id, Att.Id,Re.[name], Re.user_rating, Re.category, Re.price_range, Re.[location],Re.phone_numbers,Re.featured_image " +
+    //                    "order by {1}", category, select_att_case);
+    //            selectSTR = sb.ToString();
+    //        }
 
 
-            }
-            //filter list only unique items
-            foreach (Businesses value in bList)
-            {
-                if (!Id_list.Contains(value.Id))
-                {
-                    Id_list.Add(value.Id);
-                    Unique_list.Add(value);
-                }
-            }
+    //        SqlCommand cmd = new SqlCommand(selectSTR, con);
 
-            return Unique_list;
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
-        }
-        finally
-        {
-            if (con != null)
-            {
-                con.Close();
-            }
+    //        // get a reader
+    //        SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+    //        List<Businesses> Unique_list = new List<Businesses>();
+    //        List<int> Id_list = new List<int>();
+    //        while (dr.Read())
+    //        {   // Read till the end of the data into a row
+    //            Businesses B = new Businesses();
+    //            B.Id = Convert.ToInt32(dr["id"]);
+    //            B.Name = (string)dr["name"];
+    //            B.User_rating = Convert.ToDouble(dr["user_rating"]);
+    //            B.Category = (string)dr["category"];
+    //            B.Price_range = Convert.ToInt32(dr["price_range"]);
+    //            B.Location = (string)dr["location"];
+    //            B.Phone_numbers = (string)dr["phone_numbers"];
+    //            B.Featured_image = (string)dr["featured_image"];
 
-        }
+    //            bList.Add(B);
 
-    }
+
+    //        }
+    //        //filter list only unique items
+    //        foreach (Businesses value in bList)
+    //        {
+    //            if (!Id_list.Contains(value.Id))
+    //            {
+    //                Id_list.Add(value.Id);
+    //                Unique_list.Add(value);
+    //            }
+    //        }
+
+    //        return Unique_list;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        // write to log
+    //        throw (ex);
+    //    }
+    //    finally
+    //    {
+    //        if (con != null)
+    //        {
+    //            con.Close();
+    //        }
+
+    //    }
+
+    //}
 
     //Get Promot Resturant for user getPromotBusinessesByUser
     public List<Businesses> getPromotBusinessesByUser(int[] att_id, string category)

@@ -1,4 +1,4 @@
-﻿using cuisin.Models;
+﻿using DealenServerSide.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace cuisin.Controllers
+namespace DealenServerSide.Controllers
 {
     public class CustomerController : ApiController
     {
@@ -14,12 +14,12 @@ namespace cuisin.Controllers
 
 
         // GET api/<controller>/5
-        public IHttpActionResult Get(string mail, string password)
+        public IHttpActionResult Get(string cust_name, string password)
         {
             try
             {
                 Customer Customer = new Customer();
-                List<Customer> Customer_Islogged = Customer.CheckIfLog(mail, password);
+                List<Customer> Customer_Islogged = Customer.CheckIfLog(cust_name, password);
                 return Ok(Customer_Islogged);
             }
             catch (Exception e)
@@ -36,7 +36,7 @@ namespace cuisin.Controllers
             try
             {
                 int count = customer.Insert();
-                return Created(new Uri(Request.RequestUri.AbsoluteUri + customer.Id), count);
+                return Created(new Uri(Request.RequestUri.AbsoluteUri + customer.Cust_id), count);
 
             }
             catch (Exception e)
