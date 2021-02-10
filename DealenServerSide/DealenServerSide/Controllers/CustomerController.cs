@@ -14,12 +14,12 @@ namespace DealenServerSide.Controllers
 
 
         // GET api/<controller>/5
-        public IHttpActionResult Get(string cust_name, string password)
+        public IHttpActionResult Get(string cust_mail, string password)
         {
             try
             {
                 Customer Customer = new Customer();
-                List<Customer> Customer_Islogged = Customer.CheckIfLog(cust_name, password);
+                List<Customer> Customer_Islogged = Customer.CheckIfLog(cust_mail, password);
                 return Ok(Customer_Islogged);
             }
             catch (Exception e)
