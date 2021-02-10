@@ -1,21 +1,22 @@
 import * as React from 'react';
-import { StyleSheet, Text, View,TextInput,TouchableOpacity , Image,ImageBackground, Dimensions, TouchableWithoutFeedback} from 'react-native';
+import { StyleSheet, Text, View,TextInput,TouchableOpacity , Image,ImageBackground, Dimensions, TouchableWithoutFeedback, I18nManager} from 'react-native';
 import TimerIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DiscountIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 const { width, height } = Dimensions.get('window')
-  export default class FullDealView extends React.Component {
+
+I18nManager.allowRTL(true)
+
+
+export default class FullDealView extends React.Component {
 
     state={
-      // categoryId: null,
-      // categoryName: null,
-      // categoryDescription: null,
-      // Time:null,
       title: 'בירה היינקן', url: 'https://i.ibb.co/JxykVBt/flat-lay-photography-of-vegetable-salad-on-plate-1640777.jpg',
       description: "בואו לאכול אצלנו בשוק ותקבלו מתנה תבלינים בואו לאכול אצלנו בשוק ותקבלו מתנה תבלינים",
       BusinessName: "פורט 19 - שלמה המלך",
       DiscountDescription: "40%",
       TimeLeft: "30",
-      id: 1
+      id: 1,
+      isRTL: I18nManager.isRTL
     }
 
 
@@ -84,7 +85,7 @@ const { width, height } = Dimensions.get('window')
             </ImageBackground>
             
           </View>
-          <View style={{flex:0.8,  }}>
+          <View style={{flex:0.8, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
             <View style={{marginVertical:40, marginHorizontal: 10 }}>
               <Text>פרטים על העסק פרטים על העסק</Text>
               <Text>כתובת: בלה בלה בלה בלה בלה</Text>

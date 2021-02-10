@@ -36,6 +36,7 @@ const DealItem = ({ item,navigation }) => {
 const styles = StyleSheet.create({
     cardView: {
         flex: 1,
+
         flexDirection: 'row-reverse',
         width: width-20,
         height: height / 5,
@@ -68,14 +69,16 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0.8, height: 0.8 },
         marginBottom: 5,
         fontWeight: "bold",
-        elevation: 5
+        elevation: 5,
+
     },
     itemDescription: {
         color: 'black',
         fontSize: 13,
         shadowColor: '#000',
         elevation: 5,
-        marginHorizontal: 3
+        marginHorizontal: 3,
+
     },
     itemBusinessName: {
         color: 'black',

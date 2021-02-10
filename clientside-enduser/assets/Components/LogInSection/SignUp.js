@@ -1,12 +1,19 @@
 import React from 'react';
-import { StyleSheet, Text, View,TextInput,TouchableOpacity, Button } from 'react-native';
+import { StyleSheet, Text, View,TextInput,TouchableOpacity, Button , Dimensions} from 'react-native';
 import UserList from './UserList';
 import TabControler from '../MainTab/TabControler';
 import ImagesPicker from './ImagePicker';
-import CheckBox from '@react-native-community/checkbox';
+
+import { CheckBox } from 'react-native-elements'
+
+
+// import CheckBox from '@react-native-community/checkbox';
+
+
+
 import { useIsFocused } from '@react-navigation/native'
 import { LogBox } from 'react-native';
-
+const { width, height } = Dimensions.get('window');
 LogBox.ignoreLogs([
  'Non-serializable values were found in the navigation state',
 ]);
@@ -47,7 +54,8 @@ export default class SignUp extends React.Component {
     const { navigation, route } = this.props;
 
     return (
-      <View style={styles.container}>
+<View style={{flex:1, backgroundColor: '#003f5c'}}>
+  <View style={styles.container}>
         <Text style={styles.Logo}>Welcome</Text>
          <View style={styles.inputView} >
             <TextInput  
@@ -84,17 +92,17 @@ export default class SignUp extends React.Component {
                 <ImagesPicker func = {this.getImgUrl} /> 
             </View>
             <View style={styles.checkView}>
-              <View style={{marginTop: -5}} >
+              <View style={{marginTop: 0}} >
                 <CheckBox
-                              disabled={false}
-                              value={this.state.toggleCheckBox_Resturant}
-                              onValueChange={(newValue) => this.setState({toggleCheckBox_Resturant: newValue})}
-                              tintColors={{ true: '#fb5b5a', false: 'whitesmoke' }}
-                              
-                          />
+                   
+                    checkedColor='#fb5b5a'
+                    checked={this.state.toggleCheckBox_Resturant}
+                    onPress={() => this.setState({checked: !this.state.toggleCheckBox_Resturant})}
+                  />
+              
               </View>   
-              <TouchableOpacity  onPress={() => navigation.navigate('Bylaws', {onGoBack: () => this.refresh()})}>
-                  <Text style={{color: 'whitesmoke'}}>I read and confirm The bylaws</Text>
+            <TouchableOpacity style={{ width: '80%', height: height/22, marginTop:height/75, width: '60%'}} onPress={() => navigation.navigate('Bylaws', {onGoBack: () => this.refresh()})}>
+                  <Text style={{color: 'whitesmoke', }}>I read and confirm The bylaws</Text>
             </TouchableOpacity>         
             </View>
             <TouchableOpacity style={styles.loginBtn} onPress={this.handleSignUp}>
@@ -104,6 +112,7 @@ export default class SignUp extends React.Component {
               <Text style={styles.loginText}>Signup with facebook</Text>
             </TouchableOpacity>
       </View>
+</View>
     );
   }
 }
@@ -114,7 +123,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#003f5c',
         alignItems: 'center',
         justifyContent: 'center',
-        width: "100%"
+        width: "100%",
+        marginVertical: 30
       },
       inputView:{
         width:"80%",
