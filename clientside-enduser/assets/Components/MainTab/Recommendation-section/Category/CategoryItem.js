@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     cardView: {
         flex: 1,
         width: width/3,
-        height: height / 4.2,
+        height: height / 5,
         backgroundColor: 'white',
         margin: 10,
         borderRadius: 10,
@@ -41,20 +41,16 @@ const styles = StyleSheet.create({
         },
     image: {
         width: width/3,
-        height: height / 5.5,
+        height: height / 6.3,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10
         },
     itemTitle: {
         color: 'black',
         fontSize: 15,
-        shadowColor: '#000',
-        shadowOffset: { width: 0.8, height: 0.8 },
-        shadowOpacity: 1,
-        shadowRadius: 3,
         marginBottom: 5,
         fontWeight: "bold",
-        elevation: 5
+        elevation: 5,
     },
 })
 

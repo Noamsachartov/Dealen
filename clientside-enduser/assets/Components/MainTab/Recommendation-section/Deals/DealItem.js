@@ -66,8 +66,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         shadowColor: '#000',
         shadowOffset: { width: 0.8, height: 0.8 },
-        shadowOpacity: 1,
-        shadowRadius: 3,
         marginBottom: 5,
         fontWeight: "bold",
         elevation: 5
@@ -76,9 +74,6 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 13,
         shadowColor: '#000',
-        shadowOffset: { width: 0.8, height: 0.8 },
-        shadowOpacity: 1,
-        shadowRadius: 3,
         elevation: 5,
         marginHorizontal: 3
     },
@@ -86,9 +81,6 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 13,
         shadowColor: '#000',
-        shadowOffset: { width: 0.8, height: 0.8 },
-        shadowOpacity: 1,
-        shadowRadius: 3,
     },
     IconView: {flex: 1, flexDirection: 'row', position: 'absolute', bottom: 1},
     TimerView: {marginRight: 7},

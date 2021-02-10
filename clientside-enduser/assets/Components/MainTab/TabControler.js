@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -12,6 +12,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import FullDealView from './Recommendation-section/Deals/FullDealView';
 import CategoryFullView from './Recommendation-section/Category/CategoryFullView'
+const { width, height } = Dimensions.get('window');
 
 const Stack = createStackNavigator();
 
@@ -77,12 +78,9 @@ function MyTabs() {
 export default function TabControler() {
   return (
       <Stack.Navigator initialRouteName="MyTabs"       
-    //     screenOptions={{
-    //     headerShown: false
-    //  }}
      >
         <Stack.Screen name="MyTabs" options={{ headerShown: false}} component={MyTabs} />
-        <Stack.Screen name="FullDealView" options={{ title: '', headerTintColor:'whitesmoke',headerStyle: {height: 60, backgroundColor:'#003f5c'}}} component={FullDealView}  />
+        <Stack.Screen name="FullDealView" options={{ title: '', headerTintColor:'whitesmoke',headerStyle: {height: height/10.3, backgroundColor:'#003f5c'}}} component={FullDealView}  />
         <Stack.Screen name="CategoryFullView" component={CategoryFullView}  />
       </Stack.Navigator>    
   );
