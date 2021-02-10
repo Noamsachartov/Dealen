@@ -22,8 +22,9 @@ export default function App() {
         <Stack.Screen name="Login" component={LogIn} options={{headerShown: false}} />
         <Stack.Screen name="Signup" component={Signup} options={{headerShown: false}} />
         <Stack.Screen name="FaceBookSignup" component={FaceBookSignup} />
-        <Stack.Screen name="ChoosePreferences" component={ChoosePreferences} options={({ navigation, route }) => ({title: '',headerTintColor:'whitesmoke',headerStyle: {height: height/10.3, backgroundColor:'#003f5c'},
-        headerRight: () => (<Button title="דלג" color="#003f5c" onPress={() => navigation.navigate('Login')} />)   })} />
+        <Stack.Screen name="ChoosePreferences" component={ChoosePreferences} options={({ navigation, route }) => ({title: '',headerTintColor:'whitesmoke',headerStyle: {height: height/10, backgroundColor:'#003f5c'},
+        headerRight: () => (<Button title="דלג" color="#003f5c"  onPress={() => navigation.navigate('Login')} />)   })} />
+
         <Stack.Screen name="Bylaws" component={Bylaws}  initialParams={{ aprrove: false }}  options={{title: '',headerTintColor:'whitesmoke',headerStyle: {height: height/10.3, backgroundColor:'#003f5c'}}}/>
       </Stack.Navigator>
     </NavigationContainer>

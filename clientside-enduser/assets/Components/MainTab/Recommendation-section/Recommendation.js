@@ -16,7 +16,7 @@ export default function Recommendation() {
   console.log("inside recommendation")
   const navigation = useNavigation(); 
     return (
-      <View style={{marginTop: 25}}>
+      <View style={{marginTop: 40}}>
           <ScrollView showsVerticalScrollIndicator={false} >
             <Carousel data = {DataForCarousel}/>
             <Category navigation={navigation}  />  
