@@ -5,6 +5,7 @@ using System.Data;
 using System.Text;
 using System.Collections.Generic;
 using DealenServerSide.Models;
+using System.Globalization;
 
 
 public class DBServices
@@ -504,10 +505,115 @@ public List<Customer> CheckIfExits(string mail, string password)
         }
     }
 
+    public List<Deal> getDeals()
+    {
+        List<Deal> dlist = new List<Deal>();
+        SqlConnection con = null;
 
+        string selectSTR = null;
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+           
+                StringBuilder sb = new StringBuilder();
+
+                sb.AppendFormat("SELECT dealInbus_2021.id, Businesses_2021.name, dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount, Category_2021.name AS catgeory_name, Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name FROM Businesses_2021 INNER JOIN dealInbus_2021 ON Businesses_2021.id = dealInbus_2021.business_id INNER JOIN Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id INNER JOIN Category_2021 ON Deal_2021.cat_id = Category_2021.id");
+                selectSTR = sb.ToString(); 
+        
+
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                Deal d = new Deal();
+                d.Id = Convert.ToInt32(dr["id"]);
+                d.Name = (string)dr["deal_name"];
+                d.Business_Name = (string)dr["name"];
+                d.Category = (string)dr["catgeory_name"];
+                d.Startime = Convert.ToDateTime(dr["startime"]);
+                //startime = (string)dr["startime"];
+                //string endtime = (string)dr["endtime"];
+                d.Endtime = Convert.ToDateTime(dr["endtime"]);
+                d.Image = (string)dr["image"];
+                d.Description = (string)dr["description"];
+                dlist.Add(d);
+                //string starttimeString24Hour = Convert.ToDateTime(context.Request.QueryString["starttime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
+
+                //string endtimeString24Hour = Convert.ToDateTime(context.Request.QueryString["endtime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
+                //edit.endtime = endtimeString24Hour;
+            }
+
+            return dlist;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+
+    }
+
+
+    public List<Category> getCategory()
+    {
+        List<Category> clist = new List<Category>();
+        SqlConnection con = null;
+
+        string selectSTR = null;
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("SELECT id, name, image FROM Category_2021");
+            selectSTR = sb.ToString();
+
+
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                Category c = new Category();
+                c.Id = Convert.ToInt32(dr["id"]);
+                c.Name = (string)dr["name"];
+                c.Image = (string)dr["image"];
+                clist.Add(c);
+            
+            }
+
+            return clist;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+
+    }
 
     //Get all resturant Data for unknown user
-public List<Businesses> getBusinesses(string category = null)
+    public List<Businesses> getBusinesses(string category = null)
     {
         SqlConnection con = null;
         List<Businesses> bList = new List<Businesses>();
@@ -1107,5 +1213,20 @@ public List<Businesses> getBusinesses(string category = null)
         return command;
     }
 
-
+    private static void ConvertToDateTime(string value)
+    {
+        DateTime convertedDate;
+        try
+        {
+            convertedDate = Convert.ToDateTime(value);
+            Console.WriteLine("'{0}' converts to {1} {2} time.",
+                              value, convertedDate,
+                              convertedDate.Kind.ToString());
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("'{0}' is not in the proper format.", value);
+        }
+    }
 }
+
