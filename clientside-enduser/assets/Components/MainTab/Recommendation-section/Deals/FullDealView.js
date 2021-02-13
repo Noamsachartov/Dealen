@@ -16,12 +16,14 @@ export default class FullDealView extends React.Component {
       DiscountDescription: "40%",
       TimeLeft: "30",
       id: 1,
-      isRTL: I18nManager.isRTL
+      like: false
+
     }
 
 
     handleLike = ()=> {
       console.log("pressed")
+      this.setState({like: !this.state.like})
     }
 
     
@@ -71,7 +73,7 @@ export default class FullDealView extends React.Component {
                       <View style={styles.IconView2}>
                         <View style={{flex:1,flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                           <TouchableWithoutFeedback onPress={this.handleLike}>
-                            <TimerIcon style={{backgroundColor: '#003f5c', borderRadius: 100, height: 60, width: 60, padding: 10,  color: 'whitesmoke'}} name="heart-outline" size={40} />
+                            <TimerIcon  color={this.state.like ? '#fb5b5a' : 'whitesmoke'} style={{backgroundColor: '#003f5c', borderRadius: 100, height: 60, width: 60, padding: 10}} name="heart-outline" size={40} />
                           </TouchableWithoutFeedback>
                            
                         </View>
@@ -96,7 +98,7 @@ export default class FullDealView extends React.Component {
           <View style={{flex:1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
               <TouchableWithoutFeedback onPress={this.DiscountImplementaion} >
                 <View style={{alignSelf: 'center',justifyContent:'center', backgroundColor: '#003f5c', width: width/2, height:height/10, borderRadius: 20}}>
-                  <Text style={{color:'whitesmoke',fontSize:30, padding: 10 ,marginHorizontal:width/9}}>אישור</Text>
+                  <Text style={{color:'whitesmoke',fontSize:30, position: 'absolute', right: width/6.5}}>אישור</Text>
                 </View>
               </TouchableWithoutFeedback>
           </View>
