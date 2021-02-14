@@ -10,30 +10,48 @@ export default class LogIn extends React.Component {
     state={
         email:"",
         password:"",
-        CurrentUser: ""
+        CurrentUser: "",
+        apiUrl: "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Customer?cust_mail=noam@gmail.com&password=123",
+        Cust_name: '',
+        Cust_id: -1,
+        isLoading: true
       }
 
 
       handlePassword = () =>{
-        console.log("presd",UserList);
-        for (let i = 0; i < UserList.length; i++) {
-          let item = UserList[i];
-          if(this.state.email == item.name && this.state.password == item.password){
-            this.setState({
-              CurrentUser: [item.name,item.password]
-            })
-          }
+        var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Customer?cust_mail=" + this.state.email +"&password=" +this.state.password
+        return fetch(apiUrl)
+      .then(response => response.json())
+      .then(responseJson => {
+        if(responseJson.length > 0){
+          this.setState(
+            {
+              isLoading: false,
+              dataSource: responseJson,
+              Cust_id: responseJson[0].Cust_id,
+              Cust_name: responseJson[0].Cust_name
+            },
+            function() {
+              alert(responseJson[0].Cust_name)
+            }
+          );
+        }else {
+          alert("Sorry We Couldn't find you")
         }
 
-        console.log("welcome back", this.state.CurrentUser.length);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+        
       }
 
   render(){
     const { navigation } = this.props;
 
-    if(this.state.CurrentUser.length > 0){
+    if(!this.state.isLoading){
       return(
-        <TabControler>{console.log("Inside Tabs")}</TabControler>
+        <TabControler >{console.log("Inside Tabs")}</TabControler>
       )
     }else {
 

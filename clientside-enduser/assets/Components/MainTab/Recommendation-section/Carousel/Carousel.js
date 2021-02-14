@@ -9,7 +9,7 @@ let flatList
 function infiniteScroll(dataList){
     const numberOfData = dataList.length
     let scrollValue = 0, scrolled = 0
-    console.log(dataList)
+
     console.log("uri")
 
     setInterval(function() {

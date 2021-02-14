@@ -15,7 +15,6 @@ export default class Category extends React.Component {
 
       componentDidMount =() => {
         this.setState({Data: CategoryData})
-        console.log(CategoryData)
       }
 
   render(){
