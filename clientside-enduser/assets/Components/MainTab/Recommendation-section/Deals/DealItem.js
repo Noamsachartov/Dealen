@@ -8,7 +8,6 @@ const { width, height } = Dimensions.get('window')
 
 
 const DealItem = ({ item,navigation }) => {
-    console.log("D", item.id)
     return (
         <TouchableWithoutFeedback  onPress={() => navigation.navigate('FullDealView',{categoryId: item.id})} >
             <View style={styles.cardView}  >

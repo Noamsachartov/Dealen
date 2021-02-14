@@ -76,6 +76,7 @@ function MyTabs() {
 }
 
 export default function TabControler() {
+
   return (
       <Stack.Navigator initialRouteName="MyTabs"       
      >

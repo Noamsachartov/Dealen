@@ -37,7 +37,6 @@ console.log("Deal Component")
              <FlatList
                 data={this.state.Data}
                 renderItem={({ item }) => {
-                  console.log("tryyy")
                     return <DealItem item={item} navigation={this.props.navigation} />
                 }}
                 keyExtractor={(item, index) => 'key' + index}
