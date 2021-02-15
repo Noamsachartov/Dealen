@@ -27,16 +27,39 @@ namespace DealenServerSide.Controllers
         }
 
         // GET api/<controller>/5
-        public string Get(int id)
+
+        [HttpGet]
+        [Route("api/Deal/{cat_id}")]
+        public IHttpActionResult Getbycat(int cat_id)
         {
-            return "value";
+            try
+            {
+                Deal deal = new Deal();
+                List<Deal> deals = deal.Readbycat(cat_id);
+                return Ok(deals);
+
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e);
+            }
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        public IHttpActionResult Post([FromBody]Deal deal)
         {
-        }
+            try
+            {
+                int count = deal.Insert();
+                return Created(new Uri(Request.RequestUri.AbsoluteUri + deal.Id), count);
 
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
         // PUT api/<controller>/5
         public void Put(int id, [FromBody]string value)
         {
