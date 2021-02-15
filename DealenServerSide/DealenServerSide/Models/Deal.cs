@@ -51,7 +51,18 @@ namespace DealenServerSide.Models
             List<Deal> dlist = dbs.getDeals();
             return dlist;
         }
-            
+        public List<Deal> Readbycat(int cat_id)
+        {
+            DBServices dbs = new DBServices();
+            List<Deal> dlist = dbs.getDealsByCat(cat_id);
+            return dlist;
+        }
+        public int Insert()
+        {
+            DBServices dbs = new DBServices();
+            return dbs.Insert(this);
+
+        }
 
     }
 }
