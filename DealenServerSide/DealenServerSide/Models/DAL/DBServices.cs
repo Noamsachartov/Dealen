@@ -49,7 +49,8 @@ public class DBServices
 
 
 
-    //Insert New Customer 
+    //הכנסת לקוח קיים- Dealen
+    //הכנסת לקוח קיים- Dealen
     public int Insert(Customer customer)
     {
 
@@ -449,7 +450,7 @@ public class DBServices
 
 
 
-//Check if customer is Exits, if yes give back all the data about the customer
+//פונקציה בדיקה האם הלקוח קיים במערכת-Dealen
 public List<Customer> CheckIfExits(string mail, string password)
     {
         SqlConnection con = null;
@@ -505,6 +506,7 @@ public List<Customer> CheckIfExits(string mail, string password)
         }
     }
 
+    //קבלת המבצעים-Dealen
     public List<Deal> getDeals()
     {
         List<Deal> dlist = new List<Deal>();
@@ -562,7 +564,8 @@ public List<Customer> CheckIfExits(string mail, string password)
         }
 
     }
-
+    
+    //פונקציה קבלת פרטי הקטגוריה-Dealen
 
     public List<Category> getCategory()
     {
