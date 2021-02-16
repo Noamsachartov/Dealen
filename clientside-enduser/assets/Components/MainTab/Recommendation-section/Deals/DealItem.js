@@ -9,21 +9,23 @@ const { width, height } = Dimensions.get('window')
 
 const DealItem = ({ item,navigation }) => {
     return (
-        <TouchableWithoutFeedback  onPress={() => navigation.navigate('FullDealView',{categoryId: item.id})} >
+        <TouchableWithoutFeedback  onPress={() => navigation.navigate('FullDealView',{categoryId: item.Id})} >
             <View style={styles.cardView}  >
-                <Image style={styles.image} source={{ uri: item.url }} />
+                <Image style={styles.image} source={{ uri: item.Image }} />
                 <View style={styles.textView}>
-                    <Text style={styles.itemTitle}> {item.title}</Text>
-                    <Text style={styles.itemDescription}>{item.description}</Text>
-                    <Text style={styles.itemBusinessName}> {item.BusinessName}</Text>
+                    <Text style={styles.itemTitle}> {item.Name}</Text>
+                    <Text style={styles.itemDescription}>{item.Description}</Text>
+                    <Text style={styles.itemBusinessName}> {item.Business_Name}</Text>
                     <View style={styles.IconView}>
                         <View style={styles.TimerView}>
                             <TimerIcon style={styles.TimerIcon} name="timer-sand-empty" size={20} />
-                            <Text >{item.TimeLeft}</Text>
+                            {/* <Text >{item.TimeLeft}</Text> */}
+                            <Text >20</Text>
                         </View>
                         <View>
                             <DiscountIcon style={styles.DiscountIcon} name="ticket-percent-outline" size={20} />
-                            <Text>{item.DiscountDescription}</Text>
+                            {/* <Text>{item.DiscountDescription}</Text> */}
+                            <Text>30</Text>
                         </View>
                     </View>
                 </View>

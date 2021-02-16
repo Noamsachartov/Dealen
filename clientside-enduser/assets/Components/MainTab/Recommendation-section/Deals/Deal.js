@@ -22,15 +22,43 @@ export default class Deal extends React.Component {
 
     state={
         Data: DealsData,
+        isLoading: true
       }
 
       componentDidMount =() => {
-        this.setState({Data: DealsData})
+        // this.setState({Data: DealsData})
+        var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal";
+        return fetch(apiUrl)
+        .then(response => response.json())
+        .then(responseJson => {
+          if(responseJson.length > 0){
+            console.log(responseJson)
+            this.setState(
+              {
+                isLoading: false,
+                Data: responseJson,
+              },
+              function() {
+                
+              }
+            );
+          }else {
+            alert("Sorry We there have been an error")
+          }
+  
+        })
+        .catch(error => {
+          console.error(error);
+        });
+
+
+
+
       }
 
   render(){
 console.log("Deal Component")
-    if(this.state.Data){
+    if(!this.state.isLoading){
       return(
         <View>
           <Text style={styles.Header}>מבצעים</Text>

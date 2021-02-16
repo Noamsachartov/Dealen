@@ -9,9 +9,9 @@ const CategoryItem = ({ item, navigation }) => {
     return (
         <View style={styles.cardView}>
             <TouchableWithoutFeedback onPress={() => navigation.navigate('CategoryFullView')} >
-            <Image style={styles.image} source={{ uri: item.url }} />
+            <Image style={styles.image} source={{ uri: item.Image }} />
             <View style={styles.textView}>
-                <Text style={styles.itemTitle}> {item.title}</Text>
+                <Text style={styles.itemTitle}> {item.Name}</Text>
             </View>
             </TouchableWithoutFeedback>
         </View>
