@@ -16,9 +16,9 @@ export default class CategoryFullView extends React.Component {
       categoryId: JSON.stringify(route.params.categoryId),
       categoryName: route.params.categoryName
     })
-    console.log(route.params.categoryId)
-
-    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal";
+    var id = route.params.categoryId;
+    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/" + id;
+    console.log(apiUrl)
         return fetch(apiUrl)
         .then(response => response.json())
         .then(responseJson => {
