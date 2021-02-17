@@ -8,7 +8,7 @@ const { width, height } = Dimensions.get('window')
 const CategoryItem = ({ item, navigation }) => {
     return (
         <View style={styles.cardView}>
-            <TouchableWithoutFeedback onPress={() => navigation.navigate('CategoryFullView')} >
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('CategoryFullView',{categoryId: item.Id, categoryName: item.Name})} >
             <Image style={styles.image} source={{ uri: item.Image }} />
             <View style={styles.textView}>
                 <Text style={styles.itemTitle}> {item.Name}</Text>

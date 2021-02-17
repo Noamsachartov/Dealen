@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View,TextInput,TouchableOpacity, FlatList, Button} from 'react-native';
 import DealItem from './DealItem'
 import FullDealView from './FullDealView';
-import { DealsData } from './DealsData.js'
+
 
 
 
@@ -10,23 +10,23 @@ import { DealsData } from './DealsData.js'
 
 export default class Deal extends React.Component {
 
-  static navigationOptions = {
-    title:'Home',
-    headerStyle: {
-      backgroundColor: 'red'
-    },
-    headerTitleStyle: {
-      color: 'white'
-    }
-  }
+  // static navigationOptions = {
+  //   title:'Home',
+  //   headerStyle: {
+  //     backgroundColor: 'red'
+  //   },
+  //   headerTitleStyle: {
+  //     color: 'white'
+  //   }
+  // }
 
     state={
-        Data: DealsData,
+        Data: null,
         isLoading: true
       }
 
       componentDidMount =() => {
-        // this.setState({Data: DealsData})
+
         var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal";
         return fetch(apiUrl)
         .then(response => response.json())
@@ -50,9 +50,6 @@ export default class Deal extends React.Component {
         .catch(error => {
           console.error(error);
         });
-
-
-
 
       }
 

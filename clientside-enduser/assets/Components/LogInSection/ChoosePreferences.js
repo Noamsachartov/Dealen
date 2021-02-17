@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View,TextInput,TouchableOpacity, Button, FlatList, Dimensions, TouchableWithoutFeedback, Switch } from 'react-native';
 import Slider from '@react-native-community/slider'
 import SkipIcon from 'react-native-vector-icons/AntDesign';
-import { CategoryData } from '../MainTab/Recommendation-section/Category/CategoryData'
 import TabControler from '../MainTab/TabControler';
 import ImagesPicker from './ImagePicker';
 import { color } from 'react-native-reanimated';
@@ -18,9 +17,11 @@ export default class ChoosePreferences extends React.Component {
         Fname: "",
         Lname: "",
         Img: '',
+        Data: null,
         toggleCheckBox_Resturant: false,
         toggleCheckBox_Bar: false,
-        toggleCheckBox_Caffe: false
+        toggleCheckBox_Caffe: false,
+        isLoading: true
       }
 
 
@@ -30,7 +31,7 @@ export default class ChoosePreferences extends React.Component {
       }
 
       newCategoryPreferences = (item) => {
-        console.log(item.title,"added")
+        console.log(item.Id,"added")
       }
 
       onValueChange(value) {
@@ -44,13 +45,38 @@ export default class ChoosePreferences extends React.Component {
       }
 
     componentDidMount =() => {
-      this.setState({CategoryDatas: CategoryData})
+    
+
+      var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Category";
+      return fetch(apiUrl)
+      .then(response => response.json())
+      .then(responseJson => {
+        if(responseJson.length > 0){
+          console.log(responseJson)
+          this.setState(
+            {
+              isLoading: false,
+              Data: responseJson,
+            },
+            function() {
+              
+            }
+          );
+        }else {
+          alert("Sorry We there have been an error")
+        }
+
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
      }
 
 
   render(){
     const { navigation } = this.props;
-    if(this.state.CategoryDatas){
+    if(!this.state.isLoading){
       return(
         <View style={styles.container}>
              <View style={styles.headerView}>
@@ -61,11 +87,11 @@ export default class ChoosePreferences extends React.Component {
             <View style={{flex:2}}>
               <FlatList
                 style={styles.categoryList}
-                data={this.state.CategoryDatas}
+                data={this.state.Data}
                 renderItem={({ item }) => {
                     return (<View style={styles.inputView} >
                                 <TouchableOpacity onPress={() => this.newCategoryPreferences(item)}>
-                                    <Text style={styles.inputText}>{item.title}</Text>
+                                    <Text style={styles.inputText}>{item.Name}</Text>
                                 </TouchableOpacity>
                             </View>)
               }}
