@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View,TextInput,TouchableOpacity, FlatList} from 'react-native';
 import CategoryItem from './CategoryItem'
-import { CategoryData } from './CategoryData'
+
 
 
 
@@ -10,7 +10,7 @@ import { CategoryData } from './CategoryData'
 export default class Category extends React.Component {
 
     state={
-        Data: CategoryData,
+        Data: null,
         isLoading: true
       }
 

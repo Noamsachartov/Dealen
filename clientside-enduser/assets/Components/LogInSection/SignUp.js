@@ -3,14 +3,7 @@ import { StyleSheet, Text, View,TextInput,TouchableOpacity, Button , Dimensions}
 import UserList from './UserList';
 import TabControler from '../MainTab/TabControler';
 import ImagesPicker from './ImagePicker';
-
 import { CheckBox } from 'react-native-elements'
-
-
-// import CheckBox from '@react-native-community/checkbox';
-
-
-
 import { useIsFocused } from '@react-navigation/native'
 import { LogBox } from 'react-native';
 const { width, height } = Dimensions.get('window');
