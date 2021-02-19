@@ -44,7 +44,7 @@ export default class LogIn extends React.Component {
           },
           function () {
             if(!this.state.isfromFacebook){
-              alert(data[0].Cust_name)
+              // alert(data[0].Cust_name)
             }    
           }
         );
