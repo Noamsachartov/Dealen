@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import UserList from './UserList';
 import TabControler from '../MainTab/TabControler'
-
 import * as Facebook from 'expo-facebook';
 
 export default class LogIn extends React.Component {
@@ -19,7 +18,7 @@ export default class LogIn extends React.Component {
       userFacebookData: null,
       isfromFacebook: false,
     };
-    this.logIn = this.logIn.bind(this);
+    this.logInFaceBook = this.logInFaceBook.bind(this);
   }
 
 
@@ -31,7 +30,6 @@ export default class LogIn extends React.Component {
       } else {
         console.log("try login from faceboook")
         var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Customer?cust_mail=" + userFacebookData.email + "&password=" + userFacebookData.id
-        console.log(apiUrl)
       }
 
       const response = await fetch(apiUrl);
@@ -63,7 +61,7 @@ export default class LogIn extends React.Component {
   }
 
 
-  async logIn() {
+  async logInFaceBook() {
     try {
       await Facebook.initializeAsync({
         appId: '3717779581610741',
@@ -77,16 +75,13 @@ export default class LogIn extends React.Component {
       } = await Facebook.logInWithReadPermissionsAsync({
         permissions: ['public_profile', 'email'],
       });
-      console.log(type)
+    
       if (type === 'success') {
         // Get the user's name using Facebook's Graph API
         const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,link,first_name,last_name,email,picture.type(large)`);
-        // Alert.alert('Logged in!')
         // , `Hi ${(await response.json()).name}!`);
         const userFacebookData = await response.json()
         this.setState({ userFacebookData: userFacebookData, isfromFacebook: true })
-
-        console.log(userFacebookData)
         var first_name = userFacebookData.first_name;
         var last_name = userFacebookData.last_name;
         var id = userFacebookData.id;
@@ -111,7 +106,6 @@ export default class LogIn extends React.Component {
   }
 
   signupWithFacebook = (userFacebookData) => {
-    console.log(userFacebookData, "------------")
     var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Customer"
     fetch(apiUrl, {
       method: 'POST',
@@ -128,7 +122,7 @@ export default class LogIn extends React.Component {
     })
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(JSON.stringify(responseJson))
+        // console.log(JSON.stringify(responseJson))
         this.setState({ userId: JSON.stringify(responseJson) })
         const { navigation } = this.props;
         navigation.navigate('FBChoosePreferences')
@@ -177,7 +171,7 @@ export default class LogIn extends React.Component {
             <Text style={styles.loginText}>Signup</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={this.logIn}
+            onPress={this.logInFaceBook}
           >
             <Text style={styles.loginText}>SignIn with facebook</Text>
           </TouchableOpacity>

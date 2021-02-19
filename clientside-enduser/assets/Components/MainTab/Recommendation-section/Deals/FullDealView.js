@@ -10,13 +10,8 @@ I18nManager.allowRTL(true)
 export default class FullDealView extends React.Component {
 
     state={
-      title: 'בירה היינקן', url: 'https://i.ibb.co/JxykVBt/flat-lay-photography-of-vegetable-salad-on-plate-1640777.jpg',
-      description: "בואו לאכול אצלנו בשוק ותקבלו מתנה תבלינים בואו לאכול אצלנו בשוק ותקבלו מתנה תבלינים",
-      BusinessName: "פורט 19 - שלמה המלך",
-      DiscountDescription: "40%",
-      TimeLeft: "30",
-      id: 1,
-      like: false
+      like: false,
+      isLoading: true
 
     }
 
@@ -33,45 +28,69 @@ export default class FullDealView extends React.Component {
 
     DiscountImplementaion = () => {
       console.log("Discount Implementaion")
-      //post וקבלה חזרה קוד חד פעמי
+      const { navigation, route } = this.props;
+      navigation.navigate('DealApproval',{dealId: route.params.dealId})
+      
     }
 
     componentDidMount = () => {
       const { navigation, route } = this.props;
-      this.setState({categoryId: JSON.stringify(route.params.categoryId)})
-      //get all data about the category
-      //update state
+      this.setState({categoryId: JSON.stringify(route.params.categoryId), dealId: JSON.stringify(route.params.dealId)})
+      //Get Deal Data By Deal Id
+      var DealId = JSON.stringify(route.params.dealId);
+      var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/" + DealId;
+      return fetch(apiUrl)
+      .then(response => response.json())
+      .then(responseJson => {
+        if(responseJson){
+          this.setState(
+            {
+              isLoading: false,
+              Data: responseJson,
+
+            },
+            function() {
+              
+            }
+          );
+        }else {
+          alert("Sorry We there have been an error")
+        }
+
+      })
+      .catch(error => {
+        console.error(error);
+      });
     }
 
      
   render(){
     const { navigation, route } = this.props;
-    if(this.state.categoryId){
+    if(!this.state.isLoading){
       return(
         <View style={{flex:1}}>
-          <View style={{flex:2, backgroundColor: '#003f5c'}}>
-            <ImageBackground style={styles.image} source={{ uri: this.state.url }}>
+          <View style={styles.mainView}>
+            <ImageBackground style={styles.image} source={{ uri: this.state.Data[0].Image }}>
               <View style={{flex:1}}>
-
               </View>
-              <View style={{flex:3, backgroundColor: '#003f5c', opacity: 0.8 ,shadowColor: '#fff',shadowOpacity: 0.5,shadowRadius: 5,elevation: 2, flexDirection: 'column', alignItems: 'center'}}>
-                <Text style={{color: 'whitesmoke', fontWeight: 'bold', fontSize: 40}}>שם העסק</Text>
-                <Text style={{color: 'whitesmoke', fontWeight: 'bold', fontSize: 15}}>שם המבצע</Text>
-                <Text style={{color: 'whitesmoke', fontSize: 15, width: width-20}}>פרטים על המבצע פרטים על המבצע פרטים פרטים על  על המבצע פרטים על המבצע פרטים על המבצע</Text>
+              <View style={styles.hederView}>
+                <Text style={styles.BusinessName}>{this.state.Data[0].Business_Name}</Text>
+                <Text style={styles.DealName}>{this.state.Data[0].Name}</Text>
+                <Text style={styles.DealDescription}>{this.state.Data[0].Description}</Text>
                   <View style={styles.IconView}>
                         <View style={styles.TimerView}>
                             <TimerIcon style={styles.TimerIcon} name="timer-sand-empty" size={30} />
-                            <Text style={{color:"whitesmoke", fontSize:18}} >30 דק'</Text>
+                            <Text style={styles.timeText} >00 דק'</Text>
                         </View>
                         <View>
                             <DiscountIcon style={styles.DiscountIcon} name="ticket-percent-outline" size={30} />
-                            <Text style={{color:"whitesmoke", fontSize:18}}>25%</Text>
+                            <Text style={styles.DiscountText}>{this.state.Data[0].Discount}%</Text>
                         </View>
                     </View>
               </View>
               <View style={{flex:1}}>
                       <View style={styles.IconView2}>
-                        <View style={{flex:1,flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                        <View style={styles.viewWaLike}>
                           <TouchableWithoutFeedback onPress={this.handleLike}>
                             <TimerIcon  color={this.state.like ? '#fb5b5a' : 'whitesmoke'} style={{backgroundColor: '#003f5c', borderRadius: 100, height: 60, width: 60, padding: 10}} name="heart-outline" size={40} />
                           </TouchableWithoutFeedback>
@@ -79,47 +98,58 @@ export default class FullDealView extends React.Component {
                         </View>
                         <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
                           <TouchableWithoutFeedback onPress={this.handleWhatsapp}>
-                            <TimerIcon style={{backgroundColor: '#003f5c', borderRadius: 100, height: 60, width: 60, padding: 10, color: 'whitesmoke'}} name="whatsapp" size={40} />
+                            <TimerIcon style={styles.WaIcon} name="whatsapp" size={40} />
                           </TouchableWithoutFeedback>
                         </View>
                     </View>
               </View>
             </ImageBackground>
-            
           </View>
-          <View style={{flex:0.8, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-            <View style={{marginVertical:40, marginHorizontal: 10 }}>
+          <View style={styles.viewBusinessDeatel}>
+            <View style={styles.second_viewBusinessDeatel}>
               <Text>פרטים על העסק פרטים על העסק</Text>
               <Text>כתובת: בלה בלה בלה בלה בלה</Text>
               <Text>שעות פעילות: א'-ה': 14:00-02:00 ו': 10:00-23:30</Text>
             </View>
-              
           </View>
-          <View style={{flex:1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+          <View style={styles.viewimplemntation}>
               <TouchableWithoutFeedback onPress={this.DiscountImplementaion} >
-                <View style={{alignSelf: 'center',justifyContent:'center', backgroundColor: '#003f5c', width: width/2, height:height/10, borderRadius: 20}}>
-                  <Text style={{color:'whitesmoke',fontSize:30, position: 'absolute', right: width/6.5}}>אישור</Text>
+                <View style={styles.Secondery_viewimplemntation}>
+                  <Text style={styles.approveText}>אישור</Text>
                 </View>
               </TouchableWithoutFeedback>
           </View>
         </View>
       )
     }else {
-
-    return (
-     <View>
-        <Text>Loading</Text>
-     </View>
-    );
+      return (
+      <View>
+          <Text>Loading</Text>
+      </View>
+      );
   }
   }
 }
 
 const styles = StyleSheet.create({
+  mainView: {flex:2, backgroundColor: '#003f5c'},
+  hederView: {flex:3, backgroundColor: '#003f5c', opacity: 0.8 ,shadowColor: '#fff',shadowOpacity: 0.9,shadowRadius: 5,elevation: 2, flexDirection: 'column', alignItems: 'center'},
+  BusinessName: {color: 'white', fontWeight: 'bold', fontSize: 40},
+  DealName: {color: 'white', fontWeight: 'bold', fontSize: 15},
+  DealDescription: {color: 'white', fontSize: 15, width: width-20},
   image: {flex: 1, },
   IconView: {flex: 1, flexDirection: 'row', position: 'absolute', bottom: 1},
   IconView2: {flex: 1, flexDirection: 'row', position: 'relative', bottom: -26, zIndex: 9999},
   TimerView: {marginRight: 30},
+  timeText: {color:"white", fontSize:18},
+  DiscountText: {color:"white", fontSize:18},
   TimerIcon: {color: '#b04c00'},
-  DiscountIcon: {color: '#00961e'}
+  DiscountIcon: {color: '#00961e'},
+  viewWaLike: {flex:1,flexDirection: 'column', justifyContent: 'center', alignItems: 'center'},
+  WaIcon: {backgroundColor: '#003f5c', borderRadius: 100, height: 60, width: 60, padding: 10, color: 'whitesmoke'},
+  viewBusinessDeatel: {flex:0.8, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' },
+  second_viewBusinessDeatel: {marginVertical:40, marginHorizontal: 10 },
+  viewimplemntation: {flex:1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'},
+  Secondery_viewimplemntation: {alignSelf: 'center',justifyContent:'center', backgroundColor: '#003f5c', width: width/2, height:height/10, borderRadius: 20},
+  approveText: {color:'whitesmoke',fontSize:30, position: 'absolute', right: width/6.5},
 });

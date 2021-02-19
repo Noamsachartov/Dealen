@@ -21,7 +21,7 @@ export default class Category extends React.Component {
         .then(response => response.json())
         .then(responseJson => {
           if(responseJson.length > 0){
-            console.log(responseJson)
+            // console.log(responseJson)
             this.setState(
               {
                 isLoading: false,

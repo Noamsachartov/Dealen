@@ -10,8 +10,6 @@ function infiniteScroll(dataList){
     const numberOfData = dataList.length
     let scrollValue = 0, scrolled = 0
 
-    console.log("uri")
-
     setInterval(function() {
         scrolled ++
         if(scrolled < numberOfData)
