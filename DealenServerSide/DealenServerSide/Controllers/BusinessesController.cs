@@ -11,84 +11,88 @@ namespace DealenServerSide.Controllers
     public class BusinessesController : ApiController
     {
 
-        public IHttpActionResult Get()
+
+        // GET api/<controller>/5
+        public IHttpActionResult Get(string bmail, string password)
         {
             try
             {
-                Businesses businesses = new Businesses();
-                List<Businesses> bList = businesses.Read();
-                return Ok(bList);
-
+                Businesses business = new Businesses();
+                List<Businesses> bus_Islogged = business.CheckIfLog(bmail, password);
+                return Ok(bus_Islogged);
             }
             catch (Exception e)
             {
                 return Content(HttpStatusCode.BadRequest, e);
+
+
             }
         }
 
 
 
-        [HttpGet]
-        [Route("api/Businesses/{category}")]
-        public IHttpActionResult Get(string category)
+
+        //[HttpGet]
+        //[Route("api/Businesses/{category}")]
+        //public IHttpActionResult Get(string category)
+        //{
+        //    try
+        //    {
+        //        Businesses businesses = new Businesses();
+        //        List<Businesses> bList = businesses.Read(category);
+        //        return Ok(bList);
+
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return Content(HttpStatusCode.BadRequest, e);
+        //    }
+        //}
+
+        public IHttpActionResult Post([FromBody]Businesses businesses)
         {
             try
             {
-                Businesses businesses = new Businesses();
-                List<Businesses> bList = businesses.Read(category);
-                return Ok(bList);
+                int count = businesses.Insert();
+                return Created(new Uri(Request.RequestUri.AbsoluteUri + businesses.Bid), count);
 
             }
             catch (Exception e)
             {
-                return Content(HttpStatusCode.BadRequest, e);
-            }
-        }
 
-
-
-        [HttpGet]
-        [Route("api/Businesses/GetPromot/{category}")]
-        public IHttpActionResult GetPromot(string category)
-        {
-
-            try
-            {
-                Businesses businesses = new Businesses();
-                List<Businesses> bList = businesses.ReadPromot(category);
-                return Ok(bList);
-
-            } catch(Exception e)
-            {
-                return Content(HttpStatusCode.BadRequest, e);
+                return BadRequest(e.Message);
             }
         }
 
 
 
 
-        [HttpGet]
-        [Route("api/Businesses/GetActive/{category}")]
-        public IHttpActionResult GetActive(string category)
-        {
-
-
-            try
-            {
-                Businesses businesses = new Businesses();
-                List<Businesses> bList = businesses.ReadActive(category);
-                return Ok(bList);
-            }
-            catch (Exception e)
-            {
-                return Content(HttpStatusCode.BadRequest, e);
-            }
-        }
+      
 
 
 
-        [HttpGet]
-        [Route("api/Businesses/Byuser")]
+        //[HttpGet]
+        //[Route("api/Businesses/GetActive/{category}")]
+        //public IHttpActionResult GetActive(string category)
+        //{
+
+
+        //    try
+        //    {
+        //        Businesses businesses = new Businesses();
+        //        List<Businesses> bList = businesses.ReadActive(category);
+        //        return Ok(bList);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return Content(HttpStatusCode.BadRequest, e);
+        //    }
+        //}
+
+
+
+        //[HttpGet]
+        //[Route("api/Businesses/Byuser")]
         //public IHttpActionResult GetByuser([FromUri] int[] att_id)
         //{
 
@@ -141,11 +145,7 @@ namespace DealenServerSide.Controllers
 
 
 
-        // GET api/<controller>/5
-        public string Get(int id)
-        {
-            return "value";
-        }
+
 
 
         // PUT api/<controller>/5

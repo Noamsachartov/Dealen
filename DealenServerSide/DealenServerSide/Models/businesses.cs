@@ -7,68 +7,90 @@ namespace DealenServerSide.Models
 {
     public class Businesses
     {
-        int id;
-        string name;
-        double user_rating;
-        string category;
-        int price_range;
-        string location;
-        string phone_numbers;
-        string featured_image;
+        int bid;
+        string bname;
+        string baddress;
+        string bphone;
+        string manager;
+        string bdescription; 
+        string bmail;
+        string password;
+        TimeSpan opentime;
+        TimeSpan closetime;
+        string bimage;
+            
 
-        public Businesses(int id, string name, double user_rating, string category, int price_range, string location, string phone_numbers, string featured_image)
-        {
-            Id = id;
-            Name = name;
-            User_rating = user_rating;
-            Category = category;
-            Price_range = price_range;
-            Location = location;
-            Phone_numbers = phone_numbers;
-            Featured_image = featured_image;
-        }
+        public int Bid { get => bid; set => bid = value; }
+        public string Bname { get => bname; set => bname = value; }
+        public string Baddress { get => baddress; set => baddress = value; }
+        public string Bphone { get => bphone; set => bphone = value; }
+        public string Manager { get => manager; set => manager = value; }
+        public string Bdescription { get => bdescription; set => bdescription = value; }
+        public string Bmail { get => bmail; set => bmail = value; }
+        public string Password { get => password; set => password = value; }
+        public TimeSpan Opentime { get => opentime; set => opentime = value; }
+        public TimeSpan Closetime { get => closetime; set => closetime = value; }
+        public string Bimage { get => bimage; set => bimage = value; }
 
-        public int Id { get => id; set => id = value; }
-        public string Name { get => name; set => name = value; }
-        public double User_rating { get => user_rating; set => user_rating = value; }
-        public string Category { get => category; set => category = value; }
-        public int Price_range { get => price_range; set => price_range = value; }
-        public string Location { get => location; set => location = value; }
-        public string Phone_numbers { get => phone_numbers; set => phone_numbers = value; }
-        public string Featured_image { get => featured_image; set => featured_image = value; }
         public Businesses() { }
 
-
-        public List<Businesses> Read()
+        public Businesses(int bid, string bname, string baddress, string bphone, string manager, string bdescription, string bmail, string password, TimeSpan opentime, TimeSpan closetime, string bimage)
         {
-            DBServices dbs = new DBServices();
-            List<Businesses> bList = dbs.getBusinesses();
-            return bList;
+            Bid = bid;
+            Bname = bname;
+            Baddress = baddress;
+            Bphone = bphone;
+            Manager = manager;
+            Bdescription = bdescription;
+            Bmail = bmail;
+            Password = password;
+            Opentime = opentime;
+            Closetime = closetime;
+            Bimage = bimage;
         }
 
-        public List<Businesses> Read(string category)
+        //public List<Businesses> Read()
+        //{
+        //    DBServices dbs = new DBServices();
+        //    List<Businesses> bList = dbs.getBusinesses();
+        //    return bList;
+        //}
+
+        public int Insert()
         {
             DBServices dbs = new DBServices();
-            List<Businesses> bList = dbs.getBusinesses(category);
-            return bList;
+            return dbs.Insert(this);
+        }
+        public List<Businesses> CheckIfLog(string bmail, string password)
+        {
+            DBServices dbs = new DBServices();
+            List<Businesses> b = dbs.CheckIfbExits(bmail, password);
+            return b;
         }
 
-        public List<Businesses> ReadPromot(string category)
-        {
-            DBServices dbs = new DBServices();
-            List<Businesses> bList = dbs.getPromot(category);
-            if(bList.Count > 0)
-            {
-                dbs.CampaignView(bList);
-            }
-            return bList;
-        }
-        public List<Businesses> ReadActive(string category)
-        {
-            DBServices dbs = new DBServices();
-            List<Businesses> bList = dbs.getActive(category);
-            return bList;
-        }
+        //public List<Businesses> Read(string bus_id)
+        //{
+        //    DBServices dbs = new DBServices();
+        //    List<Businesses> bList = dbs.getBusinesses(bus_id);
+        //    return bList;
+        //}
+
+        //public List<Businesses> ReadPromot(string category)
+        //{
+        //    DBServices dbs = new DBServices();
+        //    List<Businesses> bList = dbs.getPromot(category);
+        //    if(bList.Count > 0)
+        //    {
+        //        dbs.CampaignView(bList);
+        //    }
+        //    return bList;
+        //}
+        //public List<Businesses> ReadActive(string category)
+        //{
+        //    DBServices dbs = new DBServices();
+        //    List<Businesses> bList = dbs.getActive(category);
+        //    return bList;
+        //}
 
         //public List<Businesses> ReadByUser(int[] att_id)
         //{
@@ -84,16 +106,16 @@ namespace DealenServerSide.Models
         //    return bList;
         //}
 
-        public List<Businesses> ReadPromotByUser(int[] att_id, string category)
-        {
-            DBServices dbs = new DBServices();
-            List<Businesses> bList = dbs.getPromotBusinessesByUser(att_id, category);
-            if (bList.Count > 0)
-            {
-                dbs.CampaignView(bList);
-            }
-            return bList;
-        }
+        //public List<Businesses> ReadPromotByUser(int[] att_id, string category)
+        //{
+        //    DBServices dbs = new DBServices();
+        //    List<Businesses> bList = dbs.getPromotBusinessesByUser(att_id, category);
+        //    if (bList.Count > 0)
+        //    {
+        //        dbs.CampaignView(bList);
+        //    }
+        //    return bList;
+        //}
 
 
     }

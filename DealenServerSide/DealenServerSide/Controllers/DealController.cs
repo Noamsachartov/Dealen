@@ -29,6 +29,25 @@ namespace DealenServerSide.Controllers
         // GET api/<controller>/5
 
         [HttpGet]
+        [Route("api/Deal/deal/{id}")]
+        public IHttpActionResult GetByDeal(int id)
+        {
+            try
+            {
+                Deal deal = new Deal();
+                List<Deal> deals = deal.Readbydeal(id);
+                return Ok(deals);
+
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
+
+        // GET api/<controller>/5
+
+        [HttpGet]
         [Route("api/Deal/{cat_id}")]
         public IHttpActionResult Getbycat(int cat_id)
         {

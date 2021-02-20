@@ -14,27 +14,27 @@ namespace DealenServerSide.Models
         string business_Name;
         int business_id;
         string category;
-        DateTime startime;
-        DateTime endtime;
+        TimeSpan startime;
+        TimeSpan endtime;
         string image; 
         int cat_id;
-        double discount;
+        int discount;
 
         public int Id { get => id; set => id = value; }
         public string Name { get => name; set => name = value; }
         public string Description { get => description; set => description = value; }
         public string Business_Name { get => business_Name; set => business_Name = value; }
         public string Category { get => category; set => category = value; }
-        public DateTime Startime { get => startime; set => startime = value; }
-        public DateTime Endtime { get => endtime; set => endtime = value; }
+        public TimeSpan Startime { get => startime; set => startime = value; }
+        public TimeSpan Endtime { get => endtime; set => endtime = value; }
         public string Image { get => image; set => image = value; }
         public int Cat_id { get => cat_id; set => cat_id = value; }
         public int Business_id { get => business_id; set => business_id = value; }
-        public double Discount { get => discount; set => discount = value; }
+        public int Discount { get => discount; set => discount = value; }
 
         public Deal() { }
 
-        public Deal(int id, string name, string description, string business_Name, string category, DateTime startime, DateTime endtime, string image, int cat_id, int business_id, double discount)
+        public Deal(int id, string name, string description, string business_Name, string category, TimeSpan startime, TimeSpan endtime, string image, int cat_id, int business_id, int discount)
         {
             Id = id;
             Name = name;
@@ -59,6 +59,13 @@ namespace DealenServerSide.Models
         {
             DBServices dbs = new DBServices();
             List<Deal> dlist = dbs.getDealsByCat(cat_id);
+            return dlist;
+        }
+
+        public List<Deal> Readbydeal(int cat_id)
+        {
+            DBServices dbs = new DBServices();
+            List<Deal> dlist = dbs.getDealsByDeal(cat_id);
             return dlist;
         }
         public int Insert()
