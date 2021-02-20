@@ -50,12 +50,6 @@ namespace DealenServerSide.Models
             Bimage = bimage;
         }
 
-        //public List<Businesses> Read()
-        //{
-        //    DBServices dbs = new DBServices();
-        //    List<Businesses> bList = dbs.getBusinesses();
-        //    return bList;
-        //}
 
         public int Insert()
         {
@@ -69,55 +63,7 @@ namespace DealenServerSide.Models
             return b;
         }
 
-        //public List<Businesses> Read(string bus_id)
-        //{
-        //    DBServices dbs = new DBServices();
-        //    List<Businesses> bList = dbs.getBusinesses(bus_id);
-        //    return bList;
-        //}
-
-        //public List<Businesses> ReadPromot(string category)
-        //{
-        //    DBServices dbs = new DBServices();
-        //    List<Businesses> bList = dbs.getPromot(category);
-        //    if(bList.Count > 0)
-        //    {
-        //        dbs.CampaignView(bList);
-        //    }
-        //    return bList;
-        //}
-        //public List<Businesses> ReadActive(string category)
-        //{
-        //    DBServices dbs = new DBServices();
-        //    List<Businesses> bList = dbs.getActive(category);
-        //    return bList;
-        //}
-
-        //public List<Businesses> ReadByUser(int[] att_id)
-        //{
-        //    DBServices dbs = new DBServices();
-        //    List<Businesses> bList = dbs.getBusinessesByUser(att_id);
-        //    return bList;
-        //}
-
-        //public List<Businesses> ReadByUser(int[] att_id, string category)
-        //{
-        //    DBServices dbs = new DBServices();
-        //    List<Businesses> bList = dbs.getBusinessesByUser(att_id, category);
-        //    return bList;
-        //}
-
-        //public List<Businesses> ReadPromotByUser(int[] att_id, string category)
-        //{
-        //    DBServices dbs = new DBServices();
-        //    List<Businesses> bList = dbs.getPromotBusinessesByUser(att_id, category);
-        //    if (bList.Count > 0)
-        //    {
-        //        dbs.CampaignView(bList);
-        //    }
-        //    return bList;
-        //}
-
+      
 
     }
 }

@@ -46,6 +46,8 @@ public class DBServices
 
         return cmd;
     }
+
+    //הכנסת בעל עסק חדש
     public int Insert(Businesses businesses)
     {
 
@@ -87,6 +89,9 @@ public class DBServices
         }
 
     }
+
+   //קריאה להכנסת בעל עסק
+
     private String BuildInsertCommand(Businesses businesses)
     {
         String command;
@@ -164,6 +169,8 @@ public class DBServices
 
         return command;
     }
+
+    //הכנסה מבצע חדש
     public int Insert(Deal deal)
     {
 
@@ -217,7 +224,7 @@ public class DBServices
         }
 
     }
-    //--------------------------------------------------------------------
+    //בניית קריאה להכנסה למבצע
     private String BuildInsertCommand(Deal deal)
     {
         String command;
@@ -233,6 +240,8 @@ public class DBServices
         return command;
         
     }
+
+    // לבניית קריאה לטבלה מקשרת של מבצעים ובעלי עסקים Dealen
     private String BuildInsertCommandlink(Deal deal,int deal_id)
     {
         String command;
@@ -241,7 +250,7 @@ public class DBServices
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
         sb.AppendFormat("Values({0}, {1},{2},{3});", deal.Business_id, deal_id, deal.Discount, deal.Startime,deal.Endtime);
-        String prefixc = "INSERT INTO [Deal_2021] " + "([business_id],[deal_id],[discount],[startime],[endtime])";
+        String prefixc = "INSERT INTO [dealInbus_2021] " + "([business_id],[deal_id],[discount],[startime],[endtime])";
         String get_id = "SELECT SCOPE_IDENTITY();";
         command = prefixc + sb.ToString() + get_id;
 
@@ -250,345 +259,6 @@ public class DBServices
 
 
     }
-
-
-
-    //Insert New Campaingn
-    //--------------------------------------------------------------------
-
-
-    //Insert Insert_Att_In_Rest
-    //public int Insert_Att_In_Rest(Attribute_In_rest attribute_In_Rest)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("DBConnectionString"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    String cStr = BuildInsertCommand(attribute_In_Rest);      // helper method to build the insert string
-
-    //    cmd = CreateCommand(cStr, con);             // create the command
-
-    //    try
-    //    {
-    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
-    //        return numEffected;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-    //}
-    //--------------------------------------------------------------------
-    //private String BuildInsertCommand(Attribute_In_rest attribute_In_Rest)
-    //{
-    //    String command;
-
-    //    StringBuilder sb = new StringBuilder();
-    //    // use a string builder to create the dynamic string
-    //    sb.AppendFormat("Values({0}, {1})", attribute_In_Rest.Id_attr, attribute_In_Rest.Id_rest);
-    //    String prefixc = "INSERT INTO [Attribute_rest_2021] " + "([Id_attribute],[Id_rest])";
-    //    command = prefixc + sb.ToString();
-
-    //    return command;
-    //}
-
-
-    //Insert Attribute_att_In_cust
-    //public int Attribute_att_In_cust(Attribute_In_cust attribute_In_cust)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("DBConnectionString"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    String cStr = BuildInsertCommand(attribute_In_cust);      // helper method to build the insert string
-
-    //    cmd = CreateCommand(cStr, con);             // create the command
-
-    //    try
-    //    {
-    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
-    //        return numEffected;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-    //}
-    //--------------------------------------------------------------------
-    //private String BuildInsertCommand(Attribute_In_cust attribute_In_cust)
-    //{
-    //    String command;
-
-    //    StringBuilder sb = new StringBuilder();
-    //    // use a string builder to create the dynamic string
-    //    sb.AppendFormat("Values({0}, {1})", attribute_In_cust.Id_att, attribute_In_cust.Id_cust);
-    //    String prefixc = "INSERT INTO [Attribute_Cust_2021] " + "([Id_attribute],[Id_cust])";
-    //    command = prefixc + sb.ToString();
-
-    //    return command;
-    //}
-    //Delete Attribute_att_In_cust
-    //public int Attribute_att_In_cust_Delete(int id)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("DBConnectionString"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    String cStr = BuildInsertCommand(id);      // helper method to build the insert string
-
-    //    cmd = CreateCommand(cStr, con);             // create the command
-
-    //    try
-    //    {
-    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
-    //        return numEffected;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-    //}
-    //--------------------------------------------------------------------
-    //private String BuildInsertCommand(int id)
-    //{
-    //    String command;
-
-    //    StringBuilder sb = new StringBuilder();
-    //    // use a string builder to create the dynamic string
-    //    sb.AppendFormat("{0}", id);
-    //    String prefixc = "DELETE FROM Attribute_Cust_2021 WHERE Id_cust=";
-    //    command = prefixc + sb.ToString();
-
-    //    return command;
-    //}
-
-    //update Attribute_att_In_cust_Update
-
-    //public int Attribute_att_In_cust_Update(Attribute_In_cust attribute_In_cust)
-    //{
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("DBConnectionString"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    String cStr = BuildInsertCommand2(attribute_In_cust);      // helper method to build the insert string
-    //    cmd = CreateCommand(cStr, con);             // create the command
-
-    //    try
-    //    {
-    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
-    //        return numEffected;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-    //}
-    //--------------------------------------------------------------------
-    //private String BuildInsertCommand2(Attribute_In_cust attribute_In_cust)
-    //{
-    //    String command;
-
-    //    StringBuilder sb = new StringBuilder();
-    //    // use a string builder to create the dynamic string
-    //    sb.AppendFormat("Values({0}, {1})", attribute_In_cust.Id_att, attribute_In_cust.Id_cust);
-    //    String prefixc = "INSERT INTO Attribute_Cust_2021 " + "(Id_attribute, Id_cust) ";
-    //    command = prefixc + sb.ToString();
-
-    //    return command;
-    //}
-
-
-
-
-    //Update Budget of Campaign by id
-    //public int Update_Budget(int id, int budget)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("DBConnectionString"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    String cStr = BuildUpdateCommand(id, budget);      // helper method to build the insert string
-
-    //    cmd = CreateCommand(cStr, con);             // create the command
-
-    //    try
-    //    {
-    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
-    //        return numEffected;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-    //}
-    //--------------------------------------------------------------------
-    //private String BuildUpdateCommand(int id, int difference)
-    //{
-    //    String command;
-    //    command = "UPDATE campaingn_2021 SET budget = budget + " + difference + " ,balance = balance + " + difference + " WHERE id = " + id + "; ";
-    //    return command;
-    //}
-
-    ////Delete Campaign by id - change status to false
-    //public int DeleteCampain(int id)
-    //{
-
-    //    SqlConnection con;
-    //    SqlCommand cmd;
-
-    //    try
-    //    {
-    //        con = connect("DBConnectionString"); // create the connection
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    String cStr = BuildUpdateCommand(id);      // helper method to build the insert string
-
-    //    cmd = CreateCommand(cStr, con);             // create the command
-
-    //    try
-    //    {
-    //        int numEffected = cmd.ExecuteNonQuery(); // execute the command
-    //        return numEffected;
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        // write to log
-    //        throw (ex);
-    //    }
-
-    //    finally
-    //    {
-    //        if (con != null)
-    //        {
-    //            // close the db connection
-    //            con.Close();
-    //        }
-    //    }
-
-    //}
-    ////--------------------------------------------------------------------
-    //private String BuildUpdateCommand(int id)
-    //{
-    //    String command;
-    //    command = "UPDATE campaingn_2021 SET status = 'False',balance = budget, num_clicks = 0,num_views=0 WHERE id = " + id + "; ";
-    //    return command;
-    //}
-    //private String BuildUpdateStatusCommand(Campaign c)
-    //{ 
-    //    String command;
-    //    command = "UPDATE campaingn_2021 SET status = 'True',budget = " + c.Budget+ ",balance = " + c.Budget + ", num_clicks = 0,num_views=0 WHERE id_rest = " + c.Id_rest + "; ";
-    //    return command;
-    //}
-
 
 
 
@@ -649,7 +319,8 @@ public class DBServices
 
         }
     }
-
+    
+    //Dealen-בדיקה האם בעל עסק קיים במערכת
     public List<Businesses> CheckIfbExits(string bmail, string password)
     {
         SqlConnection con = null;
@@ -820,7 +491,7 @@ public class DBServices
 
     }
 
-    //קבלת מבצע לפי קטגוריה
+    //קבלת פרטים מלאים על מבצע לפי  תז מבצע-Dealen
     public List<Deal> getDealsByDeal(int id)
     {
         List<Deal> dlist = new List<Deal>();
@@ -850,7 +521,6 @@ public class DBServices
                 b.Bname = (string)dr["bname"];
                 b.Baddress = (string)dr["baddress"];
                 b.Bphone = (string)dr["bphone"];
-                b.Manager = (string)dr["manager"];
                 b.Bmail = (string)dr["bmail"];
                 b.Opentime = (TimeSpan)dr["opentime"];
                 b.Closetime = (TimeSpan)dr["closetime"];
