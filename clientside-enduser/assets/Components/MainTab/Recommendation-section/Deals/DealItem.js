@@ -7,9 +7,10 @@ import FullDealView from './FullDealView'
 const { width, height } = Dimensions.get('window')
 
 
-const DealItem = ({ item,navigation }) => {
+const DealItem = ({ UserData, item,navigation }) => {
+
     return (
-        <TouchableWithoutFeedback  onPress={() => navigation.navigate('FullDealView',{categoryId: item.Cat_id, dealId: item.Id})} >
+        <TouchableWithoutFeedback  onPress={() => navigation.navigate('FullDealView',{categoryId: item.Cat_id, dealId: item.Id, CustomerId: UserData.Id})} >
             <View style={styles.cardView}  >
                 <Image style={styles.image} source={{ uri: item.Image }} />
                 <View style={styles.textView}>

@@ -20,8 +20,8 @@ export default class DealApproval extends React.Component {
 
     componentDidMount = () => {
     const { navigation, route } = this.props;
-    this.setState({dealId: JSON.stringify(route.params.dealId)})
-    
+    this.setState({dealId: JSON.stringify(route.params.dealId),CustomerId: JSON.stringify(route.params.CustomerId)})
+    console.log("From APPROVAL",JSON.stringify(route.params.CustomerId))
     setInterval(() => {
       this.setState({
         isLoading: false
