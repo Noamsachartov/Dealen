@@ -833,7 +833,7 @@ public class DBServices
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat("SELECT dealInbus_2021.id, Businesses_2021.bname, dealInbus_2021.business_id as business_id,dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount, Category_2021.name AS catgeory_name, Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name, Deal_2021.cat_id as cat_id FROM Businesses_2021 INNER JOIN dealInbus_2021 ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id INNER JOIN Category_2021 ON Deal_2021.cat_id = Category_2021.id where dealInbus_2021.id=" + id);
+            sb.AppendFormat("SELECT dealInbus_2021.id, Businesses_2021.bid,Businesses_2021.bname,Businesses_2021.baddress, Businesses_2021.bphone, Businesses_2021.bmail, Businesses_2021.opentime, Businesses_2021.closetime, Businesses_2021.bimage, Businesses_2021.bdescription, dealInbus_2021.business_id as business_id,dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount, Category_2021.name AS catgeory_name, Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name, Deal_2021.cat_id as cat_id FROM Businesses_2021 INNER JOIN dealInbus_2021 ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id INNER JOIN Category_2021 ON Deal_2021.cat_id = Category_2021.id where dealInbus_2021.id=" + id);
             selectSTR = sb.ToString();
 
 
@@ -844,6 +844,21 @@ public class DBServices
             while (dr.Read())
             {   // Read till the end of the data into a row
                 Deal d = new Deal();
+                Businesses b = new Businesses();
+
+                b.Bid = Convert.ToInt32(dr["bid"]);
+                b.Bname = (string)dr["bname"];
+                b.Baddress = (string)dr["baddress"];
+                b.Bphone = (string)dr["bphone"];
+                b.Manager = (string)dr["manager"];
+                b.Bmail = (string)dr["bmail"];
+                b.Opentime = (TimeSpan)dr["opentime"];
+                b.Closetime = (TimeSpan)dr["closetime"];
+                b.Bimage = (string)dr["bimage"];
+                b.Bdescription = (string)dr["bdescription"];
+                
+                d.Bus_rest = b;
+                
                 d.Id = Convert.ToInt32(dr["id"]);
                 d.Name = (string)dr["deal_name"];
                 d.Business_Name = (string)dr["bname"];
@@ -856,10 +871,7 @@ public class DBServices
                 d.Description = (string)dr["description"];
                 d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
                 dlist.Add(d);
-                //string starttimeString24Hour = Convert.ToDateTime(context.Request.QueryString["starttime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
 
-                //string endtimeString24Hour = Convert.ToDateTime(context.Request.QueryString["endtime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
-                //edit.endtime = endtimeString24Hour;
             }
 
             return dlist;

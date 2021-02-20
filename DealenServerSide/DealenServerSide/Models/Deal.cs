@@ -19,6 +19,7 @@ namespace DealenServerSide.Models
         string image; 
         int cat_id;
         int discount;
+        Businesses bus_rest;
 
         public int Id { get => id; set => id = value; }
         public string Name { get => name; set => name = value; }
@@ -31,6 +32,7 @@ namespace DealenServerSide.Models
         public int Cat_id { get => cat_id; set => cat_id = value; }
         public int Business_id { get => business_id; set => business_id = value; }
         public int Discount { get => discount; set => discount = value; }
+        public Businesses Bus_rest { get => bus_rest; set => bus_rest = value; }
 
         public Deal() { }
 

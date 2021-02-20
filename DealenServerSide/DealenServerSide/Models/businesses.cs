@@ -18,6 +18,7 @@ namespace DealenServerSide.Models
         TimeSpan opentime;
         TimeSpan closetime;
         string bimage;
+        
             
 
         public int Bid { get => bid; set => bid = value; }
