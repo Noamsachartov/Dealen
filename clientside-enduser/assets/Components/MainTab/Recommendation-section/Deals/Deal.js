@@ -5,20 +5,7 @@ import FullDealView from './FullDealView';
 
 
 
-
-
-
 export default class Deal extends React.Component {
-
-  // static navigationOptions = {
-  //   title:'Home',
-  //   headerStyle: {
-  //     backgroundColor: 'red'
-  //   },
-  //   headerTitleStyle: {
-  //     color: 'white'
-  //   }
-  // }
 
     state={
         Data: null,
@@ -32,7 +19,6 @@ export default class Deal extends React.Component {
         .then(response => response.json())
         .then(responseJson => {
           if(responseJson.length > 0){
-            console.log(responseJson)
             this.setState(
               {
                 isLoading: false,
@@ -50,7 +36,6 @@ export default class Deal extends React.Component {
         .catch(error => {
           console.error(error);
         });
-
       }
 
   render(){
@@ -67,7 +52,6 @@ console.log("Deal Component")
                 keyExtractor={(item, index) => 'key' + index}
                 scrollEventThrottle={16}
                 decelerationRate={"fast"}
-                // removeClippedSubviews={false}
             />
         </View>
       )

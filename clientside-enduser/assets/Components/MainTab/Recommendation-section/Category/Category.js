@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View,TextInput,TouchableOpacity, FlatList} from 'react-native';
 import CategoryItem from './CategoryItem'
-
+import Loading from '../LoadingComp';
 
 
 
@@ -15,20 +15,24 @@ export default class Category extends React.Component {
       }
 
       componentDidMount =() => {
-
+        setInterval(() => {
+          this.setState({
+            isLoading: false
+          });
+        }, 1500);
+        
         var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Category";
         return fetch(apiUrl)
         .then(response => response.json())
         .then(responseJson => {
           if(responseJson.length > 0){
-            console.log(responseJson)
+            // console.log(responseJson)
             this.setState(
               {
-                isLoading: false,
                 Data: responseJson,
               },
               function() {
-                
+                console.log("after")
               }
             );
           }else {
@@ -41,11 +45,12 @@ export default class Category extends React.Component {
         });
 
 
+
       }
 
   render(){
 
-    if(!this.state.isLoading){
+    if(!this.state.isLoading && this.state.Data){
       return(
         <View>
           <Text style={styles.Header}>קטגוריות</Text>
@@ -67,7 +72,7 @@ export default class Category extends React.Component {
 
     return (
       <View>
-        <Text>Loading categories</Text>
+        <Loading  title={'מלא מבצעים בדרך...'}/>
       </View>
     );
   }
