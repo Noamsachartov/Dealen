@@ -33,7 +33,8 @@ export default class SignUp extends React.Component {
           fetch(apiUrl, {
             method: 'POST',
             body: JSON.stringify({
-              Cust_name: this.state.Lname,
+              Cust_fname: this.state.Fname,
+              Cust_lname: this.state.Lname,
               Cust_mail: this.state.email,
               Password: this.state.password,
               Image: this.state.Img[0],
