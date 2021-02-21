@@ -29,16 +29,17 @@ export default class FullDealView extends React.Component {
     DiscountImplementaion = () => {
       console.log("Discount Implementaion")
       const { navigation, route } = this.props;
-      navigation.navigate('DealApproval',{dealId: route.params.dealId})
+      navigation.navigate('DealApproval',{dealId: route.params.dealId, CustomerId: route.params.CustomerId})
       
     }
 
     componentDidMount = () => {
+      this._isMounted = true;
       const { navigation, route } = this.props;
-      this.setState({categoryId: JSON.stringify(route.params.categoryId), dealId: JSON.stringify(route.params.dealId)})
+      this.setState({categoryId: JSON.stringify(route.params.categoryId), dealId: JSON.stringify(route.params.dealId) ,CustomerId: JSON.stringify(route.params.CustomerId)})
       //Get Deal Data By Deal Id
       var DealId = JSON.stringify(route.params.dealId);
-      var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/" + DealId;
+      var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/deal/" + DealId;
       return fetch(apiUrl)
       .then(response => response.json())
       .then(responseJson => {
@@ -47,7 +48,6 @@ export default class FullDealView extends React.Component {
             {
               isLoading: false,
               Data: responseJson,
-
             },
             function() {
               
@@ -56,13 +56,16 @@ export default class FullDealView extends React.Component {
         }else {
           alert("Sorry We there have been an error")
         }
-
       })
       .catch(error => {
         console.error(error);
       });
     }
 
+    componentWillUnmount(){
+      //fix the the bug - Can't perform a React state update on an unmounted component
+      this._isMounted = false;
+    }
      
   render(){
     const { navigation, route } = this.props;
@@ -94,7 +97,6 @@ export default class FullDealView extends React.Component {
                           <TouchableWithoutFeedback onPress={this.handleLike}>
                             <TimerIcon  color={this.state.like ? '#fb5b5a' : 'whitesmoke'} style={{backgroundColor: '#003f5c', borderRadius: 100, height: 60, width: 60, padding: 10}} name="heart-outline" size={40} />
                           </TouchableWithoutFeedback>
-                           
                         </View>
                         <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
                           <TouchableWithoutFeedback onPress={this.handleWhatsapp}>
@@ -107,9 +109,10 @@ export default class FullDealView extends React.Component {
           </View>
           <View style={styles.viewBusinessDeatel}>
             <View style={styles.second_viewBusinessDeatel}>
-              <Text>פרטים על העסק פרטים על העסק</Text>
-              <Text>כתובת: בלה בלה בלה בלה בלה</Text>
-              <Text>שעות פעילות: א'-ה': 14:00-02:00 ו': 10:00-23:30</Text>
+              <Text>{this.state.Data[0].Bus_rest.Bdescription}</Text>
+              <Text>כתובת: {this.state.Data[0].Bus_rest.Baddress}</Text>
+              <Text>שעות פעילות: {this.state.Data[0].Bus_rest.Opentime} - {this.state.Data[0].Bus_rest.Closetime}</Text>
+              <Text>מספר טלפון: {this.state.Data[0].Bus_rest.Bphone}</Text>
             </View>
           </View>
           <View style={styles.viewimplemntation}>
@@ -124,7 +127,7 @@ export default class FullDealView extends React.Component {
     }else {
       return (
       <View>
-          <Text>Loading</Text>
+          <Text>Loading..</Text>
       </View>
       );
   }
@@ -147,7 +150,7 @@ const styles = StyleSheet.create({
   DiscountIcon: {color: '#00961e'},
   viewWaLike: {flex:1,flexDirection: 'column', justifyContent: 'center', alignItems: 'center'},
   WaIcon: {backgroundColor: '#003f5c', borderRadius: 100, height: 60, width: 60, padding: 10, color: 'whitesmoke'},
-  viewBusinessDeatel: {flex:0.8, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' },
+  viewBusinessDeatel: {flex:1.2, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' },
   second_viewBusinessDeatel: {marginVertical:40, marginHorizontal: 10 },
   viewimplemntation: {flex:1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'},
   Secondery_viewimplemntation: {alignSelf: 'center',justifyContent:'center', backgroundColor: '#003f5c', width: width/2, height:height/10, borderRadius: 20},

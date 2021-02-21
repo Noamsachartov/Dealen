@@ -18,7 +18,6 @@ export default class App extends React.Component {
 
 
   render(props) {
-    console.log(this.props.title)
     return (
       <View style={styles.container}>
         <Spinner

@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'reac
 import UserList from './UserList';
 import TabControler from '../MainTab/TabControler'
 import * as Facebook from 'expo-facebook';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class LogIn extends React.Component {
   constructor(props) {
@@ -11,7 +12,7 @@ export default class LogIn extends React.Component {
       email: "",
       password: "",
       CurrentUser: "",
-      apiUrl: "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Customer?cust_mail=noam@gmail.com&password=123",
+      // apiUrl: "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Customer?cust_mail=noam@gmail.com&password=123",
       Cust_name: '',
       Cust_id: -1,
       isLoading: true,
@@ -35,16 +36,18 @@ export default class LogIn extends React.Component {
       const response = await fetch(apiUrl);
       const data = await response.json();
       if (data.length) {
+        //update user id async storage
+        this.saveUserInAsyncStorage(data)
         this.setState(
           {
             isLoading: false,
             dataSource: data,
             Cust_id: data[0].Cust_id,
-            Cust_name: data[0].Cust_name
+            Cust_name: data[0].Cust_fname
           },
           function () {
             if(!this.state.isfromFacebook){
-              // alert(data[0].Cust_name)
+              
             }    
           }
         );
@@ -85,7 +88,7 @@ export default class LogIn extends React.Component {
         var first_name = userFacebookData.first_name;
         var last_name = userFacebookData.last_name;
         var id = userFacebookData.id;
-        var id = userFacebookData.email;
+        var email = userFacebookData.email;
 
         //try login with facebook data- mabey already exists
         var logedin = await this.handlePassword(userFacebookData)
@@ -110,7 +113,8 @@ export default class LogIn extends React.Component {
     fetch(apiUrl, {
       method: 'POST',
       body: JSON.stringify({
-        Cust_name: userFacebookData.first_name,
+        Cust_fname: userFacebookData.first_name,
+        Cust_lname: userFacebookData.last_name,
         Cust_mail: userFacebookData.email,
         Password: userFacebookData.id,
         Image: '',
@@ -133,7 +137,21 @@ export default class LogIn extends React.Component {
       });
   }
 
+  saveUserInAsyncStorage =  async (UserData) => {
+    var User = {
+      "Id": UserData[0].Cust_id,
+      "UserName": UserData[0].Cust_fname,
+      "LastName": UserData[0].Cust_lname
+    }
+    try {
+      await AsyncStorage.setItem("UserData",JSON.stringify(User))
+      console.log("UserSaved")
+    }catch (error) {
+      alert(error)
+    }
+  }
 
+  
   render() {
     const { navigation } = this.props;
     if (!this.state.isLoading) {
