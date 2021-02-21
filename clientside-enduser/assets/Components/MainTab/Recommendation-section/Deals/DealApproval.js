@@ -19,7 +19,7 @@ export default class DealApproval extends React.Component {
     }
 
     componentDidMount = () => {
-      this._isMounted = true;
+    this._isMounted = true;
     const { navigation, route } = this.props;
     this.setState({dealId: JSON.stringify(route.params.dealId),CustomerId: JSON.stringify(route.params.CustomerId)})
     setInterval(() => {
@@ -40,8 +40,9 @@ export default class DealApproval extends React.Component {
     if(!this.state.isLoading){
         
       return(
-        <View style={{flex:1}}>
-            <Text>number</Text>
+        <View style={{flex:1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: '#003f5c'}}>
+            <Text style={{fontSize: 30, marginBottom: 30, color: 'white'}}>הצג קוד זה למארחת</Text>
+            <Text style={{fontSize: 50, color: 'white', letterSpacing: 35}}>12345</Text>
         </View>
       )
     }else {
