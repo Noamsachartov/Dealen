@@ -197,14 +197,14 @@ public class DBServices
             try
             {
                 String cStr1 = BuildInsertCommandlink(deal,numEffected);      // helper method to build the insert string
-                cmd = CreateCommand(cStr, con);
+                cmd = CreateCommand(cStr1, con);
                 int numEffected2 = Convert.ToInt32(cmd.ExecuteScalar());
                 return numEffected;
+
 
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -248,9 +248,10 @@ public class DBServices
         command = "";
 
         StringBuilder sb = new StringBuilder();
+        var d = deal.Date.ToString("yyyy-MM-dd");
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values({0}, {1},{2},{3});", deal.Business_id, deal_id, deal.Discount, deal.Startime,deal.Endtime);
-        String prefixc = "INSERT INTO [dealInbus_2021] " + "([business_id],[deal_id],[discount],[startime],[endtime])";
+        sb.AppendFormat("Values({0}, {1},{2},'True','{3}','{4}','{5}');", deal.Business_id, deal_id, deal.Discount, deal.Startime,deal.Endtime,d);
+        String prefixc = "INSERT INTO [dealInbus_2021] " + "([business_id],[deal_id],[discount],[active],[startime],[endtime],[date])";
         String get_id = "SELECT SCOPE_IDENTITY();";
         command = prefixc + sb.ToString() + get_id;
 
@@ -259,6 +260,72 @@ public class DBServices
 
 
     }
+
+    public int Insert(DealInCust dealInCust)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String cStr = BuildInsertCommand(dealInCust);      // helper method to build the insert string
+
+        cmd = CreateCommand(cStr, con);             // create the command
+
+        try
+        {
+            return  Convert.ToInt32(cmd.ExecuteScalar()); // execute the command
+   
+        }
+        catch (SqlException ex)
+        {
+            if (ex.Number == 2627)
+            {
+                return Insert(dealInCust);  // לשלוח עוד פעם לפונקציה שמייצרת מספר ומכניסה לdb
+            }
+            else
+                // write to log
+                throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    private String BuildInsertCommand(DealInCust busInCust)
+    {
+        String command;
+        command = "";
+        Random generator = new Random();
+        int r = generator.Next(100000, 1000000);
+
+        StringBuilder sb = new StringBuilder();
+        // use a string builder to create the dynamic string
+        sb.AppendFormat("Values({0}, {1},'{2}','False',GETDATE());", r, busInCust.Dealinbus_id, busInCust.Dealincust_mail);
+        String prefixc = "INSERT INTO [dealIncust_2021] " + "([coupon],[dealinbus_id],[dealincust_mail],[used],[timegetcoupon])";
+        String get_id = "SELECT SCOPE_IDENTITY();";
+        command = prefixc + sb.ToString() + get_id;
+
+        return command;
+
+    }
+
 
 
 
@@ -406,8 +473,8 @@ public class DBServices
                 d.Business_id= Convert.ToInt32(dr["business_id"]);
                 d.Category = (string)dr["catgeory_name"];
                 d.Cat_id= Convert.ToInt32(dr["cat_id"]);
-                d.Startime = Convert.ToDateTime(dr["startime"]).TimeOfDay;
-                d.Endtime = Convert.ToDateTime(dr["endtime"]).TimeOfDay;
+                d.Startime = (TimeSpan)dr["startime"];
+                d.Endtime = (TimeSpan)dr["endtime"];
                 d.Image = (string)dr["image"];
                 d.Description = (string)dr["description"];
                 d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
@@ -462,8 +529,8 @@ public class DBServices
                 d.Business_id = Convert.ToInt32(dr["business_id"]);
                 d.Category = (string)dr["catgeory_name"];
                 d.Cat_id = Convert.ToInt32(dr["cat_id"]);
-                d.Startime = Convert.ToDateTime(dr["startime"]).TimeOfDay;
-                d.Endtime = Convert.ToDateTime(dr["endtime"]).TimeOfDay;
+                d.Startime = (TimeSpan)dr["startime"];
+                d.Endtime = (TimeSpan)dr["endtime"];
                 d.Image = (string)dr["image"];
                 d.Description = (string)dr["description"];
                 d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"])*100);
@@ -535,8 +602,8 @@ public class DBServices
                 d.Business_id = Convert.ToInt32(dr["business_id"]);
                 d.Category = (string)dr["catgeory_name"];
                 d.Cat_id = Convert.ToInt32(dr["cat_id"]);
-                d.Startime = Convert.ToDateTime(dr["startime"]).TimeOfDay;
-                d.Endtime = Convert.ToDateTime(dr["endtime"]).TimeOfDay;
+                d.Startime = (TimeSpan)dr["startime"];
+                d.Endtime = (TimeSpan)dr["endtime"];
                 d.Image = (string)dr["image"];
                 d.Description = (string)dr["description"];
                 d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
