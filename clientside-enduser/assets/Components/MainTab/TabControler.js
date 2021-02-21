@@ -84,7 +84,7 @@ export default function TabControler() {
         <Stack.Screen name="MyTabs" options={{ headerShown: false}} component={MyTabs} />
         <Stack.Screen name="FullDealView" options={{ title: '', headerTintColor:'whitesmoke',headerStyle: {height: height/10.3, backgroundColor:'#003f5c'}}} component={FullDealView}  />
         <Stack.Screen name="CategoryFullView" options={{ title: ''}} component={CategoryFullView}  />
-        <Stack.Screen name="DealApproval" options={{ title: ''}} component={DealApproval}  />
+        <Stack.Screen name="DealApproval" options={{headerShown: false }} component={DealApproval}  />
       </Stack.Navigator>    
   );
 }

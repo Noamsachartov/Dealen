@@ -52,7 +52,6 @@ export default class Deal extends React.Component {
                 this.setState({UserData: JSON.parse(UserData)})
             }else{
               this.setState({UserData: []});
-              console.log("999err")
             }
           
         } catch (error){
