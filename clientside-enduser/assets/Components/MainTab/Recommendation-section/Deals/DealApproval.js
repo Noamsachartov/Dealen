@@ -19,15 +19,19 @@ export default class DealApproval extends React.Component {
     }
 
     componentDidMount = () => {
+      this._isMounted = true;
     const { navigation, route } = this.props;
     this.setState({dealId: JSON.stringify(route.params.dealId),CustomerId: JSON.stringify(route.params.CustomerId)})
-    console.log("From APPROVAL",JSON.stringify(route.params.CustomerId))
     setInterval(() => {
       this.setState({
         isLoading: false
       });
     }, 3000);
 
+    }
+    componentWillUnmount(){
+      //fix the the bug - Can't perform a React state update on an unmounted component
+      this._isMounted = false;
     }
 
      

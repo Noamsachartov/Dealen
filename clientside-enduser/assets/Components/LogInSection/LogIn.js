@@ -36,6 +36,8 @@ export default class LogIn extends React.Component {
       const response = await fetch(apiUrl);
       const data = await response.json();
       if (data.length) {
+        //update user id async storage
+        this.saveUserInAsyncStorage(data)
         this.setState(
           {
             isLoading: false,
@@ -45,8 +47,7 @@ export default class LogIn extends React.Component {
           },
           function () {
             if(!this.state.isfromFacebook){
-              //update user id async storage
-              this.saveUserInAsyncStorage(data)
+              
             }    
           }
         );
@@ -96,13 +97,6 @@ export default class LogIn extends React.Component {
           this.signupWithFacebook(userFacebookData)
         } else {
           console.log("already exists")  
-          var UserDate = [{
-            "Cust_id": id,
-            "Cust_fname": first_name,
-            "Cust_lname": last_name
-          }]
-          //Save UserData in asyncStorage
-          this.saveUserInAsyncStorage(UserDate);
         }
 
       } else {
@@ -144,13 +138,11 @@ export default class LogIn extends React.Component {
   }
 
   saveUserInAsyncStorage =  async (UserData) => {
-    console.log(UserData)
     var User = {
       "Id": UserData[0].Cust_id,
       "UserName": UserData[0].Cust_fname,
       "LastName": UserData[0].Cust_lname
     }
-    console.log(User)
     try {
       await AsyncStorage.setItem("UserData",JSON.stringify(User))
       console.log("UserSaved")

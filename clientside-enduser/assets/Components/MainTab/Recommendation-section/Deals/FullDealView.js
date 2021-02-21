@@ -34,12 +34,12 @@ export default class FullDealView extends React.Component {
     }
 
     componentDidMount = () => {
+      this._isMounted = true;
       const { navigation, route } = this.props;
       this.setState({categoryId: JSON.stringify(route.params.categoryId), dealId: JSON.stringify(route.params.dealId) ,CustomerId: JSON.stringify(route.params.CustomerId)})
       //Get Deal Data By Deal Id
       var DealId = JSON.stringify(route.params.dealId);
       var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/deal/" + DealId;
-      console.log(apiUrl,"-----")
       return fetch(apiUrl)
       .then(response => response.json())
       .then(responseJson => {
@@ -62,6 +62,10 @@ export default class FullDealView extends React.Component {
       });
     }
 
+    componentWillUnmount(){
+      //fix the the bug - Can't perform a React state update on an unmounted component
+      this._isMounted = false;
+    }
      
   render(){
     const { navigation, route } = this.props;
