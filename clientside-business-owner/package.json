@@ -1,20 +1,29 @@
 {
-  "name": "clientside-business-owner",
+  "name": "dealen-rest",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
     "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.2.3",
-    "@testing-library/user-event": "^12.6.2",
+    "@testing-library/react": "^11.2.5",
+    "@testing-library/user-event": "^12.7.1",
+    "expo-image-picker": "^10.0.0",
+    "material-ui": "^0.20.2",
     "react": "^17.0.1",
+    "react-bootstrap": "^1.4.3",
     "react-dom": "^17.0.1",
-    "react-scripts": "4.0.1",
-    "web-vitals": "^0.2.4"
+    "react-form-with-constraints": "^0.16.0",
+    "react-images-upload": "^1.2.8",
+    "react-responsive-navbar-overlay": "^1.1.2",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.2",
+    "web-vitals": "^1.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "npm": "react-scripts test",
+    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
