@@ -7,9 +7,10 @@ import FullDealView from './FullDealView'
 const { width, height } = Dimensions.get('window')
 
 
-const DealItem = ({ item,navigation }) => {
+const DealItem = ({ UserData, item,navigation }) => {
+
     return (
-        <TouchableWithoutFeedback  onPress={() => navigation.navigate('FullDealView',{categoryId: item.Id})} >
+        <TouchableWithoutFeedback  onPress={() => navigation.navigate('FullDealView',{categoryId: item.Cat_id, dealId: item.Id, CustomerId: UserData.Id})} >
             <View style={styles.cardView}  >
                 <Image style={styles.image} source={{ uri: item.Image }} />
                 <View style={styles.textView}>
@@ -20,12 +21,12 @@ const DealItem = ({ item,navigation }) => {
                         <View style={styles.TimerView}>
                             <TimerIcon style={styles.TimerIcon} name="timer-sand-empty" size={20} />
                             {/* <Text >{item.TimeLeft}</Text> */}
-                            <Text >20</Text>
+                            <Text >00</Text>
                         </View>
                         <View>
                             <DiscountIcon style={styles.DiscountIcon} name="ticket-percent-outline" size={20} />
                             {/* <Text>{item.DiscountDescription}</Text> */}
-                            <Text>30</Text>
+                            <Text>{item.Discount}%</Text>
                         </View>
                     </View>
                 </View>

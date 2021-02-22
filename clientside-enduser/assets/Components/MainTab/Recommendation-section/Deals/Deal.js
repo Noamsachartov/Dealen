@@ -2,37 +2,29 @@ import React from 'react';
 import { StyleSheet, Text, View,TextInput,TouchableOpacity, FlatList, Button} from 'react-native';
 import DealItem from './DealItem'
 import FullDealView from './FullDealView';
-
-
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
 export default class Deal extends React.Component {
 
-  // static navigationOptions = {
-  //   title:'Home',
-  //   headerStyle: {
-  //     backgroundColor: 'red'
-  //   },
-  //   headerTitleStyle: {
-  //     color: 'white'
-  //   }
-  // }
-
     state={
         Data: null,
-        isLoading: true
+        isLoading: true,
+        UserData: null
       }
 
       componentDidMount =() => {
+        //Get User data From Async Storage
+        this.LoadUserData();
 
+
+        //Get Deals for User
         var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal";
         return fetch(apiUrl)
         .then(response => response.json())
         .then(responseJson => {
           if(responseJson.length > 0){
-            console.log(responseJson)
             this.setState(
               {
                 isLoading: false,
@@ -50,24 +42,39 @@ export default class Deal extends React.Component {
         .catch(error => {
           console.error(error);
         });
-
       }
+
+      LoadUserData = async () => {
+        console.log("try load")
+        try{
+            let UserData = await AsyncStorage.getItem("UserData");
+            if (UserData !== null){
+                this.setState({UserData: JSON.parse(UserData)})
+            }else{
+              this.setState({UserData: []});
+            }
+          
+        } catch (error){
+            alert(error);
+        }
+      }
+
 
   render(){
 console.log("Deal Component")
     if(!this.state.isLoading){
+      console.log(this.state.UserData.Id)
       return(
         <View>
           <Text style={styles.Header}>מבצעים</Text>
              <FlatList
                 data={this.state.Data}
                 renderItem={({ item }) => {
-                    return <DealItem item={item} navigation={this.props.navigation} />
+                    return <DealItem UserData={this.state.UserData} item={item} navigation={this.props.navigation} />
                 }}
                 keyExtractor={(item, index) => 'key' + index}
                 scrollEventThrottle={16}
                 decelerationRate={"fast"}
-                // removeClippedSubviews={false}
             />
         </View>
       )
