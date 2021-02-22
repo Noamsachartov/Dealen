@@ -320,7 +320,8 @@ public class DBServices
         // use a string builder to create the dynamic string
         sb.AppendFormat("Values({0}, {1},'{2}','False',GETDATE());", r, busInCust.Dealinbus_id, busInCust.Dealincust_mail);
         String prefixc = "INSERT INTO [dealIncust_2021] " + "([coupon],[dealinbus_id],[dealincust_mail],[used],[timegetcoupon])";
-
+        String get_id = "SELECT "+r+";";
+        command = prefixc + sb.ToString() + get_id;
         command = prefixc + sb.ToString();
 
         return command;
