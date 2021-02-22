@@ -40,6 +40,13 @@ namespace DealenServerSide.Models
             return dbs.Insert(this);
         }
 
+        public int UseCoupon(int coupon)
+        {
+
+            DBServices dbs = new DBServices();
+            return dbs.UseCoupon(coupon);
+        }
+
   
 
     }

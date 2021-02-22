@@ -23,12 +23,12 @@ namespace DealenServerSide.Controllers
         }
 
         // POST api/<controller>
-        public IHttpActionResult Post([FromBody]DealInCust busInCust)
+        public IHttpActionResult Post([FromBody]DealInCust dealInCust)
         {
             try
             {
-                int count = busInCust.Insert();
-                return Created(new Uri(Request.RequestUri.AbsoluteUri + busInCust.Coupon), count);
+                int count = dealInCust.Insert();
+                return Created(new Uri(Request.RequestUri.AbsoluteUri + dealInCust.Coupon), count);
 
             }
             catch (Exception e)
@@ -39,8 +39,21 @@ namespace DealenServerSide.Controllers
         }
 
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        public IHttpActionResult Put(int coupon)
         {
+            DealInCust dealInCust = new DealInCust();
+
+            try
+            {
+                int count = dealInCust.UseCoupon(coupon);
+                return Created(new Uri(Request.RequestUri.AbsoluteUri + dealInCust.Coupon), count);
+
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
         }
 
         // DELETE api/<controller>/5

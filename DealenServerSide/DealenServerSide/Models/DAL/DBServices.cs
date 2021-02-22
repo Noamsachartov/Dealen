@@ -297,6 +297,7 @@ public class DBServices
                 throw (ex);
         }
 
+
         finally
         {
             if (con != null)
@@ -319,8 +320,8 @@ public class DBServices
         // use a string builder to create the dynamic string
         sb.AppendFormat("Values({0}, {1},'{2}','False',GETDATE());", r, busInCust.Dealinbus_id, busInCust.Dealincust_mail);
         String prefixc = "INSERT INTO [dealIncust_2021] " + "([coupon],[dealinbus_id],[dealincust_mail],[used],[timegetcoupon])";
-        String get_id = "SELECT SCOPE_IDENTITY();";
-        command = prefixc + sb.ToString() + get_id;
+
+        command = prefixc + sb.ToString();
 
         return command;
 
@@ -680,9 +681,54 @@ public class DBServices
 
     }
 
-   
+    public int UseCoupon(int coupon)
+    {
 
+        SqlConnection con;
+        SqlCommand cmd;
 
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String cStr = BuildCommusecoupon(coupon);      // helper method to build the insert string
+
+        cmd = CreateCommand(cStr, con);             // create the command
+
+        try
+        {
+            int numEffected = Convert.ToInt32(cmd.ExecuteScalar());// execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    private String BuildCommusecoupon(int coupon)
+    {
+        String command;
+        command = "UPDATE dealIncust_2021 SET used = 'True',timeusecoupon = GETDATE() WHERE coupon = " + coupon; 
+        return command;
+    }
 
 
     private static void ConvertToDateTime(string value)
