@@ -322,7 +322,6 @@ public class DBServices
         String prefixc = "INSERT INTO [dealIncust_2021] " + "([coupon],[dealinbus_id],[dealincust_mail],[used],[timegetcoupon])";
         String get_id = "SELECT "+r+";";
         command = prefixc + sb.ToString() + get_id;
-        command = prefixc + sb.ToString();
 
         return command;
 
