@@ -6,6 +6,7 @@ import Upload_Image from "./Components/MainTab/Home/Upload_Image"
 import Home from "./Components/MainTab/Home/Home"
 import Report from "./Components/MainTab/Report/Report"
 import Settings from "./Components/MainTab/Settings/Settings"
+import Coupon from "./Components/MainTab/Home/Coupon";
 
 
 
@@ -17,7 +18,7 @@ function App(){
     return(
       <div className="App">
         <FCHeader/>
-        <switch>
+        <Switch>
           <Route exact path="/">
             <Home />
           </Route>
@@ -36,8 +37,11 @@ function App(){
           <Route path="/Login">
             <Login/>
           </Route>
+          <Route path="/Coupon">
+            <Coupon/>
+          </Route>
           
-        </switch>
+        </Switch>
       </div>
 
     )

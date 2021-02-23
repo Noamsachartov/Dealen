@@ -10,21 +10,9 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Dealen
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -46,8 +34,51 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Login() {
-  const classes = useStyles();
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Dealen
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: ''
+    };
+  }
+
+mySubmitHandler = (event) => {
+  event.preventDefault(); 
+  
+  
+  var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Businesses?bmail=" + this.state.email + "&password=" + this.state.password;
+  fetch(apiUrl)
+    .then((response) => response.json())
+    .then((responseJson) => {
+      if (responseJson.length > 0){
+        console.log(responseJson[0].Bid);
+        localStorage.setItem("user_id", responseJson[0].Bid);
+        window.location = "/";
+      }
+    })
+    .catch((error) => {
+      alert(JSON.stringify(error));
+      console.error(error);
+    });
+}
+
+
+  render() {
+    const { classes } = this.props;
 
   return (
     <Container component="main" maxWidth="xs">
@@ -59,17 +90,18 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={this.mySubmitHandler}>
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="כתובת מייל"
             name="email"
             autoComplete="email"
             autoFocus
+            onChange={text => this.setState({email: text.target.value})}
           />
           <TextField
             variant="outlined"
@@ -77,10 +109,11 @@ export default function Login() {
             required
             fullWidth
             name="password"
-            label="Password"
+            label="סיסמא"
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={text => this.setState({password: text.target.value})}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -115,3 +148,5 @@ export default function Login() {
     </Container>
   );
 }
+}
+export default withStyles(useStyles)(Login)

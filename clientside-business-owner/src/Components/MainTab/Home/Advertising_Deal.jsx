@@ -32,18 +32,24 @@ export default class MyForm extends React.Component {
   };
 
   mySubmitHandler = (event) => {
-    event.preventDefault();
+    event.preventDefault(); //
     
+    var is_logged = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
     var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal"
     fetch(apiUrl, {
       method: 'POST',
       body: JSON.stringify({
-        Deal_name: this.state.deal_name,
-        Start_time: this.state.start_time,
-        End_time: this.state.end_time,
-        Discount: this.state.discount,
-        Description: this.state.description,
-        Image: this.state.image,
+        business_id: is_logged,
+        business_Name: "Uri ha maniak", // Remember to change
+        date: "", // Remember to change
+        category: "אסייתי", // Remember to change
+        cat_id: 1, // Remember to change
+        name: this.state.deal_name,
+        startime: this.state.start_time,
+        endtime: this.state.end_time,
+        discount: this.state.discount,
+        description: this.state.description,
+        image: this.state.image,
       }),
       headers: {
         Accept: 'application/json',
