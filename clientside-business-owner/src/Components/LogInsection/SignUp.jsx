@@ -1,4 +1,5 @@
 import React from 'react';
+import { Component } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,21 +11,9 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Dealen
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import { grid } from '@material-ui/system';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -46,9 +35,88 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
-  const classes = useStyles();
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Dealen
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
 
+class SignUp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      image: null,
+      BusinessName: '',
+      managerName: '',
+      phone: '',
+      address: '',
+      description: '',
+      opentime: '',
+      closetime: '',
+      email: '',
+      password: ''
+    };
+    
+    this.onImageChange = this.onImageChange.bind(this);
+  }
+
+  onImageChange = event => {
+    if (event.target.files && event.target.files[0]) {
+      let img = event.target.files[0];
+      this.setState({
+        image: URL.createObjectURL(img)
+      });
+    }
+  };
+
+  mySubmitHandler = (event) => {
+    event.preventDefault(); //
+    
+    
+    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/businesses"
+    fetch(apiUrl, {
+      method: 'POST',
+      body: JSON.stringify({
+        bname: this.state.BusinessName,
+        manager: this.state.managerName,
+        bphone: this.state.phone,
+        baddress: this.state.address,
+        bdescription: this.state.description,
+        opentime: this.state.opentime,
+        closetime: this.state.closetime,
+        bmail: this.state.email,
+        password: this.state.password,
+        bimage: this.state.image,
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
+      })
+      .catch((error) => {
+        alert(JSON.stringify(error));
+        console.error(error);
+      });
+
+    alert("You are submitting " + this.state.username);
+    console.log(this.state);
+  }
+
+
+  render() {
+    const { classes } = this.props;
+ 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -59,18 +127,19 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={this.mySubmitHandler}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
-                name="firstName"
+                name="BusinessName"
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                id="BusinessName"
+                label="שם בית העסק"
                 autoFocus
+                onChange={text => this.setState({BusinessName: text.target.value})}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -78,11 +147,74 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
+                id="managerName"
+                label="שם מנהל העסק"
+                name="managerName"
+                autoComplete="mname"
+                onChange={text => this.setState({managerName: text.target.value})}
               />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="phone"
+                label="מספר טלפון"
+                name="phone"
+                autoComplete="phone"
+                onChange={text => this.setState({phone: text.target.value})}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="address"
+                label="כתובת"
+                name="address"
+                autoComplete="address"
+                onChange={text => this.setState({address: text.target.value})}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="opentime"
+                label="שעת פתיחה"
+                name="opentime"
+                autoComplete="opentime"
+                onChange={text => this.setState({opentime: text.target.value})}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="closetime"
+                label="שעת סגירה"
+                name="closetime"
+                autoComplete="closetime"
+                onChange={text => this.setState({closetime: text.target.value})}
+              />
+            </Grid>
+            <Grid item xs={12}>
+            <TextField
+                variant="outlined"
+                required
+                fullWidth
+                multiline
+                rows={4}
+                id="description"
+                label=" תיאור"
+                name="description"
+                autoComplete="description"
+                onChange={text => this.setState({description: text.target.value})}
+              />  
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -90,9 +222,10 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="כתובת מייל"
                 name="email"
                 autoComplete="email"
+                onChange={text => this.setState({email: text.target.value})}
               />
             </Grid>
             <Grid item xs={12}>
@@ -101,11 +234,19 @@ export default function SignUp() {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="סיסמא"
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={text => this.setState({password: text.target.value})}
               />
+            </Grid>
+            <Grid>
+              <div>
+                  <img src={this.state.image} />
+                  <input type="file" name="myImage" onChange={this.onImageChange} />
+                  <label className="col-sm-0 control-label"> :  העלאת תמונה <br></br><br></br> </label>
+              </div>
             </Grid>
             <Grid item xs={12}>
               <FormControlLabel
@@ -138,3 +279,5 @@ export default function SignUp() {
     </Container>
   );
 }
+}
+export default withStyles(useStyles)(SignUp)
