@@ -32,17 +32,16 @@ namespace DealenServerSide.Models
         public bool Used { get => used; set => used = value; }
         public DealInCust() { }
 
-
+        //User want the Deal and get a coupon
         public int Insert()
         {
-
             DBServices dbs = new DBServices();
             return dbs.Insert(this);
         }
 
+        //business owner check the coupon
         public int UseCoupon(int coupon)
         {
-
             DBServices dbs = new DBServices();
             return dbs.UseCoupon(coupon);
         }

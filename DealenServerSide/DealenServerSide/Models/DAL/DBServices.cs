@@ -107,10 +107,6 @@ public class DBServices
         return command;
     }
 
-
-
-
-
     //הכנסת לקוח - Dealen
     public int Insert(Customer customer)
     {
@@ -681,6 +677,7 @@ public class DBServices
 
     }
 
+    //Use coupon - Business side
     public int UseCoupon(int coupon)
     {
 
@@ -730,7 +727,7 @@ public class DBServices
         return command;
     }
 
-
+    //convert date time
     private static void ConvertToDateTime(string value)
     {
         DateTime convertedDate;
