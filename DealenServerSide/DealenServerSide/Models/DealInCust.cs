@@ -9,16 +9,16 @@ namespace DealenServerSide.Models
     {
         int coupon;
         int dealinbus_id;
-        string dealincust_mail;
+        int dealincust_id;
         DateTime timegetcoupon;
         DateTime timeusecoupon;
         bool used;
 
-        public DealInCust(int coupon, int dealinbus_id, string dealincust_mail, DateTime timegetcoupon, DateTime timeusecoupon, bool used)
+        public DealInCust(int coupon, int dealinbus_id, int dealincust_id, DateTime timegetcoupon, DateTime timeusecoupon, bool used)
         {
             Coupon = coupon;
             Dealinbus_id = dealinbus_id;
-            Dealincust_mail = dealincust_mail;
+            Dealincust_id = dealincust_id;
             Timegetcoupon = timegetcoupon;
             Timeusecoupon = timeusecoupon;
             Used = used;
@@ -26,7 +26,7 @@ namespace DealenServerSide.Models
 
         public int Coupon { get => coupon; set => coupon = value; }
         public int Dealinbus_id { get => dealinbus_id; set => dealinbus_id = value; }
-        public string Dealincust_mail { get => dealincust_mail; set => dealincust_mail = value; }
+        public int Dealincust_id { get => dealincust_id; set => dealincust_id = value; }
         public DateTime Timegetcoupon { get => timegetcoupon; set => timegetcoupon = value; }
         public DateTime Timeusecoupon { get => timeusecoupon; set => timeusecoupon = value; }
         public bool Used { get => used; set => used = value; }
