@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, ScrollView, SafeAreaView } from 'react-native';
+import { Text, View, ScrollView, SafeAreaView,StatusBar } from 'react-native';
 import Carousel from './Carousel/Carousel';
 import Category from './Category/Category';
 import Deal from './Deals/Deal';
@@ -17,7 +17,11 @@ export default function Recommendation() {
   console.log("inside recommendation")
   const navigation = useNavigation(); 
     return (
-      <View style={{marginTop: 40}}>  
+      <View style={{marginTop: 7}}>  
+          <StatusBar
+          animated={true}
+          backgroundColor="#003f5c"
+           />
           <ScrollView showsVerticalScrollIndicator={false} > 
             <Carousel data = {DataForCarousel}/>
             <Category navigation={navigation}  />  

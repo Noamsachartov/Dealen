@@ -45,8 +45,7 @@ export default class ChoosePreferences extends React.Component {
       }
 
     componentDidMount =() => {
-    
-
+      
       var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Category";
       return fetch(apiUrl)
       .then(response => response.json())
