@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert,StatusBar } from 'react-native';
 import UserList from './UserList';
 import TabControler from '../MainTab/TabControler'
 import * as Facebook from 'expo-facebook';
@@ -161,6 +161,10 @@ export default class LogIn extends React.Component {
     } else {
       return (
         <View style={styles.container}>
+          <StatusBar
+          animated={true}
+          backgroundColor="#003f5c"
+           />
           <Text style={styles.Logo}>DEALEN</Text>
           <View style={styles.inputView} >
             <TextInput

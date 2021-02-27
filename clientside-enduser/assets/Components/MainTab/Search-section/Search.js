@@ -1,6 +1,9 @@
 import * as React from 'react';
 import {StyleSheet,Dimensions, Text, View ,TextInput,StatusBar,FlatList,TouchableOpacity} from 'react-native';
 import SearchIcon from 'react-native-vector-icons/EvilIcons';
+import RecentListDeal from './RecentListDeal';
+
+
 
 
 const { width, height } = Dimensions.get('window')
@@ -67,13 +70,13 @@ export default class Search extends React.Component {
               </View>
             </View>  
           </View>
-          <View style={{flex:1,marginVertical: 20}}>
+          <View style={{flex:2,marginVertical: 20, alignItems: 'center', justifyContent: 'center'}}>
             <FlatList
                     style={styles.categoryList}
                     data={this.state.Data}
                     renderItem={({ item }) => {
                         return (<View style={styles.CategoryView} >
-                                    <TouchableOpacity onPress={() => this.CategorySearch(item)}>
+                                    <TouchableOpacity  onPress={() => this.CategorySearch(item)}>
                                         <Text style={{color: "whitesmoke"}}>{item.Name}</Text>
                                     </TouchableOpacity>
                                 </View>)
@@ -82,11 +85,16 @@ export default class Search extends React.Component {
                   horizontal={false}
                   numColumns={5}
                   showsHorizontalScrollIndicator={false}
+                  showsVerticalScrollIndicator={false}
                   />
           </View>
-          <View style={{flex: 1}}>
+          {/* <View style={{flex: 1}}>
             <Text style={{textAlign: 'right', fontSize: 20, fontWeight: 'bold'}}>מבצעים שנבחרו לאחרונה</Text>
+          </View> */}
+          <View style={{flex: 1.5}}>
+            <RecentListDeal />
           </View>
+         
 
           
           
@@ -116,7 +124,9 @@ const styles = StyleSheet.create({
       borderRadius:25,
       height:35,
       // marginBottom:20,
-      justifyContent:"center",
+     
+      justifyContent:'center',
+      alignItems: 'center',
       padding:10,
       marginHorizontal: 5,
       marginVertical: 10
