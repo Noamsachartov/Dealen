@@ -46,7 +46,13 @@ namespace DealenServerSide.Models
             return dbs.UseCoupon(coupon);
         }
 
-  
+        public int LikeDeal(int coupon)
+        {
+            DBServices dbs = new DBServices();
+            return dbs.LikeDeal(coupon);
+        }
+
+
 
     }
 }

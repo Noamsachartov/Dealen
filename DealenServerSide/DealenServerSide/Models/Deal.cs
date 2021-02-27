@@ -21,6 +21,8 @@ namespace DealenServerSide.Models
         int discount;
         Businesses bus_rest;
         DateTime date;
+        int coupon;
+
 
         public int Id { get => id; set => id = value; }
         public string Name { get => name; set => name = value; }
@@ -36,10 +38,12 @@ namespace DealenServerSide.Models
         public DateTime Date { get => date; set => date = value; }
 
         public Businesses Bus_rest { get => bus_rest; set => bus_rest = value; }
+        public int Coupon { get => coupon; set => coupon = value; }
+
 
         public Deal() { }
 
-        public Deal(int id, string name, string description, string business_Name, string category, TimeSpan startime, TimeSpan endtime, string image, int cat_id, int business_id, int discount, DateTime date)
+        public Deal(int id, string name, string description, string business_Name, string category, TimeSpan startime, TimeSpan endtime, string image, int cat_id, int business_id, int discount, DateTime date, int coupon)
         {
             Id = id;
             Name = name;
@@ -52,6 +56,8 @@ namespace DealenServerSide.Models
             Cat_id = cat_id;
             Business_id = business_id;
             Discount = discount;
+            Coupon = coupon;
+
         }
 
         public List<Deal> Read()
@@ -73,6 +79,16 @@ namespace DealenServerSide.Models
             List<Deal> dlist = dbs.getDealsByDeal(cat_id);
             return dlist;
         }
+
+        public List<Deal> Readlastdeals(int cust_id)
+        {
+            DBServices dbs = new DBServices();
+            List<Deal> dlist = dbs.getDealslastDeals(cust_id);
+            return dlist;
+        }
+
+
+
         public int Insert()
         {
             DBServices dbs = new DBServices();

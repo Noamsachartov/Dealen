@@ -39,7 +39,9 @@ namespace DealenServerSide.Controllers
         }
 
         // PUT api/<controller>/5
-        public IHttpActionResult Put(int coupon)
+        [HttpPut]
+        [Route("api/DealInCust/used/{coupon}")]
+        public IHttpActionResult Putused(int coupon)
         {
             DealInCust dealInCust = new DealInCust();
 
@@ -55,6 +57,27 @@ namespace DealenServerSide.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        // PUT api/<controller>/5
+        [HttpPut]
+        [Route("api/DealInCust/like/{coupon}")]
+        public IHttpActionResult Putlike(int coupon)
+        {
+            DealInCust dealInCust = new DealInCust();
+
+            try
+            {
+                int count = dealInCust.LikeDeal(coupon);
+                return Created(new Uri(Request.RequestUri.AbsoluteUri + dealInCust.Coupon), count);
+
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
+
 
         // DELETE api/<controller>/5
         public void Delete(int id)

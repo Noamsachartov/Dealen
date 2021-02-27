@@ -555,6 +555,77 @@ public class DBServices
 
     }
 
+
+    public List<Deal> getDealslastDeals(int cust_id)
+    {
+        List<Deal> dlist = new List<Deal>();
+        SqlConnection con = null;
+
+        string selectSTR = null;
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("SELECT TOP (10) dealIncust_2021.coupon ,dealInbus_2021.id, dealInbus_2021.business_id, dealInbus_2021.discount, dealInbus_2021.date, dealInbus_2021.endtime, " +
+                "dealInbus_2021.startime, Deal_2021.description, Deal_2021.name as deal_name, Deal_2021.image, Category_2021.name AS catgeory_name,  Businesses_2021.bname " +
+                "FROM  dealIncust_2021 INNER JOIN "+
+                         "dealInbus_2021 ON dealIncust_2021.dealinbus_id = dealInbus_2021.id INNER JOIN "+
+                         "Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id INNER JOIN "+
+                         "Category_2021 ON Deal_2021.cat_id = Category_2021.id  INNER JOIN " +
+                         "Businesses_2021 ON dealInbus_2021.business_id = Businesses_2021.bid "+
+                 "WHERE(dealIncust_2021.used = 'True') AND(dealIncust_2021.dealincust_id = " + cust_id+")");
+            selectSTR = sb.ToString();
+
+
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                Deal d = new Deal();
+                d.Id = Convert.ToInt32(dr["id"]);
+                d.Business_Name = (string)dr["bname"];
+                d.Business_id = Convert.ToInt32(dr["business_id"]);
+                d.Category = (string)dr["catgeory_name"];
+                d.Startime = (TimeSpan)dr["startime"];
+                d.Endtime = (TimeSpan)dr["endtime"];
+                d.Image = (string)dr["image"];
+                d.Description = (string)dr["description"];
+                d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
+                d.Name = (string)dr["deal_name"];
+                d.Coupon = Convert.ToInt32(dr["coupon"]);
+                //string starttimeString24Hour = Convert.ToDateTime(context.Request.QueryString["starttime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
+                //string endtimeString24Hour = Convert.ToDateTime(context.Request.QueryString["endtime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
+                //edit.endtime = endtimeString24Hour;
+                dlist.Add(d);
+
+            }
+
+            return dlist;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+
+    }
+
+
+
+
+
     //קבלת פרטים מלאים על מבצע לפי  תז מבצע-Dealen
     public List<Deal> getDealsByDeal(int id)
     {
@@ -723,9 +794,67 @@ public class DBServices
     private String BuildCommusecoupon(int coupon)
     {
         String command;
-        command = "UPDATE dealIncust_2021 SET used = 'True',timeusecoupon = GETDATE() WHERE coupon = " + coupon; 
+        command = "UPDATE dealIncust_2021 SET used = 'True',timeusecoupon = GETDATE() WHERE coupon = " + coupon;
+        String get_id = "SELECT " + coupon + ";";
+        command +=  get_id;
+
         return command;
     }
+
+
+    public int LikeDeal(int coupon)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String cStr = BuildCommlikedeal(coupon);      // helper method to build the insert string
+
+        cmd = CreateCommand(cStr, con);             // create the command
+
+        try
+        {
+            int numEffected = Convert.ToInt32(cmd.ExecuteScalar());// execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    private String BuildCommlikedeal(int coupon)
+    {
+        String command;
+        command = "UPDATE dealIncust_2021 SET liked = 'True' WHERE coupon = " + coupon;
+        String get_id = "SELECT " + coupon + ";";
+        command += get_id;
+
+        return command;
+    }
+
+
 
     //convert date time
     private static void ConvertToDateTime(string value)

@@ -64,6 +64,23 @@ namespace DealenServerSide.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("api/Deal/lastDeal/{cust_id}")]
+        public IHttpActionResult GetLastDeals(int cust_id)
+        {
+            try
+            {
+                Deal deal = new Deal();
+                List<Deal> deals = deal.Readlastdeals(cust_id);
+                return Ok(deals);
+
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
+
         // POST api/<controller>
         public IHttpActionResult Post([FromBody]Deal deal)
         {
