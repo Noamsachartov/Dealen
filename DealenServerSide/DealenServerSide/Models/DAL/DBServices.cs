@@ -575,7 +575,7 @@ public class DBServices
                          "Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id INNER JOIN "+
                          "Category_2021 ON Deal_2021.cat_id = Category_2021.id  INNER JOIN " +
                          "Businesses_2021 ON dealInbus_2021.business_id = Businesses_2021.bid "+
-                 "WHERE(dealIncust_2021.used = 'True') AND(dealIncust_2021.dealincust_id = " + cust_id+")");
+                 "WHERE(dealIncust_2021.used = 'True') AND(dealIncust_2021.dealincust_id = " + cust_id+ ")  order by dealIncust_2021.timeusecoupon");
             selectSTR = sb.ToString();
 
 
