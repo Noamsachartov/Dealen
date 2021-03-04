@@ -2,8 +2,8 @@ import * as React from 'react';
 import {StyleSheet,Dimensions, Text, View ,TextInput,StatusBar,FlatList,TouchableOpacity} from 'react-native';
 import SearchIcon from 'react-native-vector-icons/EvilIcons';
 import RecentListDeal from './RecentListDeal';
-
-
+import SearchByCategory from './SearchByCategory';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const { width, height } = Dimensions.get('window')
@@ -11,15 +11,45 @@ export default class Search extends React.Component {
   state = {
     isLoading: true,
     Data: null,
+    CategoryData: null,
+    isLodingCategory: true,
   };
 
   CategorySearch = (item) => {
     console.log("Search Category by id: ",item.Id)
+
+    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/" +item.Id;
+    return fetch(apiUrl)
+    .then(response => response.json())
+    .then(responseJson => {
+      if(responseJson.length > 0){
+        console.log(responseJson)
+        this.setState(
+          {
+            CategoryData: responseJson,
+            isLodingCategory: false,
+            isLoading: true
+          },
+          function() {
+            console.log("after")
+          }
+        );
+      }else {
+        alert("Sorry there have been an error")
+      }
+
+    })
+    .catch(error => {
+      console.error(error);
+    });
+
+
   }
 
 
   componentDidMount =() => {
-      
+    this.LoadUserData();
+
     var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Category";
     return fetch(apiUrl)
     .then(response => response.json())
@@ -43,8 +73,26 @@ export default class Search extends React.Component {
     .catch(error => {
       console.error(error);
     });
+    
 
    }
+
+
+   LoadUserData = async () => {
+    console.log("try load")
+    try{
+        let UserData = await AsyncStorage.getItem("UserData");
+        if (UserData !== null){
+            this.setState({UserData: JSON.parse(UserData)})
+        }else{
+          this.setState({UserData: []});
+        }
+      
+    } catch (error){
+        alert(error);
+    }
+  }
+
 
   render(props) {
 
@@ -88,22 +136,45 @@ export default class Search extends React.Component {
                   showsVerticalScrollIndicator={false}
                   />
           </View>
-          {/* <View style={{flex: 1}}>
-            <Text style={{textAlign: 'right', fontSize: 20, fontWeight: 'bold'}}>מבצעים שנבחרו לאחרונה</Text>
-          </View> */}
           <View style={{flex: 1.5}}>
-            <RecentListDeal />
+            <RecentListDeal UserData={this.state.UserData}/>
           </View>
-         
-
-          
-          
-          
   
         </View>
       );
-    } else {
-      return <Text>Loading...</Text>
+    } else if (!this.state.isLodingCategory) {
+      return (
+        <View style={styles.container}>
+        <StatusBar
+      animated={true}
+      backgroundColor="#003f5c"
+       />
+      <View style={styles.inputView} >
+          <View style={{flex:1, flexDirection: 'row', justifyContent: 'flex-end' }}>
+            <View>
+              <TextInput  
+              style={styles.inputText}
+              placeholder="חיפוש..." 
+              placeholderTextColor="#003f5c"
+              textAlign={"right"}
+              onChangeText={text => this.setState({email:text})} />
+            </View>
+            <View >
+              <SearchIcon name="search" size={35} color={"#003f5c"} title="Open camera"  />
+            </View>
+          </View>  
+        </View>
+
+        <SearchByCategory UserData={this.state.UserData} Data={this.state.CategoryData} navigation={this.props.navigation}/>
+
+
+      </View>
+      )
+    } else{
+      return (
+        <Text>Loading...</Text>
+      )
+      
     }
   }
 }
