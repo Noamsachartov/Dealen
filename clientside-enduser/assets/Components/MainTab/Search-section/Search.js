@@ -22,7 +22,6 @@ export default class Search extends React.Component {
     .then(response => response.json())
     .then(responseJson => {
       if(responseJson.length > 0){
-        console.log(responseJson)
         this.setState(
           {
             CategoryData: responseJson,
@@ -56,7 +55,6 @@ export default class Search extends React.Component {
       .then(response => response.json())
       .then(responseJson => {
         if(responseJson.length > 0){
-          console.log(responseJson)
           this.setState(
                   {
                     isLoading: false,

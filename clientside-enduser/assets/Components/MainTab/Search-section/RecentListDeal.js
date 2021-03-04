@@ -43,21 +43,6 @@ export default class RecentDeals extends React.Component {
         });
       }
 
-      // LoadUserData = async () => {
-      //   console.log("try load")
-      //   try{
-      //       let UserData = await AsyncStorage.getItem("UserData");
-      //       if (UserData !== null){
-      //           this.setState({UserData: JSON.parse(UserData)})
-      //       }else{
-      //         this.setState({UserData: []});
-      //       }
-          
-      //   } catch (error){
-      //       alert(error);
-      //   }
-      // }
-
 
   render(){
 console.log("Deal Component")
