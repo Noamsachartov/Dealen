@@ -15,11 +15,11 @@ export default class RecentDeals extends React.Component {
 
       componentDidMount =() => {
         //Get User data From Async Storage
-        this.LoadUserData();
+        // this.LoadUserData();
 
 
         //Get Deals for User- need to change the call to recent deals by the user
-        var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal";
+        var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/lastDeal/" + this.props.UserData.Id ;
         return fetch(apiUrl)
         .then(response => response.json())
         .then(responseJson => {
@@ -43,20 +43,20 @@ export default class RecentDeals extends React.Component {
         });
       }
 
-      LoadUserData = async () => {
-        console.log("try load")
-        try{
-            let UserData = await AsyncStorage.getItem("UserData");
-            if (UserData !== null){
-                this.setState({UserData: JSON.parse(UserData)})
-            }else{
-              this.setState({UserData: []});
-            }
+      // LoadUserData = async () => {
+      //   console.log("try load")
+      //   try{
+      //       let UserData = await AsyncStorage.getItem("UserData");
+      //       if (UserData !== null){
+      //           this.setState({UserData: JSON.parse(UserData)})
+      //       }else{
+      //         this.setState({UserData: []});
+      //       }
           
-        } catch (error){
-            alert(error);
-        }
-      }
+      //   } catch (error){
+      //       alert(error);
+      //   }
+      // }
 
 
   render(){
@@ -68,7 +68,7 @@ console.log("Deal Component")
              <FlatList
                 data={this.state.Data}
                 renderItem={({ item }) => {
-                    return <RecentDealItem UserData={this.state.UserData} item={item}/>
+                    return <RecentDealItem UserData={this.props.UserData} item={item}/>
                 }}
                 keyExtractor={(item, index) => 'key' + index}
                 scrollEventThrottle={16}
