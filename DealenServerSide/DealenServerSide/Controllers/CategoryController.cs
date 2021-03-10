@@ -26,6 +26,23 @@ namespace DealenServerSide.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("api/Category/Active")]
+        public IHttpActionResult GetActive()
+        {
+            try
+            {
+                Category category = new Category();
+                List<Category> categories = category.Read_Active();
+                return Ok(categories);
+
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
+
         // GET api/<controller>/5
         public string Get(int id)
         {

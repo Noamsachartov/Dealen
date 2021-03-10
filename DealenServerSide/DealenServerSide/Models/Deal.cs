@@ -66,6 +66,13 @@ namespace DealenServerSide.Models
             List<Deal> dlist = dbs.getDeals();
             return dlist;
         }
+        public List<Deal> ReadActive()
+        {
+            DBServices dbs = new DBServices();
+            List<Deal> dlist = dbs.getDealsActive();
+            return dlist;
+        }
+
         public List<Deal> Readbycat(int cat_id)
         {
             DBServices dbs = new DBServices();
@@ -86,8 +93,12 @@ namespace DealenServerSide.Models
             List<Deal> dlist = dbs.getDealslastDeals(cust_id);
             return dlist;
         }
-
-
+        public List<Deal> ReadSearch(string Letters)
+        {
+            DBServices dbs = new DBServices();
+            List<Deal> dlist = dbs.getDealsBySearch(Letters);
+            return dlist;
+        }
 
         public int Insert()
         {

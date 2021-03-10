@@ -29,6 +29,14 @@ namespace DealenServerSide.Models
             return clist;
         }
 
+        public List<Category> Read_Active()
+        {
+            DBServices dbs = new DBServices();
+            List<Category> clist = dbs.getCategory_Active();
+            return clist;
+        }
+
+
 
     }
 }

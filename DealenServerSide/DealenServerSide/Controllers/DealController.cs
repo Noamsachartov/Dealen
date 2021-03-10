@@ -25,6 +25,21 @@ namespace DealenServerSide.Controllers
                 return Content(HttpStatusCode.BadRequest, e);
             }
         }
+        // GET api/<controller>
+        public IHttpActionResult GetActive()
+        {
+            try
+            {
+                Deal deal = new Deal();
+                List<Deal> deals = deal.ReadActive();
+                return Ok(deals);
+
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
 
         // GET api/<controller>/5
 
@@ -72,6 +87,21 @@ namespace DealenServerSide.Controllers
             {
                 Deal deal = new Deal();
                 List<Deal> deals = deal.Readlastdeals(cust_id);
+                return Ok(deals);
+
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
+
+        public IHttpActionResult GetSearch(string Letters)
+        {
+            try
+            {
+                Deal deal = new Deal();
+                List<Deal> deals = deal.ReadSearch(Letters);
                 return Ok(deals);
 
             }

@@ -1,10 +1,10 @@
-﻿using DealenServerSide.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using DealenServerSide.Models;
 
 namespace DealenServerSide.Controllers
 {
