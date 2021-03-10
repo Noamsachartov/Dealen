@@ -96,12 +96,14 @@ namespace DealenServerSide.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("api/Deal/Search/{Letters}")]
         public IHttpActionResult GetSearch(string Letters)
         {
             try
             {
                 Deal deal = new Deal();
-                List<Deal> deals = deal.ReadSearch(Letters);
+                List<Deal> deals = deal.ReadSearch(Letters );
                 return Ok(deals);
 
             }
