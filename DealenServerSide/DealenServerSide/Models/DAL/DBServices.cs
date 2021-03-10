@@ -509,7 +509,7 @@ public class DBServices
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat(" SELECT db.id,db.business_id, b.bname, db.startime, db.endtime, db.discount, c.name AS catgeory_name," +
+            sb.AppendFormat(" SELECT db.id,db.business_id, b.bname, db.startime, db.endtime, db.discount, c.name AS catgeory_name, " +
                             " d.image, d.description, d.name AS deal_name, d.cat_id as cat_id  " +
                             " FROM Businesses_2021 AS b INNER JOIN dealInbus_2021 AS db ON b.bid = db.business_id INNER JOIN Deal_2021 AS d ON" +
                             " db.deal_id = d.id INNER JOIN Category_2021 AS c ON d.cat_id = c.id " +
@@ -765,10 +765,10 @@ public class DBServices
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat("SELECT db.id, b.bname, db.business_id as business_id,db.startime, db.endtime, db.discount, c.name AS catgeory_name, d.image, d.description, d.name AS deal_name, d.cat_id as cat_id" +
-                            "FROM Businesses_2021 AS b INNER JOIN dealInbus_2021 AS db ON b.bid = db.business_id INNER JOIN Deal_2021 AS d ON" +
-                            "db.deal_id = d.id INNER JOIN Category_2021 AS c ON d.cat_id = c.id" +
-                            "WHERE b.bname LIKE 'Letter%' OR d.name LIKE 'Letter%' OR c.name LIKE 'Letter%'");
+            sb.AppendFormat("SELECT db.id, b.bname, db.business_id as business_id,db.startime, db.endtime, db.discount, c.name AS catgeory_name, d.image, d.description, d.name AS deal_name, d.cat_id as cat_id " +
+                            "FROM Businesses_2021 AS b INNER JOIN dealInbus_2021 AS db ON b.bid = db.business_id INNER JOIN Deal_2021 AS d ON " +
+                            "db.deal_id = d.id INNER JOIN Category_2021 AS c ON d.cat_id = c.id " +
+                            "WHERE b.bname LIKE '%"+Letter+"%' OR d.name LIKE '%"+Letter+"%' OR c.name LIKE '%"+Letter+"%'");
 
             selectSTR = sb.ToString();
 
@@ -946,8 +946,8 @@ public class DBServices
             StringBuilder sb = new StringBuilder();
 
             sb.AppendFormat("SELECT C.id, C.name, C.image " +
-                "FROM Category_2021 as C INNER JOIN Deal_2021 as D ON C.Id=D.Cat_id" +
-                "INNER JOIN dealInbus_2021 as db on db.deal_id=D.id" +
+                "FROM Category_2021 as C INNER JOIN Deal_2021 as D ON C.Id=D.Cat_id " +
+                "INNER JOIN dealInbus_2021 as db on db.deal_id=D.id " +
                 " WHERE db.date=CONVERT(date, GETDATE()) and CONVERT(time, GETDATE()) BETWEEN db.startime and dib.endtime");
             selectSTR = sb.ToString();
 
