@@ -26,6 +26,8 @@ namespace DealenServerSide.Controllers
             }
         }
         // GET api/<controller>
+        [HttpGet]
+        [Route("api/Deal/GetActive")]
         public IHttpActionResult GetActive()
         {
             try
