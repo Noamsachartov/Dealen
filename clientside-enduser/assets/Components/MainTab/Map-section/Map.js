@@ -4,12 +4,13 @@ import SearchIcon from 'react-native-vector-icons/EvilIcons';
 import * as Location from 'expo-location';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
-import Mapview from './mapview'
+import Mapview from './Mapview'
 
 
 export default class Map extends React.Component {
     state={
       
+      location: null
     }
     componentDidMount =() => {
       //Get User data From Async Storage
@@ -28,30 +29,38 @@ export default class Map extends React.Component {
     }
 
     render(){
-    console.log("inside map")
-     return(
-      <View style={styles.container}>
-        <View style={styles.inputView} >
-          <View style={styles.seconderView}>
-            <View>
-              <TextInput  
-              style={styles.inputText}
-              placeholder="חיפוש..." 
-              placeholderTextColor="#003f5c"
-              textAlign={"right"} />
+      if(this.state.location){
+        console.log("inside map")
+        return(
+          <View style={styles.container}>
+            <View style={styles.inputView} >
+              <View style={styles.seconderView}>
+                <View>
+                  <TextInput  
+                  style={styles.inputText}
+                  placeholder="חיפוש..." 
+                  placeholderTextColor="#003f5c"
+                  textAlign={"right"} />
+                </View>
+                <View >
+                  <SearchIcon name="search" size={35} color={"#003f5c"} title="Open camera"  />
+                </View>
+              </View>
+            </View>     
+            <Mapview item= {this.state.location} />   
             </View>
-            <View >
-              <SearchIcon name="search" size={35} color={"#003f5c"} title="Open camera"  />
-            </View>
-          </View>
-        </View>        
-        <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
-          <Text><Mapview item={this.state.location} /></Text>
-         
-        </View>
-        </View>
+        );
+      }
+  
+  else  {
+
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
     );
   }
+}
 }
 const styles = StyleSheet.create({
     container: {flex: 1, flexDirection:'column', alignItems: 'center'},
