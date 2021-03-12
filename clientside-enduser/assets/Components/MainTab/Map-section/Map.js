@@ -4,53 +4,65 @@ import SearchIcon from 'react-native-vector-icons/EvilIcons';
 import * as Location from 'expo-location';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
-
-export default function Map() {
-
+import Mapview from './Mapview'
 
 
-  console.log("inside map")
+export default class Map extends React.Component {
+    state={
+      
+      location: null
+    }
+    componentDidMount =() => {
+      //Get User data From Async Storage
+      this.Location();
+    }
+    
+    Location = async () =>{
+      let { status } = await Location.requestPermissionsAsync();
+      if (status !== 'granted') {
+        this.setState ({errorMessage : 'Permission to access location was denied', });
+      }
+        let location = await Location.getCurrentPositionAsync({});
+        console.log(location,1)
+        this.setState({ location});
+        console.log(this.state.location.coords.latitude)
+    }
+
+    render(){
+      if(this.state.location){
+        console.log("inside map")
+        return(
+          <View style={styles.container}>
+            <View style={styles.inputView} >
+              <View style={styles.seconderView}>
+                <View>
+                  <TextInput  
+                  style={styles.inputText}
+                  placeholder="חיפוש..." 
+                  placeholderTextColor="#003f5c"
+                  textAlign={"right"} />
+                </View>
+                <View >
+                  <SearchIcon name="search" size={35} color={"#003f5c"} title="Open camera"  />
+                </View>
+              </View>
+            </View>     
+            <Mapview item= {this.state.location} />   
+            </View>
+        );
+      }
+  
+  else  {
+
     return (
-      <View style={styles.container}>
-        <View style={styles.inputView} >
-          <View style={styles.seconderView}>
-            <View>
-              <TextInput  
-              style={styles.inputText}
-              placeholder="חיפוש..." 
-              placeholderTextColor="#003f5c"
-              textAlign={"right"} />
-            </View>
-            <View >
-              <SearchIcon name="search" size={35} color={"#003f5c"} title="Open camera"  />
-            </View>
-          </View>
-        </View>
-
-                
-        <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
-          <MapView
-            style={{flex:0.7 , width: Dimensions.get ('window').width-30,}}
-            region={{
-              latitude:32.157154,
-              longitude:34.843893,
-              latitudeDelta: 0.0122,
-              longitudeDelta: 0.0121,
-            }} >
-            <Marker
-            coordinate={{
-              latitude:32.15715,
-              longitude:34.843893
-            }}
-            title='my place:)'
-            description='here i am'
-            /> 
-          </MapView>                  
-        </View>
-        </View>
+      <View>
+        <Text>Loading...</Text>
+      </View>
     );
   }
-  const styles = StyleSheet.create({
+}
+}
+const styles = StyleSheet.create({
     container: {flex: 1, flexDirection:'column', alignItems: 'center'},
       inputView:{
         width:"95%",
@@ -79,4 +91,4 @@ export default function Map() {
       },
       flatlistview: {flex:2,marginVertical: 20, alignItems: 'center', justifyContent: 'center'},
       categoryList: {color: 'whitesmoke'},
-  });
+});
