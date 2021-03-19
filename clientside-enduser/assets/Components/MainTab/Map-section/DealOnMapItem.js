@@ -3,15 +3,16 @@ import { View, StyleSheet, Text, Image, Dimensions, Button } from 'react-native'
 import { TouchableHighlight, TouchableWithoutFeedback  } from 'react-native-gesture-handler';
 import TimerIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DiscountIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import FullDealView from './FullDealView'
 const { width, height } = Dimensions.get('window')
+import FullDealViewMap from './FullDealViewMap';  
 
 
-const DealItem = ({ UserData, item,navigation }) => {
+
+const DealItem = ({ UserData, item }) => {
     
 
     return (
-        <TouchableWithoutFeedback  onPress={() => navigation.navigate('FullDealView',{categoryId: item.Cat_id, dealId: item.Id, CustomerId: UserData.Id})} >
+        <TouchableWithoutFeedback  >
             <View style={styles.cardView}  >
                 <Image style={styles.image} source={{ uri: item.Image }} />
                 <View style={styles.textView}>
