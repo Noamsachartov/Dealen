@@ -4,6 +4,8 @@ import * as Location from 'expo-location';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 import Markeritem from './Markeritem';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 
