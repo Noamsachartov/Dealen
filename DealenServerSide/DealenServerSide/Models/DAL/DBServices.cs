@@ -416,9 +416,7 @@ public class DBServices
                 b.Bimage = (string)dr["bimage"];
                 b.Bdescription= (string)dr["bdescription"];
 
-
-
-          
+  
                 blist.Add(b);
             }
 
