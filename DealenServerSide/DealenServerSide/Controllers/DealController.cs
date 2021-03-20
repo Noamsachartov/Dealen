@@ -113,6 +113,41 @@ namespace DealenServerSide.Controllers
             }
         }
 
+
+        [HttpGet]
+        [Route("api/Deal/SearchDeals/{userQuery}")]
+        public IHttpActionResult SearchDeals(string userQuery)
+        {
+            try
+            {
+                Deal deal = new Deal();
+                List<Deal> deals = deal.SearchDeals(userQuery);
+                return Ok(deals);
+
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/Deal/GetTags")]
+        public IHttpActionResult GetTags()
+        {
+            try
+            {
+                Deal deal = new Deal();
+                List<Deal> deals = deal.getTags();
+                return Ok(deals);
+
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
+
         // POST api/<controller>
         public IHttpActionResult Post([FromBody]Deal deal)
         {

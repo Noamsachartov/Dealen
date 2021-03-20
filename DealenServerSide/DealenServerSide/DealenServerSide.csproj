@@ -211,6 +211,7 @@
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\DAL\DBServices.cs" />
     <Compile Include="Models\Deal.cs" />
+    <Compile Include="Models\Levenshtein.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="System\Data\Spatial.cs" />
   </ItemGroup>
