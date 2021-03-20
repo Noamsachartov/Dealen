@@ -138,9 +138,7 @@ if(this.state.lmarker){
               longitudeDelta: 0.02,
             }} >
             <Markeritem Markeritem={this.state.lmarker} PressMarker={this.props.PressMarker} /> 
-
         </MapView>
-
         </View>
     )
   }
