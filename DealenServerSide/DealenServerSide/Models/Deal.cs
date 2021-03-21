@@ -72,7 +72,12 @@ namespace DealenServerSide.Models
             List<Deal> dlist = dbs.getDealsActive();
             return dlist;
         }
-
+        public List<Deal> ReadbyRest(int rest_id)
+        {
+            DBServices dbs = new DBServices();
+            List<Deal> dlist = dbs.getDealsByRest(rest_id);
+            return dlist;
+        }
         public List<Deal> Readbycat(int cat_id)
         {
             DBServices dbs = new DBServices();

@@ -28,7 +28,22 @@ namespace DealenServerSide.Controllers
 
             }
         }
+        [HttpGet]
+        [Route("api/Businesses/ActiveRest")]
+        public IHttpActionResult GetActiveRest()
+        {
+            try
+            {
+                Businesses business = new Businesses();
+                List<Businesses> bus = business.ReadActiveRest();
+                return Ok(bus);
 
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
 
 
 

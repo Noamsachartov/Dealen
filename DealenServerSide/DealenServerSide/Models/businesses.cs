@@ -62,8 +62,14 @@ namespace DealenServerSide.Models
             List<Businesses> b = dbs.CheckIfbExits(bmail, password);
             return b;
         }
+        public List<Businesses> ReadActiveRest()
+        {
+            DBServices dbs = new DBServices();
+            List<Businesses> bus = dbs.getActiveRes();
+            return bus;
+        }
 
-      
+
 
     }
 }

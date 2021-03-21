@@ -27,7 +27,7 @@ namespace DealenServerSide.Controllers
         }
         // GET api/<controller>
         [HttpGet]
-        [Route("api/Deal/GetActive")]
+        [Route("api/Deal/Active")]
         public IHttpActionResult GetActive()
         {
             try
@@ -53,6 +53,23 @@ namespace DealenServerSide.Controllers
             {
                 Deal deal = new Deal();
                 List<Deal> deals = deal.Readbydeal(id);
+                return Ok(deals);
+
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/Deal/dealbyRest/{rest_id}")]
+        public IHttpActionResult GetByRest(int rest_id)
+        {
+            try
+            {
+                Deal deal = new Deal();
+                List<Deal> deals = deal.ReadbyRest(rest_id);
                 return Ok(deals);
 
             }

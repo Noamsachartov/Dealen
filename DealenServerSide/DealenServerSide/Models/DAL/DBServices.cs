@@ -6,7 +6,7 @@ using System.Text;
 using System.Collections.Generic;
 using DealenServerSide.Models;
 using System.Globalization;
-
+using System.Runtime.Remoting.Messaging;
 
 public class DBServices
 {
@@ -439,6 +439,66 @@ public class DBServices
         }
     }
 
+    // return restaurants with active Deal 
+
+    public List<Businesses> getActiveRes()
+    {
+        SqlConnection con = null;
+        List<Businesses> blist = new List<Businesses>();
+
+        string selectSTR = null;
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("SELECT B.bid, B.bname, B.baddress, B.bphone, B.opentime, B.closetime, B.bimage, B.bdescription" +
+                " FROM Businesses_2021 as B INNER JOIN dealInbus_2021 as DB ON B.bId=DB.business_id " +
+                " WHERE db.date=CONVERT(date, GETDATE()) and CONVERT(time, GETDATE()) BETWEEN db.startime and db.endtime");
+            selectSTR = sb.ToString();
+
+
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                Businesses b = new Businesses();
+
+
+                b.Bid = Convert.ToInt32(dr["bid"]);
+                b.Bname = (string)dr["bname"];
+                b.Baddress = (string)dr["baddress"];
+                b.Bphone = (string)dr["bphone"];
+                b.Opentime = (TimeSpan)dr["opentime"];
+                b.Closetime = (TimeSpan)dr["closetime"];
+                b.Bimage = (string)dr["bimage"];
+                b.Bdescription = (string)dr["bdescription"];
+
+                blist.Add(b);
+
+            }
+
+            return blist;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+
+    }
+
 
     //קבלת המבצעים-Dealen
     public List<Deal> getDeals()
@@ -616,6 +676,62 @@ public class DBServices
 
     }
 
+    //return deals by rest
+    public List<Deal> getDealsByRest(int rest_id)
+    {
+        List<Deal> dlist = new List<Deal>();
+        SqlConnection con = null;
+
+        string selectSTR = null;
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("SELECT dealInbus_2021.id, Businesses_2021.bname, dealInbus_2021.business_id as business_id,dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount, Category_2021.name AS catgeory_name, Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name, Deal_2021.cat_id as cat_id FROM Businesses_2021 INNER JOIN dealInbus_2021 ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id INNER JOIN Category_2021 ON Deal_2021.cat_id = Category_2021.id where dealInbus_2021.date=CONVERT(date, GETDATE()) and CONVERT(time, GETDATE()) BETWEEN dealInbus_2021.startime and dealInbus_2021.endtime AND dealInbus_2021.business_id=" + rest_id);
+            selectSTR = sb.ToString();
+
+
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                Deal d = new Deal();
+                d.Id = Convert.ToInt32(dr["id"]);
+                d.Name = (string)dr["deal_name"];
+                d.Business_Name = (string)dr["bname"];
+                d.Business_id = Convert.ToInt32(dr["business_id"]);
+                d.Category = (string)dr["catgeory_name"];
+                d.Cat_id = Convert.ToInt32(dr["cat_id"]);
+                d.Startime = (TimeSpan)dr["startime"];
+                d.Endtime = (TimeSpan)dr["endtime"];
+                d.Image = (string)dr["image"];
+                d.Description = (string)dr["description"];
+                d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
+                dlist.Add(d);
+
+            }
+
+            return dlist;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+
+    }
 
     public List<Deal> getDealslastDeals(int cust_id)
     {
@@ -948,7 +1064,7 @@ public class DBServices
             sb.AppendFormat("SELECT C.id, C.name, C.image " +
                 "FROM Category_2021 as C INNER JOIN Deal_2021 as D ON C.Id=D.Cat_id " +
                 "INNER JOIN dealInbus_2021 as db on db.deal_id=D.id " +
-                " WHERE db.date=CONVERT(date, GETDATE()) and CONVERT(time, GETDATE()) BETWEEN db.startime and dib.endtime");
+                " WHERE db.date=CONVERT(date, GETDATE()) and CONVERT(time, GETDATE()) BETWEEN db.startime and db.endtime");
             selectSTR = sb.ToString();
 
 
@@ -968,7 +1084,7 @@ public class DBServices
 
             return clist;
         }
-        catch (Exception ex)
+            catch (Exception ex)
         {
             // write to log
             throw (ex);
