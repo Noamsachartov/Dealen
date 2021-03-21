@@ -22,6 +22,7 @@ namespace DealenServerSide.Models
         Businesses bus_rest;
         DateTime date;
         int coupon;
+       
 
 
         public int Id { get => id; set => id = value; }
@@ -105,12 +106,48 @@ namespace DealenServerSide.Models
             return dlist;
         }
 
+        //Use levenshteinDistance for userstanding user input
+        public List<Deal> SearchDeals(string UserQuery)
+        {
+            DBServices dbs = new DBServices();
+            List<Deal> Tags = getTags();
+            //List<Deal> dlist = dbs.getDealsBySearch(Letters);
+            List<Deal> dlist = new List<Deal>();
+            int tempdistance;
+            List<string> res = new List<string>();
+            foreach (var item in Tags)
+            {
+                tempdistance = Levenshtein.LevenshteinDistance(UserQuery, item.Name);
+                if(tempdistance == 0)
+                {
+                    res.Add("Empty");
+                    dlist = dbs.getDealsByTag(item.Name, res);
+                    return dlist;
+                }
+                else if (tempdistance > 0 && tempdistance < 3)
+                {
+                    res.Add(item.Name);
+                }
+            }
+            dlist = dbs.getDealsByTag("",res);
+            return dlist;
+        }
+
         public int Insert()
         {
             DBServices dbs = new DBServices();
             return dbs.Insert(this);
 
         }
+
+        public List<Deal> getTags()
+        {
+            DBServices dbs = new DBServices();
+            List<Deal> Tags = dbs.getTags();
+            return Tags;
+
+        }
+
 
     }
 }

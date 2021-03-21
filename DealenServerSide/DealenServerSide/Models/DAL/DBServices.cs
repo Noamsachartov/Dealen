@@ -416,9 +416,7 @@ public class DBServices
                 b.Bimage = (string)dr["bimage"];
                 b.Bdescription= (string)dr["bdescription"];
 
-
-
-          
+  
                 blist.Add(b);
             }
 
@@ -996,8 +994,146 @@ public class DBServices
 
 
 
-    //פונקציה קבלת פרטי הקטגוריה-Dealen
 
+
+    public List<Deal> getTags()
+    {
+        List<Deal> dlist = new List<Deal>();
+        SqlConnection con = null;
+
+        string selectSTR = null;
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("select * from  Tags_2021");
+            selectSTR = sb.ToString();
+
+
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                Deal d = new Deal();
+                d.Id = Convert.ToInt32(dr["Tag_Id"]);
+                d.Name = (string)dr["name"];
+                
+                dlist.Add(d);
+            }
+
+            return dlist;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+
+    }
+
+    //Search Deals by Tags
+    public List<Deal> getDealsByTag(string TagName, List<string> res)
+    {
+        List<Deal> dlist = new List<Deal>();
+        SqlConnection con = null;
+
+        string selectSTR = null;
+
+        string TagsNames = "";
+        foreach (var item in res)
+        {
+            TagsNames += " Tags.[name] = '" + item + "' or";
+        }
+        TagsNames = TagsNames.Remove(TagsNames.Length - 2);
+
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            StringBuilder sb = new StringBuilder();
+            if (TagName != "")
+            {
+                sb.AppendFormat("select deals.id,Tags.[name], b.bname, deal.[name] as deal_name, deal.[description],deal.[image], deal.cat_id, deals.business_id, deals.discount, " +
+                "deals.deal_id, deals.active, deals.startime, deals.endtime, deals.[date] " +
+                "from Businesses_2021 AS b inner join dealInbus_2021 as deals on b.bid = deals.business_id " +
+                "inner join Deal_2021 as Deal on Deal.id = deals.deal_id " +
+                "inner join TagsInDeals_2021 as TagDeal on deals.id = TagDeal.Deal_id " +
+                "inner join Tags_2021 as Tags on TagDeal.Tag_Id = Tags.Tag_Id " +
+                "where Tags.[name] = '" + TagName + "'  ");
+            }else
+            {
+                sb.AppendFormat("select deals.id,Tags.[name], b.bname, deal.[name] as deal_name, deal.[description],deal.[image], deal.cat_id, deals.business_id, deals.discount, " +
+                "deals.deal_id, deals.active, deals.startime, deals.endtime, deals.[date] " +
+                "from Businesses_2021 AS b inner join dealInbus_2021 as deals on b.bid = deals.business_id " +
+                "inner join Deal_2021 as Deal on Deal.id = deals.deal_id " +
+                "inner join TagsInDeals_2021 as TagDeal on deals.id = TagDeal.Deal_id " +
+                "inner join Tags_2021 as Tags on TagDeal.Tag_Id = Tags.Tag_Id " +
+                "where " + TagsNames);
+            }
+           
+            selectSTR = sb.ToString();
+
+
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                Deal d = new Deal();
+                Businesses b = new Businesses();
+
+                //b.Bid = Convert.ToInt32(dr["business_id"]);
+                //b.Bname = (string)dr["bname"];
+                d.Bus_rest = b;
+
+                d.Id = Convert.ToInt32(dr["id"]);
+                d.Name = (string)dr["deal_name"];
+                d.Business_Name = (string)dr["bname"];
+                d.Business_id = Convert.ToInt32(dr["business_id"]);
+                d.Cat_id = Convert.ToInt32(dr["cat_id"]);
+                d.Startime = (TimeSpan)dr["startime"];
+                d.Endtime = (TimeSpan)dr["endtime"];
+                d.Image = (string)dr["image"];
+                d.Description = (string)dr["description"];
+                d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
+                dlist.Add(d);
+
+            }
+
+            return dlist;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+
+    }
+
+
+    //פונקציה קבלת פרטי הקטגוריה-Dealen
     public List<Category> getCategory()
     {
         List<Category> clist = new List<Category>();
