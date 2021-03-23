@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
     },
     inputText:{
       height:30,
+      width: 250,
       color:"#003f5c",
       
     },
