@@ -4,6 +4,7 @@ import SearchIcon from 'react-native-vector-icons/EvilIcons';
 import RecentListDeal from './RecentListDeal';
 import SearchByCategory from './SearchByCategory';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 
 const { width, height } = Dimensions.get('window')
@@ -11,7 +12,7 @@ export default class Search extends React.Component {
   state = {
     isLoading: true,
     Data: null,
-    CategoryData: null,
+    DataToSearch: null,
     isLodingCategory: true,
   };
 
@@ -24,7 +25,7 @@ export default class Search extends React.Component {
       if(responseJson.length > 0){
         this.setState(
           {
-            CategoryData: responseJson,
+            DataToSearch: responseJson,
             isLodingCategory: false,
             isLoading: true
           },
@@ -48,31 +49,59 @@ export default class Search extends React.Component {
   componentDidMount =() => {
     const { navigation, route } = this.props;
     this._unsubscribe = navigation.addListener('focus', () => {
-      this.LoadUserData();
+      this.likecomponenetdidmount();
+      // this.LoadUserData();
 
-      var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Category";
-      return fetch(apiUrl)
-      .then(response => response.json())
-      .then(responseJson => {
-        if(responseJson.length > 0){
-          this.setState(
-                  {
-                    isLoading: false,
-                    Data: responseJson,
-                  },
-                  function() {
+      // var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Category";
+      // return fetch(apiUrl)
+      // .then(response => response.json())
+      // .then(responseJson => {
+      //   if(responseJson.length > 0){
+      //     this.setState(
+      //             {
+      //               isLoading: false,
+      //               Data: responseJson,
+      //             },
+      //             function() {
                     
-                  }
-                );
-              }else {
-                alert("נראה שיש לנו שגיאה במערכת, מצטערים")
-              }
+      //             }
+      //           );
+      //         }else {
+      //           alert("נראה שיש לנו שגיאה במערכת, מצטערים")
+      //         }
         
-            })
-            .catch(error => {
-              console.error(error);
-            });
+      //       })
+      //       .catch(error => {
+      //         console.error(error);
+      //       });
         });  
+   }
+
+   likecomponenetdidmount = () => {
+    this.LoadUserData();
+
+    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Category";
+    return fetch(apiUrl)
+    .then(response => response.json())
+    .then(responseJson => {
+      if(responseJson.length > 0){
+        this.setState(
+                {
+                  isLoading: false,
+                  Data: responseJson,
+                },
+                function() {
+                  
+                }
+              );
+            }else {
+              alert("נראה שיש לנו שגיאה במערכת, מצטערים")
+            }
+      
+          })
+          .catch(error => {
+            console.error(error);
+          });
    }
 
 
@@ -91,6 +120,46 @@ export default class Search extends React.Component {
     }
   }
 
+  FreeSearch = (text) => {
+    this.setState({
+      Search:text,
+    })
+
+    console.log(this.state.Search)
+  }
+
+  onEndEditing = () => {
+    console.log("!!!!!!!!!!!!!!!")
+    if(this.state.Search == ""){
+      this.likecomponenetdidmount();
+    }else {
+      var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/SearchDeals/" + this.state.Search;
+      return fetch(apiUrl)
+      .then(response => response.json())
+      .then(responseJson => {
+        if(responseJson.length > 0){
+          this.setState(
+                  {
+                    DataToSearch: responseJson,
+                    isLodingCategory: false,
+                    isLoading: true
+                  },
+                  function() {
+                    
+                  }
+                );
+              }else {
+                alert("לא מצאנו מבצעים מתאימים לחיפוש")
+                this.likecomponenetdidmount();
+              }
+        
+            })
+            .catch(error => {
+              console.error(error);
+            });
+    }
+    
+  }
 
   render(props) {
 
@@ -103,7 +172,10 @@ export default class Search extends React.Component {
           placeholder="חיפוש..." 
           placeholderTextColor="#003f5c"
           textAlign={"right"}
-          onChangeText={text => this.setState({email:text})} />
+          onChangeText={text => this.FreeSearch(text)} 
+          onEndEditing={() => this.onEndEditing()}
+          />
+     
         </View>
         <View >
           <SearchIcon name="search" size={35} color={"#003f5c"} title="Open camera"  />
@@ -150,7 +222,7 @@ export default class Search extends React.Component {
             backgroundColor="#003f5c"
           />
           {InputHeader}
-          <SearchByCategory UserData={this.state.UserData} Data={this.state.CategoryData} navigation={this.props.navigation}/>
+            <SearchByCategory UserData={this.state.UserData} Data={this.state.DataToSearch} navigation={this.props.navigation}/>   
       </View>
       )
     } else{
