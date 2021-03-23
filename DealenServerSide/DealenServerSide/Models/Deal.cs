@@ -22,6 +22,7 @@ namespace DealenServerSide.Models
         Businesses bus_rest;
         DateTime date;
         int coupon;
+        int[] tags;
        
 
 
@@ -40,11 +41,11 @@ namespace DealenServerSide.Models
 
         public Businesses Bus_rest { get => bus_rest; set => bus_rest = value; }
         public int Coupon { get => coupon; set => coupon = value; }
-
+        public int[] Tags { get => tags; set => tags = value; }
 
         public Deal() { }
 
-        public Deal(int id, string name, string description, string business_Name, string category, TimeSpan startime, TimeSpan endtime, string image, int cat_id, int business_id, int discount, DateTime date, int coupon)
+        public Deal(int id, string name, string description, string business_Name, string category, TimeSpan startime, TimeSpan endtime, string image, int cat_id, int business_id, int discount, DateTime date, int coupon, int[] tags)
         {
             Id = id;
             Name = name;
@@ -58,6 +59,7 @@ namespace DealenServerSide.Models
             Business_id = business_id;
             Discount = discount;
             Coupon = coupon;
+            Tags = tags;
 
         }
 
@@ -111,7 +113,6 @@ namespace DealenServerSide.Models
         {
             DBServices dbs = new DBServices();
             List<Deal> Tags = getTags();
-            //List<Deal> dlist = dbs.getDealsBySearch(Letters);
             List<Deal> dlist = new List<Deal>();
             int tempdistance;
             List<string> res = new List<string>();

@@ -195,6 +195,9 @@ public class DBServices
                 String cStr1 = BuildInsertCommandlink(deal,numEffected);      // helper method to build the insert string
                 cmd = CreateCommand(cStr1, con);
                 int numEffected2 = Convert.ToInt32(cmd.ExecuteScalar());
+                String cStr3 = BuildInsertCommandTags(deal, numEffected2);      // helper method to build the insert tags
+                cmd = CreateCommand(cStr3, con);
+                int numEffected3 = cmd.ExecuteNonQuery();
                 return numEffected;
 
 
@@ -253,6 +256,29 @@ public class DBServices
 
         return command;
         
+    }
+
+    private String BuildInsertCommandTags(Deal deal, int deal_id)
+    {
+        String command;
+        command = "";
+
+        string TagsInsert = "";
+        foreach (var item in deal.Tags)
+        {
+            TagsInsert += " (" + item.ToString() +"," +deal_id.ToString() + ") ,";
+        }
+        TagsInsert = TagsInsert.Remove(TagsInsert.Length - 1);
+
+        StringBuilder sb = new StringBuilder();
+        sb.AppendFormat(" Values " + TagsInsert);
+        String prefixc = "Insert into TagsInDeals_2021 (Tag_Id,Deal_id)";
+        //String get_id = "SELECT SCOPE_IDENTITY();";
+        //command = prefixc + sb.ToString() + get_id;
+        command = prefixc + sb.ToString();
+
+        return command;
+
 
 
     }
