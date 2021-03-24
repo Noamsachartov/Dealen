@@ -1,6 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Advertising_Deal from "./Advertising_Deal.css"
+import { makeStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Button from '@material-ui/core/Button';
+import Checkbox from './CheckInput';
+
 
 
 
@@ -14,13 +22,47 @@ export default class MyForm extends React.Component {
         end_time: '',
         discount: '',
         description: '',
-        image: null
+        image: null,
+        Categories: [],
+        Tags: []
      };
      this.onImageChange = this.onImageChange.bind(this);
      this.apiUrl = 'http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal';
 
 
   }
+
+  componentDidMount(){
+    this.getCategory();
+}
+getCategory=()=>{
+    const cats = [];
+    const url ="http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Category"
+    fetch(url)
+    .then(response => response.json())
+    .then(data => {
+        data.forEach((item) => {
+            cats.push(item.Id);
+        });
+        this.setState({Categories:[...cats]});
+    });
+    console.log(this.state.Categories)
+    alert(this.state.Categories)
+}
+
+getTags=()=>{
+  const ings = [];
+  const url ="http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Category"
+  fetch(url)
+  .then(response => response.json())
+  .then(data => {
+      data.forEach((item) => {
+          ings.push(item.Id);
+      });
+      this.setState({ingredients:[...ings]});
+  });
+  console.log(this.state.ingredients)
+}
 
   onImageChange = event => {
     if (event.target.files && event.target.files[0]) {
@@ -72,7 +114,16 @@ export default class MyForm extends React.Component {
     this.setState({username: event.target.value});
   }
 
+  changedCheckedValues=(itemId,checked)=>{
+    let ings = [...this.state.ingredients];
+    ings.find(item=>item.ing.id===itemId).checked = checked;
+    this.setState({ingredients:[...ings]});
+}
+
+
   render() {
+    if(this.state.Categories)
+    { 
     return (
       <form onSubmit={this.mySubmitHandler}>
       <h1>פרסום מבצע </h1>
@@ -81,13 +132,19 @@ export default class MyForm extends React.Component {
         onChange={text => this.setState({deal_name: text.target.value})}
       />
       <label className="col-sm-0 control-label"> : שם המבצע <br></br><br></br></label>
-
+      {
+                        this.state.Categories?.length>0&&
+                        this.state.Categories?.map((item,key)=><CheckInput checked={item.checked} changeChecked={this.changedCheckedValues} id={item.ing.id} key={key} label={item.ing.name}/>)
+                    }
+      <br></br>
+      <br></br>
       <input
         type='text'
         onChange={text => this.setState({start_time: text.target.value})}
         placeholder="09:00 AM"
         pattern="(0[1-9])|(1[0-2]):([0-5][0-9])\s((a|p|A|P)(m|M))"
       />
+     
       <label className="col-sm-0 control-label"> : שעת תחילת מבצע <br></br> <br></br></label>
 
       <input
@@ -110,6 +167,7 @@ export default class MyForm extends React.Component {
         cols="40" rows="20" placeholder="Message"
         required minLength={5} maxLength={50}
       />
+      
       <label className="col-sm-0 control-label"> :  תיאור מבצע <br></br><br></br> </label>
       <div>
         <div>
@@ -128,6 +186,30 @@ export default class MyForm extends React.Component {
       </form>
     );
   }
+
+else
+{
+    return(
+    <h1>loading</h1>
+  );
+  }
+}
 }
 
+
+
+
+
+
+
 // ReactDOM.render(<MyForm />, document.getElementById('root'));
+const useStyles = makeStyles((theme) => ({
+  button: {
+    display: 'block',
+    marginTop: theme.spacing(2),
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+}));
