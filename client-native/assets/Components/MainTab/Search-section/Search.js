@@ -50,30 +50,6 @@ export default class Search extends React.Component {
     const { navigation, route } = this.props;
     this._unsubscribe = navigation.addListener('focus', () => {
       this.likecomponenetdidmount();
-      // this.LoadUserData();
-
-      // var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Category";
-      // return fetch(apiUrl)
-      // .then(response => response.json())
-      // .then(responseJson => {
-      //   if(responseJson.length > 0){
-      //     this.setState(
-      //             {
-      //               isLoading: false,
-      //               Data: responseJson,
-      //             },
-      //             function() {
-                    
-      //             }
-      //           );
-      //         }else {
-      //           alert("נראה שיש לנו שגיאה במערכת, מצטערים")
-      //         }
-        
-      //       })
-      //       .catch(error => {
-      //         console.error(error);
-      //       });
         });  
    }
 

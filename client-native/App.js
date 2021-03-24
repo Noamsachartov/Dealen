@@ -18,6 +18,10 @@ const Stack = createStackNavigator();
 
 export default function App() {
   return (
+    <>
+    <View>
+      <Text>sapir</Text>
+    </View>
     <NavigationContainer>
       <Stack.Navigator 
      >
@@ -32,6 +36,7 @@ export default function App() {
         <Stack.Screen name="HomeR" component={HomeR} options={{headerShown: false}} />
       </Stack.Navigator>
     </NavigationContainer>
+    </>
   );
 }
 
