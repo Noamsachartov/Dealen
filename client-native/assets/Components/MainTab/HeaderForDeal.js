@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View , Text, TouchableWithoutFeedback} from 'react-native'
-import { DealContext} from './Context/DealContext';
+import { DealContext} from '../../Context/DealContext'
 import ArrowIcon from 'react-native-vector-icons/MaterialIcons';
 import CancelIcon from 'react-native-vector-icons/MaterialIcons';
 
@@ -13,8 +13,31 @@ const [details, setdetails] = useState(false);
 const [title, setTitle] = useState('פרטי מבצע נבחר');
 const [arrow, setarrow] = useState('keyboard-arrow-down');
     CancelDiscount= () => {
-        showDeal(false, null, null)
+        var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/DealInCust/CancelDeal/" + coupon;
+        fetch(apiUrl, {
+          method: 'PUT',
+          body: JSON.stringify({
+          
+          }),
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        })
+          .then((response) => response.json())
+          .then((responseJson) => {
+            showDeal(false, null, null)
+          })
+          .catch((error) => {
+            alert(JSON.stringify(error));
+            console.error(error);
+          });
+
+
+        
     }
+
+
     OpenView= () => {
         console.log("123")
         if (viewHeight == 175){

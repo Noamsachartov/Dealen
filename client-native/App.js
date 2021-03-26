@@ -9,7 +9,7 @@ import FBChoosePreferences from './assets/Components/LogInSection/FBChoosePrefer
 import Bylaws from './assets/Components/LogInSection/Bylaws'
 import TabControler from './assets/Components/MainTab/TabControler';
 import HomeR from './assets/Components/MainTab/TabControler';
-import HeaderForDeal from './assets/HeaderForDeal';
+import HeaderForDeal from './assets/Components/MainTab/HeaderForDeal';
 import { NavigationContainer, ThemeProvider } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ThemeConsumer } from 'react-native-elements';

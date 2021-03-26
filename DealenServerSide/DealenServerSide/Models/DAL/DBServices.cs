@@ -1340,8 +1340,6 @@ public class DBServices
         {
            
             int numEffected = cmd.ExecuteNonQuery();
-            //command = prefixc + sb.ToString();
-            //int numEffected = Convert.ToInt32(cmd.ExecuteScalar());// execute the command
             return numEffected;
         }
         catch (Exception ex)
@@ -1370,7 +1368,7 @@ public class DBServices
 
 
 
-    public int LikeDeal(int coupon)
+    public int LikeDeal(int coupon, bool islike)
     {
 
         SqlConnection con;
@@ -1386,13 +1384,13 @@ public class DBServices
             throw (ex);
         }
 
-        String cStr = BuildCommlikedeal(coupon);      // helper method to build the insert string
+        String cStr = BuildCommlikedeal(coupon,islike);      // helper method to build the insert string
 
         cmd = CreateCommand(cStr, con);             // create the command
 
         try
         {
-            int numEffected = Convert.ToInt32(cmd.ExecuteScalar());// execute the command
+            int numEffected = cmd.ExecuteNonQuery();// execute the command
             return numEffected;
         }
         catch (Exception ex)
@@ -1412,13 +1410,10 @@ public class DBServices
 
     }
 
-    private String BuildCommlikedeal(int coupon)
+    private String BuildCommlikedeal(int coupon, bool islike)
     {
         String command;
-        command = "UPDATE dealIncust_2021 SET liked = 'True' WHERE coupon = " + coupon;
-        String get_id = "SELECT " + coupon + ";";
-        command += get_id;
-
+        command = "UPDATE dealIncust_2021 SET liked = '"+ islike+"' WHERE coupon = " + coupon;
         return command;
     }
 

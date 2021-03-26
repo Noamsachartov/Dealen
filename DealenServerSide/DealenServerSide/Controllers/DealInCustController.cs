@@ -97,6 +97,25 @@ namespace DealenServerSide.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("api/DealInCust/Unlike/{coupon}")]
+        public IHttpActionResult PutUnlike(int coupon)
+        {
+            DealInCust dealInCust = new DealInCust();
+
+            try
+            {
+                int count = dealInCust.UNLikeDeal(coupon);
+                return Created(new Uri(Request.RequestUri.AbsoluteUri + dealInCust.Coupon), count);
+
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
+
 
         // DELETE api/<controller>/5
         public void Delete(int id)
