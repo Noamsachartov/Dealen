@@ -115,6 +115,7 @@ namespace DealenServerSide.Controllers
             }
         }
 
+
         [HttpGet]
         [Route("api/Deal/Search/{Letters}")]
         public IHttpActionResult GetSearch(string Letters)

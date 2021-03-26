@@ -101,6 +101,7 @@ namespace DealenServerSide.Models
             List<Deal> dlist = dbs.getDealslastDeals(cust_id);
             return dlist;
         }
+        
         public List<Deal> ReadSearch(string Letters)
         {
             DBServices dbs = new DBServices();

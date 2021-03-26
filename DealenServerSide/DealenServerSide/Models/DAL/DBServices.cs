@@ -1315,6 +1315,60 @@ public class DBServices
         return command;
     }
 
+    //cancel Deala pproval
+    public int CancelDeal(int coupon)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String cStr = BuildCommcancelDeal(coupon);      // helper method to build the insert string
+
+        cmd = CreateCommand(cStr, con);             // create the command
+
+        try
+        {
+           
+            int numEffected = cmd.ExecuteNonQuery();
+            //command = prefixc + sb.ToString();
+            //int numEffected = Convert.ToInt32(cmd.ExecuteScalar());// execute the command
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    private String BuildCommcancelDeal(int coupon)
+    {
+        String command;
+        command = "UPDATE dealIncust_2021 SET canceldeal = 'True' WHERE coupon = '" + coupon.ToString() + "'";
+        return command;
+    }
+
+
 
     public int LikeDeal(int coupon)
     {

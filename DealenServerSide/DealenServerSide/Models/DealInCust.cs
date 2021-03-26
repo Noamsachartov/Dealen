@@ -46,6 +46,12 @@ namespace DealenServerSide.Models
             return dbs.UseCoupon(coupon);
         }
 
+        //User want to cancal approval
+        public int CancelDeal(int coupon)
+        {
+            DBServices dbs = new DBServices();
+            return dbs.CancelDeal(coupon);
+        }
         public int LikeDeal(int coupon)
         {
             DBServices dbs = new DBServices();
