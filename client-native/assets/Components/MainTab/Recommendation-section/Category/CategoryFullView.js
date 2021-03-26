@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text, View,FlatList,StyleSheet } from 'react-native';
 import DealItem from '../Deals/DealItem';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class CategoryFullView extends React.Component {
   state={
@@ -12,6 +12,8 @@ export default class CategoryFullView extends React.Component {
 
   componentDidMount = () => {
     const { navigation, route } = this.props;
+    //Get User data From Async Storage
+    this.LoadUserData();
     this.setState({
       categoryId: JSON.stringify(route.params.categoryId),
       categoryName: route.params.categoryName
@@ -41,6 +43,23 @@ export default class CategoryFullView extends React.Component {
         });
   }
 
+  
+  LoadUserData = async () => {
+    console.log("try load")
+    try{
+        let UserData = await AsyncStorage.getItem("UserData");
+        if (UserData !== null){
+            this.setState({UserData: JSON.parse(UserData)})
+        }else{
+          this.setState({UserData: []});
+        }
+      
+    } catch (error){
+        alert(error);
+    }
+  }
+
+
    
   render(){
     const { navigation, route } = this.props;
@@ -52,7 +71,7 @@ export default class CategoryFullView extends React.Component {
            <FlatList
               data={this.state.Data}
               renderItem={({ item }) => {
-                  return <DealItem item={item} navigation={this.props.navigation} />
+                  return <DealItem UserData={this.state.UserData} item={item} navigation={this.props.navigation} />
               }}
               keyExtractor={(item, index) => 'key' + index}
               scrollEventThrottle={16}

@@ -53,7 +53,7 @@ const [arrow, setarrow] = useState('keyboard-arrow-down');
                     <View style={{marginHorizontal: 10}}>
                         <Text style={{fontSize: 15, color:'whitesmoke'}}>{dealInfo[0].Description}</Text>
                     </View>
-                    <View style={{marginHorizontal: 10,marginTop: -10}}>
+                    <View style={{marginHorizontal: 10,marginTop: -4}}>
                         <Text style={{fontSize: 15, color:'whitesmoke'}}>הגעה ל{dealInfo[0].Business_Name} בכתובת: {dealInfo[0].Bus_rest.Baddress}</Text>
                     </View>
                     <View style={{marginHorizontal: 10}}>
