@@ -2,12 +2,15 @@ import * as React from 'react';
 import { StyleSheet, Text, View,TextInput,TouchableOpacity , Image,ImageBackground, Dimensions, TouchableWithoutFeedback, I18nManager} from 'react-native';
 import TimerIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DiscountIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { DealContext } from '../../../../Context/DealContext';
+
 const { width, height } = Dimensions.get('window')
 
 I18nManager.allowRTL(true)
 
 
 export default class FullDealView extends React.Component {
+  static contextType = DealContext;
 
     state={
       like: false,
@@ -27,9 +30,14 @@ export default class FullDealView extends React.Component {
     }
 
     DiscountImplementaion = () => {
+      if(this.context.isShow === true) return;
+
+      
+      // this.context.showDeal(true, this.state.Data, "123")
+
       console.log("Discount Implementaion")
       const { navigation, route } = this.props;
-      navigation.navigate('DealApproval',{dealId: route.params.dealId, CustomerId: route.params.CustomerId})
+      navigation.navigate('DealApproval',{dealId: route.params.dealId, CustomerId: route.params.CustomerId, Data: this.state.Data})
       
     }
 
@@ -116,11 +124,15 @@ export default class FullDealView extends React.Component {
             </View>
           </View>
           <View style={styles.viewimplemntation}>
-              <TouchableWithoutFeedback onPress={this.DiscountImplementaion} >
+            {!this.context.isShow && 
+            <TouchableWithoutFeedback onPress={this.DiscountImplementaion} >
                 <View style={styles.Secondery_viewimplemntation}>
                   <Text style={styles.approveText}>אישור</Text>
                 </View>
               </TouchableWithoutFeedback>
+              }
+              
+              {this.context.isShow && <Text>קיים מבצע פעיל אחר</Text>}
           </View>
         </View>
       )

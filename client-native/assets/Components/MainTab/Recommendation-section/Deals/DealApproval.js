@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { StyleSheet, Text, View,TextInput,TouchableOpacity , Image,ImageBackground, Dimensions, TouchableWithoutFeedback} from 'react-native';
 import Loading from '../LoadingComp.js';
+import { DealContext } from '../../../../Context/DealContext';
 const { width, height } = Dimensions.get('window')
 
 
 export default class DealApproval extends React.Component {
-
+  static contextType = DealContext;
     state={
       like: false,
       isLoading: true,
@@ -22,7 +23,7 @@ export default class DealApproval extends React.Component {
     componentDidMount = () => {
     this._isMounted = true;
     const { navigation, route } = this.props;
-    this.setState({dealId: JSON.stringify(route.params.dealId),CustomerId: JSON.stringify(route.params.CustomerId)})
+    this.setState({dealId: JSON.stringify(route.params.dealId),CustomerId: JSON.stringify(route.params.CustomerId), Data: route.params.Data})
     setInterval(() => {
       this.setState({
         isLoading: false
@@ -45,6 +46,7 @@ export default class DealApproval extends React.Component {
       .then((responseJson) => {
         console.log(responseJson);
         this.setState({coupon: JSON.stringify(responseJson)})
+        this.context.showDeal(true, this.state.Data,JSON.stringify(responseJson))
       })
       .catch((error) => {
         alert(JSON.stringify(error));

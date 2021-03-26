@@ -9,34 +9,39 @@ import FBChoosePreferences from './assets/Components/LogInSection/FBChoosePrefer
 import Bylaws from './assets/Components/LogInSection/Bylaws'
 import TabControler from './assets/Components/MainTab/TabControler';
 import HomeR from './assets/Components/MainTab/TabControler';
-import { NavigationContainer } from '@react-navigation/native';
+import HeaderForDeal from './assets/HeaderForDeal';
+import { NavigationContainer, ThemeProvider } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { ThemeConsumer } from 'react-native-elements';
+import {DealContextProvider} from './assets/Context/DealContext';
 const { width, height } = Dimensions.get('window');
 
 const Stack = createStackNavigator();
 
 
+
 export default function App() {
+
   return (
-    <>
-    <View>
-      <Text>sapir</Text>
-    </View>
-    <NavigationContainer>
-      <Stack.Navigator 
-     >
-        <Stack.Screen name="Login" component={LogIn} options={{headerShown: false}} />
-        <Stack.Screen name="Signup" component={Signup} options={{headerShown: false}} />
-        <Stack.Screen name="FaceBookSignup" component={FaceBookSignup} />
-        <Stack.Screen name="ChoosePreferences" component={ChoosePreferences} options={({ navigation, route }) => ({title: '',headerTintColor:'whitesmoke',headerStyle: {height: height/10, backgroundColor:'#003f5c'},
-        headerRight: () => (<Button title="דלג" color="#003f5c"  onPress={() => navigation.navigate('Login')} />)   })} />
-        <Stack.Screen name="FBChoosePreferences" component={FBChoosePreferences} options={({ navigation, route }) => ({title: '',headerTintColor:'whitesmoke',headerStyle: {height: height/10, backgroundColor:'#003f5c'},
-        headerRight: () => (<Button title="דלג" color="#003f5c"  onPress={() => navigation.navigate('HomeR')} />)   })} />
-        <Stack.Screen name="Bylaws" component={Bylaws}  initialParams={{ aprrove: false }}  options={{title: '',headerTintColor:'whitesmoke',headerStyle: {height: height/10.3, backgroundColor:'#003f5c'}}}/>
-        <Stack.Screen name="HomeR" component={HomeR} options={{headerShown: false}} />
-      </Stack.Navigator>
-    </NavigationContainer>
-    </>
+    <DealContextProvider>
+      
+        <HeaderForDeal />
+        <NavigationContainer>
+          <Stack.Navigator 
+        >
+            <Stack.Screen name="Login" component={LogIn} options={{headerShown: false}} />
+            <Stack.Screen name="Signup" component={Signup} options={{headerShown: false}} />
+            <Stack.Screen name="FaceBookSignup" component={FaceBookSignup} />
+            <Stack.Screen name="ChoosePreferences" component={ChoosePreferences} options={({ navigation, route }) => ({title: '',headerTintColor:'whitesmoke',headerStyle: {height: height/10, backgroundColor:'#003f5c'},
+            headerRight: () => (<Button title="דלג" color="#003f5c"  onPress={() => navigation.navigate('Login')} />)   })} />
+            <Stack.Screen name="FBChoosePreferences" component={FBChoosePreferences} options={({ navigation, route }) => ({title: '',headerTintColor:'whitesmoke',headerStyle: {height: height/10, backgroundColor:'#003f5c'},
+            headerRight: () => (<Button title="דלג" color="#003f5c"  onPress={() => navigation.navigate('HomeR')} />)   })} />
+            <Stack.Screen name="Bylaws" component={Bylaws}  initialParams={{ aprrove: false }}  options={{title: '',headerTintColor:'whitesmoke',headerStyle: {height: height/10.3, backgroundColor:'#003f5c'}}}/>
+            <Stack.Screen name="HomeR" component={HomeR} options={{headerShown: false}} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </DealContextProvider>
+
   );
 }
 
