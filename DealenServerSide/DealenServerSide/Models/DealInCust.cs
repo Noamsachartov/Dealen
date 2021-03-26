@@ -55,7 +55,12 @@ namespace DealenServerSide.Models
         public int LikeDeal(int coupon)
         {
             DBServices dbs = new DBServices();
-            return dbs.LikeDeal(coupon);
+            return dbs.LikeDeal(coupon,true);
+        }
+        public int UNLikeDeal(int coupon)
+        {
+            DBServices dbs = new DBServices();
+            return dbs.LikeDeal(coupon,false);
         }
 
 
