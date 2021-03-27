@@ -14,7 +14,8 @@ export default class FullDealView extends React.Component {
 
     state={
       like: false,
-      isLoading: true
+      isLoading: true,
+      islikealready: "2"
 
     }
 
@@ -70,6 +71,7 @@ export default class FullDealView extends React.Component {
 
     componentDidMount = () => {
       this._isMounted = true;
+      this.islikealready();
       const { navigation, route } = this.props;
       this.setState({categoryId: JSON.stringify(route.params.categoryId), dealId: JSON.stringify(route.params.dealId) ,CustomerId: JSON.stringify(route.params.CustomerId)})
       //Get Deal Data By Deal Id
@@ -90,6 +92,48 @@ export default class FullDealView extends React.Component {
           );
         }else {
           alert("Sorry there have been an error")
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    }
+
+
+    islikealready=()=>{
+      const { navigation, route } = this.props;
+      var DealId = JSON.stringify(route.params.dealId);
+      var CustomerId = JSON.stringify(route.params.CustomerId);
+console.log(DealId)
+      var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/CheckIsLike/" + DealId + "/" + CustomerId;
+      return fetch(apiUrl)
+      .then(response => response.json())
+      .then(responseJson => {
+        if(responseJson.length){
+          if(!responseJson[0].IsLike){
+            console.log(responseJson[0].IsLike,"falseer")
+            this.setState(
+              {
+                islikealready: "1",
+                
+              },
+              function() {
+                
+              }
+            );
+          }else {
+            console.log("true")
+            this.setState({
+              like: !this.state.like,
+              islikealready: "2",
+            })
+            
+          }
+          
+        }else{
+          this.setState({
+            islikealready: "2",
+          })
         }
       })
       .catch(error => {
