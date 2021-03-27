@@ -1367,8 +1367,8 @@ public class DBServices
     }
 
 
-
-    public int LikeDeal(int coupon, bool islike)
+    //Like Unlike Deal
+    public int LikeDeal(int coupon, bool islike, bool isbefore, int cust_id, int deal_id)
     {
 
         SqlConnection con;
@@ -1384,7 +1384,7 @@ public class DBServices
             throw (ex);
         }
 
-        String cStr = BuildCommlikedeal(coupon,islike);      // helper method to build the insert string
+        String cStr = BuildCommlikedeal(coupon,islike, isbefore, cust_id, deal_id);      // helper method to build the insert string
 
         cmd = CreateCommand(cStr, con);             // create the command
 
@@ -1410,12 +1410,26 @@ public class DBServices
 
     }
 
-    private String BuildCommlikedeal(int coupon, bool islike)
+    private String BuildCommlikedeal(int coupon, bool islike, bool isbefore, int cust_id, int deal_id)
     {
         String command;
-        command = "UPDATE dealIncust_2021 SET liked = '"+ islike+"' WHERE coupon = " + coupon;
+        StringBuilder sb = new StringBuilder();
+        if (isbefore && islike)
+        {
+            sb.AppendFormat("Values({0}, {1}, '{2}');", cust_id, deal_id, isbefore);
+            String prefixc = "INSERT INTO [cust_like_2021] " + "([cust_id],[dealInbus_id],[isLike])";
+            command = prefixc + sb.ToString();
+        }else if(isbefore && islike == false)
+        {
+            command = "UPDATE cust_like_2021 SET isLike = '" + islike + "' WHERE cust_id = " + cust_id + "AND dealInbus_id = " + deal_id;
+        }
+        else
+        {
+            command = "UPDATE dealIncust_2021 SET liked = '" + islike + "' WHERE coupon = " + coupon;
+        }
         return command;
     }
+
 
 
 

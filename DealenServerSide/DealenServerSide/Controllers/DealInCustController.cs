@@ -79,14 +79,14 @@ namespace DealenServerSide.Controllers
 
         // PUT api/<controller>/5
         [HttpPut]
-        [Route("api/DealInCust/like/{coupon}")]
-        public IHttpActionResult Putlike(int coupon)
+        [Route("api/DealInCust/like/{coupon}/{isbefore}/{cust_id}/{deal_id}")]
+        public IHttpActionResult Putlike(int coupon, bool isbefore, int cust_id, int deal_id)
         {
             DealInCust dealInCust = new DealInCust();
 
             try
             {
-                int count = dealInCust.LikeDeal(coupon);
+                int count = dealInCust.LikeDeal(coupon, isbefore, cust_id, deal_id);
                 return Created(new Uri(Request.RequestUri.AbsoluteUri + dealInCust.Coupon), count);
 
             }
@@ -98,14 +98,14 @@ namespace DealenServerSide.Controllers
         }
 
         [HttpPut]
-        [Route("api/DealInCust/Unlike/{coupon}")]
-        public IHttpActionResult PutUnlike(int coupon)
+        [Route("api/DealInCust/Unlike/{coupon}/{isbefore}/{cust_id}/{deal_id}")]
+        public IHttpActionResult PutUnlike(int coupon, bool isbefore, int cust_id, int deal_id)
         {
             DealInCust dealInCust = new DealInCust();
 
             try
             {
-                int count = dealInCust.UNLikeDeal(coupon);
+                int count = dealInCust.UNLikeDeal(coupon, isbefore, cust_id, deal_id);
                 return Created(new Uri(Request.RequestUri.AbsoluteUri + dealInCust.Coupon), count);
 
             }
