@@ -52,15 +52,15 @@ namespace DealenServerSide.Models
             DBServices dbs = new DBServices();
             return dbs.CancelDeal(coupon);
         }
-        public int LikeDeal(int coupon)
+        public int LikeDeal(int coupon, bool isbefore, int cust_id, int deal_id)
         {
             DBServices dbs = new DBServices();
-            return dbs.LikeDeal(coupon,true);
+            return dbs.LikeDeal(coupon,true,isbefore, cust_id, deal_id);
         }
-        public int UNLikeDeal(int coupon)
+        public int UNLikeDeal(int coupon, bool isbefore, int cust_id, int deal_id)
         {
             DBServices dbs = new DBServices();
-            return dbs.LikeDeal(coupon,false);
+            return dbs.LikeDeal(coupon,false, isbefore, cust_id, deal_id);
         }
 
 
