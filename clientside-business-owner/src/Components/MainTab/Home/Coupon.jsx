@@ -24,7 +24,7 @@ class Coupon extends React.Component {
   mySubmitHandler = (event) => {
     event.preventDefault(); 
 
-    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/DealInCust/?coupon=" + this.state.coupon_code;
+    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/DealInCust/used/" + this.state.coupon_code;
     fetch(apiUrl, {
       method: 'PUT',
       headers: {
