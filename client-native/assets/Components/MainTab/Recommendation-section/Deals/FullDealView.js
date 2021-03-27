@@ -62,7 +62,7 @@ export default class FullDealView extends React.Component {
      onShare = async () => {
       try {
         const result = await Share.share({
-          message: 'היי! ראיתי מבצע מפחיד באפליקציית DEALEN ' +  ' המבצע הוא '  +this.state.Data[0].Name+ ' זה נמצא ב' +this.state.Data[0].Business_Name + " בכתובת: " + this.state.Data[0].Bus_rest.Baddress + ' כל הפרטים באפליקצייה!'
+          message: 'היי! ראיתי מבצע מעולה באפליקציית DEALEN ' +  ' המבצע הוא '  +this.state.Data[0].Name+ ' זה נמצא ב' +this.state.Data[0].Business_Name + " בכתובת: " + this.state.Data[0].Bus_rest.Baddress + ' כל הפרטים באפליקצייה!'
         });
         if (result.action === Share.sharedAction) {
           if (result.activityType) {
@@ -197,7 +197,7 @@ console.log(DealId)
                         </View>
                         <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
                           <TouchableWithoutFeedback onPress={this.handleWhatsapp}>
-                            <TimerIcon style={styles.WaIcon} name="whatsapp" size={40} />
+                            <TimerIcon style={styles.WaIcon} name="share-variant" size={40} />
                           </TouchableWithoutFeedback>
                         </View>
                     </View>
