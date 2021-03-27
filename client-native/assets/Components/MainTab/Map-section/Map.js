@@ -14,66 +14,7 @@ import ActiveDealMarker from './ActiveDealMarker';
 
 export default class Map extends React.Component {
   state={
-    lmarker:[ {
-      "Bus_rest": null,
-      "Business_Name": "דיזי",
-      "Business_id": 1,
-      "Cat_id": 1,
-      "Category": "אסייתי",
-      "Coupon": 0,
-      "Date": "0001-01-01T00:00:00",
-      "Description": "פוקה פוקה פוקה פוקה פוקה פוקה בחה טעים טעים טעים",
-      "Discount": 20,
-      "Endtime": "23:59:00",
-      "Id": 1,
-      "Image": "https://i.ibb.co/JtS24qP/food-inside-bowl-1854037.jpg",
-      "Name": "קערת פוקה",
-      "Startime": "00:00:00",
-      "latitude" : 32.0649966,
-      "longitude": 34.7793597,
-      "title":'my place:)',
-    },
-     {
-      "Bus_rest": null,
-      "Business_Name": "דיזי",
-      "Business_id": 1,
-      "Cat_id": 1,
-      "Category": "אסייתי",
-      "Coupon": 0,
-      "Date": "0001-01-01T00:00:00",
-      "Description": "האוכל הטבעוני שלנו מפוצץ חלבון וטעים, בואו במקום האימון עכשיו ב 30 % הנחה",
-      "Discount": 40,
-      "Endtime": "12:00:00",
-      "Id": 2,
-      "Image": "https://i.ibb.co/JxykVBt/flat-lay-photography-of-vegetable-salad-on-plate-1640777.jpg",
-      "Name": "אוכל טבעוני",
-      "Startime": "12:00:00",
-      "latitude" : 32.0679966,
-      "longitude": 34.793597,
-      "title":'my place2:)',
-      "description":'here i am'
-    },
-    {
-      "Bus_rest": null,
-      "Business_Name": "דיזי",
-      "Business_id": 1,
-      "Cat_id": 2,
-      "Category": "בירה",
-      "Coupon": 0,
-      "Date": "0001-01-01T00:00:00",
-      "Description": "טקסט טקסט טקסט טקסט טקס טקסט",
-      "Discount": 60,
-      "Endtime": "12:00:00",
-      "Id": 3,
-      "Image": "https://i.ibb.co/JxykVBt/flat-lay-photography-of-vegetable-salad-on-plate-1640777.jpg",
-      "Name": "בירה מהחבית",
-      "Startime": "12:00:00",
-      "latitude" : 32.0659966,
-      "longitude": 34.7794597,
-      "title":'my place3:)',
-      "description":'here i am'
-    }
-    ],
+    lmarker:[],
   
       
       location: null,
@@ -88,7 +29,11 @@ export default class Map extends React.Component {
       this.Location();
       this.LoadUserData();
       //this.ShowDeal();
+      
+     
     }
+
+    
     
     Location = async () =>{
       let { status } = await Location.requestPermissionsAsync();
@@ -99,14 +44,15 @@ export default class Map extends React.Component {
         this.setState({ location});
         // let address='דרך שלמה 62, תל אביב יפו';
         // address= unicode(address.decode('utf8')).encode('utf8')
-        let u= await Location.geocodeAsync('נטף')
-        if(u){
-        console.log(u[0].longitude,'uri')
-        // alert(address)
-        }
-        else{
-          alert("no ,kc")
-        }
+        // let u= await Location.geocodeAsync('תל אביב, דיזינגוף 23')
+        // if(u){
+        // console.log(u,'uri')
+        // alert(u[0].longitude)
+        // }
+        // else{
+          
+        //   alert("no ,kc")
+        // }
 
     }
     LoadUserData = async () => {
