@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { StyleSheet, Text, View,TextInput,TouchableOpacity , Image,ImageBackground, Dimensions, TouchableWithoutFeedback, I18nManager} from 'react-native';
+import { StyleSheet, Text, View,TextInput,TouchableOpacity , Image,ImageBackground, Dimensions, TouchableWithoutFeedback, Share} from 'react-native';
 import TimerIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DiscountIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { DealContext } from '../../../../Context/DealContext';
 
 const { width, height } = Dimensions.get('window')
 
-I18nManager.allowRTL(true)
 
 
 export default class FullDealView extends React.Component {
@@ -23,13 +22,15 @@ export default class FullDealView extends React.Component {
     handleLike = ()=> {
       console.log("pressed")
       const { navigation, route } = this.props;
-      if(!this.state.like){
+      if(!this.state.like && this.state.islikealready == 2){
+        var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/DealInCust/like/2/True/" + JSON.stringify(route.params.CustomerId)+ "/" +JSON.stringify(route.params.dealId);
+      }else if(!this.state.like && this.state.islikealready == 1){
         var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/DealInCust/like/1/True/" + JSON.stringify(route.params.CustomerId)+ "/" +JSON.stringify(route.params.dealId);
-      }else{
+      }
+      else{
         var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/DealInCust/Unlike/1/True/" + JSON.stringify(route.params.CustomerId)+ "/" +JSON.stringify(route.params.dealId);
       }
 
-      console.log(apiUrl,"090909")
       fetch(apiUrl, {
         method: 'PUT',
         body: JSON.stringify({
@@ -54,14 +55,31 @@ export default class FullDealView extends React.Component {
 
     
     handleWhatsapp = ()=> {
-      console.log("wa pressed")
+      console.log("Share pressed")
+      this.onShare();
     }
+
+     onShare = async () => {
+      try {
+        const result = await Share.share({
+          message: 'היי! ראיתי מבצע מפחיד באפליקציית DEALEN ' +  ' המבצע הוא '  +this.state.Data[0].Name+ ' זה נמצא ב' +this.state.Data[0].Business_Name + " בכתובת: " + this.state.Data[0].Bus_rest.Baddress + ' כל הפרטים באפליקצייה!'
+        });
+        if (result.action === Share.sharedAction) {
+          if (result.activityType) {
+            // shared with activity type of result.activityType
+          } else {
+            // shared
+          }
+        } else if (result.action === Share.dismissedAction) {
+          // dismissed
+        }
+      } catch (error) {
+        alert(error.message);
+      }
+    };
 
     DiscountImplementaion = () => {
       if(this.context.isShow === true) return;
-
-      
-      // this.context.showDeal(true, this.state.Data, "123")
 
       console.log("Discount Implementaion")
       const { navigation, route } = this.props;
@@ -125,7 +143,7 @@ console.log(DealId)
             console.log("true")
             this.setState({
               like: !this.state.like,
-              islikealready: "2",
+              islikealready: "1",
             })
             
           }
