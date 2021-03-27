@@ -1335,7 +1335,19 @@ public class DBServices
         try
         {
             int numEffected = Convert.ToInt32(cmd.ExecuteScalar());// execute the command
-            return numEffected;
+            try
+            {
+
+                String cStr1 = BuildInsertCommandData(coupon);      // helper method to build the insert string
+                cmd = CreateCommand(cStr1, con);
+                int numEffected2 = Convert.ToInt32(cmd.ExecuteScalar());
+                return numEffected;
+
+            }
+            catch (Exception )
+            {
+                throw;
+            }
         }
         catch (Exception ex)
         {
@@ -1364,8 +1376,30 @@ public class DBServices
         return command;
     }
 
+<<<<<<< Updated upstream
     //cancel Deala pproval
     public int CancelDeal(int coupon)
+=======
+    //הכנסת נתוני המבצע לדאטה לאחר מימוש
+    private String BuildInsertCommandData(int coupon)
+    {
+        String command;
+        command = "INSERT INTO DataOfCust_2021 "+
+            "SELECT d.id, dic.dealincust_id, dib.business_id, c.id, dib.discount,DATEPART(dw,GETDATE()), CONVERT (TIME, GETDATE()) " +
+            "FROM dealIncust_2021 AS dic INNER JOIN dealinbus_2021 AS dib ON dic.dealinbus_id=dib.id " +
+            "INNER JOIN Businesses_2021 AS b ON b.bid=dib.business_id " +
+            "INNER JOIN Deal_2021 AS d ON dib.deal_id=d.id " +
+            "INNER JOIN Category_2021 AS c ON d.cat_id=c.id " +
+            "WHERE dic.coupon=" + coupon + " AND dic.Used='True'";
+        String get_id = "SELECT SCOPE_IDENTITY();";
+        command += get_id;
+
+        return command;
+    }
+
+
+    public int LikeDeal(int coupon)
+>>>>>>> Stashed changes
     {
 
         SqlConnection con;
