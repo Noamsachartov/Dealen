@@ -21,7 +21,34 @@ export default class FullDealView extends React.Component {
 
     handleLike = ()=> {
       console.log("pressed")
-      this.setState({like: !this.state.like})
+      const { navigation, route } = this.props;
+      if(!this.state.like){
+        var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/DealInCust/like/1/True/" + JSON.stringify(route.params.CustomerId)+ "/" +JSON.stringify(route.params.dealId);
+      }else{
+        var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/DealInCust/Unlike/1/True/" + JSON.stringify(route.params.CustomerId)+ "/" +JSON.stringify(route.params.dealId);
+      }
+
+      console.log(apiUrl,"090909")
+      fetch(apiUrl, {
+        method: 'PUT',
+        body: JSON.stringify({
+        
+        }),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          this.setState({like: !this.state.like})
+        })
+        .catch((error) => {
+          alert(JSON.stringify(error));
+          console.error(error);
+        });
+
+      
     }
 
     
@@ -62,7 +89,7 @@ export default class FullDealView extends React.Component {
             }
           );
         }else {
-          alert("Sorry We there have been an error")
+          alert("Sorry there have been an error")
         }
       })
       .catch(error => {

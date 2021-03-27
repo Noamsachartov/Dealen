@@ -893,6 +893,55 @@ public class DBServices
         }
 
     }
+
+    public List<Deal> CheckIsLike(int deal_id, int cust_id)
+    {
+        List<Deal> dlist = new List<Deal>();
+        SqlConnection con = null;
+
+        string selectSTR = null;
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("select islike " +
+                            "from cust_like_2021 " +
+                            "where cust_id = '"+ cust_id + "' and dealInbus_id = '"+ deal_id + "' ");
+            selectSTR = sb.ToString();
+
+
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                Deal d = new Deal();
+               
+                d.IsLike = (bool)dr["islike"];
+                dlist.Add(d);
+
+            }
+
+            return dlist;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+
+    }
     public List<Deal> getDealsBySearch(string Letter)
     {
         List<Deal> dlist = new List<Deal>();
@@ -1414,12 +1463,17 @@ public class DBServices
     {
         String command;
         StringBuilder sb = new StringBuilder();
-        if (isbefore && islike)
+        if (isbefore && islike && coupon != 1)
         {
             sb.AppendFormat("Values({0}, {1}, '{2}');", cust_id, deal_id, isbefore);
             String prefixc = "INSERT INTO [cust_like_2021] " + "([cust_id],[dealInbus_id],[isLike])";
             command = prefixc + sb.ToString();
-        }else if(isbefore && islike == false)
+        }
+        else if (isbefore && islike && coupon == 1)
+        {
+            command = "UPDATE cust_like_2021 SET isLike = '" + islike + "' WHERE cust_id = " + cust_id + "AND dealInbus_id = " + deal_id;
+        }
+        else if(isbefore && islike == false)
         {
             command = "UPDATE cust_like_2021 SET isLike = '" + islike + "' WHERE cust_id = " + cust_id + "AND dealInbus_id = " + deal_id;
         }

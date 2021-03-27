@@ -23,6 +23,7 @@ namespace DealenServerSide.Models
         DateTime date;
         int coupon;
         int[] tags;
+        bool isLike;
        
 
 
@@ -42,10 +43,11 @@ namespace DealenServerSide.Models
         public Businesses Bus_rest { get => bus_rest; set => bus_rest = value; }
         public int Coupon { get => coupon; set => coupon = value; }
         public int[] Tags { get => tags; set => tags = value; }
+        public bool IsLike { get => isLike; set => isLike = value; }
 
         public Deal() { }
 
-        public Deal(int id, string name, string description, string business_Name, string category, TimeSpan startime, TimeSpan endtime, string image, int cat_id, int business_id, int discount, DateTime date, int coupon, int[] tags)
+        public Deal(int id, string name, string description, string business_Name, string category, TimeSpan startime, TimeSpan endtime, string image, int cat_id, int business_id, int discount, DateTime date, int coupon, int[] tags, bool isLike)
         {
             Id = id;
             Name = name;
@@ -60,6 +62,7 @@ namespace DealenServerSide.Models
             Discount = discount;
             Coupon = coupon;
             Tags = tags;
+            IsLike = isLike;
 
         }
 
@@ -101,7 +104,14 @@ namespace DealenServerSide.Models
             List<Deal> dlist = dbs.getDealslastDeals(cust_id);
             return dlist;
         }
+        public List<Deal> CheckIsLike(int deal_id,int cust_id)
+        {
+            DBServices dbs = new DBServices();
+            List<Deal> dlist = dbs.CheckIsLike(deal_id,cust_id);
+            return dlist;
+        }
         
+
         public List<Deal> ReadSearch(string Letters)
         {
             DBServices dbs = new DBServices();

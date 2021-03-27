@@ -63,6 +63,23 @@ namespace DealenServerSide.Controllers
         }
 
         [HttpGet]
+        [Route("api/Deal/CheckIsLike/{id}/{cust_id}")]
+        public IHttpActionResult CheckIsLike(int id, int cust_id)
+        {
+            try
+            {
+                Deal deal = new Deal();
+                List<Deal> deals = deal.CheckIsLike(id, cust_id);
+                return Ok(deals);
+
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
+
+        [HttpGet]
         [Route("api/Deal/dealbyRest/{rest_id}")]
         public IHttpActionResult GetByRest(int rest_id)
         {
