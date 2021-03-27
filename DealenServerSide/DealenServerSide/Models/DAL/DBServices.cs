@@ -1344,7 +1344,7 @@ public class DBServices
                 return numEffected;
 
             }
-            catch (Exception )
+            catch (Exception)
             {
                 throw;
             }
@@ -1371,20 +1371,16 @@ public class DBServices
         String command;
         command = "UPDATE dealIncust_2021 SET used = 'True',timeusecoupon = GETDATE() WHERE coupon = " + coupon;
         String get_id = "SELECT " + coupon + ";";
-        command +=  get_id;
+        command += get_id;
 
         return command;
     }
 
-<<<<<<< Updated upstream
-    //cancel Deala pproval
-    public int CancelDeal(int coupon)
-=======
-    //הכנסת נתוני המבצע לדאטה לאחר מימוש
+    //Insert data after user coupon
     private String BuildInsertCommandData(int coupon)
     {
         String command;
-        command = "INSERT INTO DataOfCust_2021 "+
+        command = "INSERT INTO DataOfCust_2021 " +
             "SELECT d.id, dic.dealincust_id, dib.business_id, c.id, dib.discount,DATEPART(dw,GETDATE()), CONVERT (TIME, GETDATE()) " +
             "FROM dealIncust_2021 AS dic INNER JOIN dealinbus_2021 AS dib ON dic.dealinbus_id=dib.id " +
             "INNER JOIN Businesses_2021 AS b ON b.bid=dib.business_id " +
@@ -1398,8 +1394,8 @@ public class DBServices
     }
 
 
-    public int LikeDeal(int coupon)
->>>>>>> Stashed changes
+    //cancel Deala pproval
+    public int CancelDeal(int coupon)
     {
 
         SqlConnection con;
@@ -1421,7 +1417,7 @@ public class DBServices
 
         try
         {
-           
+
             int numEffected = cmd.ExecuteNonQuery();
             return numEffected;
         }
@@ -1467,7 +1463,7 @@ public class DBServices
             throw (ex);
         }
 
-        String cStr = BuildCommlikedeal(coupon,islike, isbefore, cust_id, deal_id);      // helper method to build the insert string
+        String cStr = BuildCommlikedeal(coupon, islike, isbefore, cust_id, deal_id);      // helper method to build the insert string
 
         cmd = CreateCommand(cStr, con);             // create the command
 
@@ -1507,7 +1503,7 @@ public class DBServices
         {
             command = "UPDATE cust_like_2021 SET isLike = '" + islike + "' WHERE cust_id = " + cust_id + "AND dealInbus_id = " + deal_id;
         }
-        else if(isbefore && islike == false)
+        else if (isbefore && islike == false)
         {
             command = "UPDATE cust_like_2021 SET isLike = '" + islike + "' WHERE cust_id = " + cust_id + "AND dealInbus_id = " + deal_id;
         }
