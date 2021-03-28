@@ -7,7 +7,7 @@ const { width, height } = Dimensions.get('window')
 I18nManager.allowRTL(true)
 
 
-export default class FullDealView extends React.Component {
+export default class FullDealViewMap extends React.Component {
 
     state={
       like: false,

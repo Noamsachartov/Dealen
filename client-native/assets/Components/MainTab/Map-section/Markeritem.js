@@ -39,7 +39,7 @@ export default class Markeritem extends React.Component {
 
   render(props){
    
-        console.log(this.props.Markeritem,'marker')
+        //console.log(this.props.Markeritem,'marker')
         var martkerlist= this.props.Markeritem.map((item, index) => {
           return(
             <Marker1 Markeritem={item} key={index} PressMarker={this.props.PressMarker}/> 

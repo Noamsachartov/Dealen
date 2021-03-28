@@ -22,12 +22,12 @@ export default class Marker1 extends React.Component {
 
   Location = async () =>{
     this.setState({isLoading: false})
-    console.log(this.props.Markeritem.Baddress,"from marker1")
+    //console.log(this.props.Markeritem.Baddress,"from marker1")
     try{
       let u= await Location.geocodeAsync(this.props.Markeritem.Baddress)
       this.setState({latitude: u[0].latitude });
       this.setState({longitude: u[0].longitude });
-      console.log(u[0].latitude,u[0].longitude,"from marker111")
+      //console.log(u[0].latitude,u[0].longitude,"from marker111")
     } catch (e){
       alert(e)
     } finally {
@@ -46,12 +46,12 @@ export default class Marker1 extends React.Component {
 
     if(this.state.isLoading){
 
-      console.log(this.props.Markeritem.Baddress,this.state.longitude, "from render")
+      //console.log(this.props.Markeritem.Baddress,this.state.longitude, "from render")
       return (
               <Marker
               coordinate={{
-                  latitude: 35,
-                  longitude:35,
+                  latitude: this.state.latitude,
+                  longitude: this.state.longitude,
                 
                 }}
                 title= {this.props.Markeritem.Baddress}

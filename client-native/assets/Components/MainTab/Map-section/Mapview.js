@@ -103,7 +103,6 @@ export default class Mapview extends React.Component {
         });
         }
 
-
   render(props){
 
 if(this.state.lmarker){

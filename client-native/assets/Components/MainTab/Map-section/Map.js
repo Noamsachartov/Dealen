@@ -21,7 +21,7 @@ export default class Map extends React.Component {
       UserData: null,
       lactivedeals: false,
 
-      Ismarker: true,
+      Ismarker: false,
     }
   
 
@@ -59,8 +59,8 @@ export default class Map extends React.Component {
       }
     }
 
-    ShowDeal= async ()=>{
-      // console.log(marker);
+    ShowDeal= async (marker)=>{
+      console.log(marker);
       this.setState({Ismarker: true })
 
 
@@ -95,12 +95,13 @@ export default class Map extends React.Component {
     }
 
     
-
+    onMapLayout = () => {
+      this.setState({ isMapReady: true });
+    };
 
     render(props){
       var  ShowView= <View style={{flex:1, flexDirection: 'row', justifyContent: 'flex-end'}} >
-      <ActiveDealMarker data={this.state.lactivedeals} UserData={this.state.UserData} navigation={this.props.navigation}
- />
+      <ActiveDealMarker data={this.state.lactivedeals} UserData={this.state.UserData} navigation={this.props.navigation}/>
       </View>
       if(this.state.location){
         console.log("inside map")
@@ -124,7 +125,7 @@ export default class Map extends React.Component {
             <View style={{flex:1, flexDirection: 'row', justifyContent: 'flex-end'}} >     
               <Mapview item={this.state.location} PressMarker={this.ShowDeal} UserData={this.state.UserData}/> 
             </View>
-            {this.state.lmarker.length ? ShowView : <View></View>} 
+            {this.state.lactivedeals.length ? ShowView : <View></View>} 
           </View>
             
         );
