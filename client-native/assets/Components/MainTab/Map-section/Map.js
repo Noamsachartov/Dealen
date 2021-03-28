@@ -14,13 +14,10 @@ import ActiveDealMarker from './ActiveDealMarker';
 
 export default class Map extends React.Component {
   state={
-    lmarker:[],
-  
-      
+    lmarker:[],    
       location: null,
       UserData: null,
       Ismarker: false,
-
     }
   
 
@@ -28,7 +25,7 @@ export default class Map extends React.Component {
       //Get User data From Async Storage
       this.Location();
       this.LoadUserData();
-      //this.ShowDeal();
+      // this.ShowDeal();
       
      
     }
@@ -42,19 +39,8 @@ export default class Map extends React.Component {
       }
         let location = await Location.getCurrentPositionAsync({});
         this.setState({ location});
-        // let address='דרך שלמה 62, תל אביב יפו';
-        // address= unicode(address.decode('utf8')).encode('utf8')
-        // let u= await Location.geocodeAsync('תל אביב, דיזינגוף 23')
-        // if(u){
-        // console.log(u,'uri')
-        // alert(u[0].longitude)
-        // }
-        // else{
-          
-        //   alert("no ,kc")
-        // }
-
     }
+
     LoadUserData = async () => {
       console.log("try load")
       try{
@@ -83,7 +69,8 @@ export default class Map extends React.Component {
                 lmarker: responseJson,
               },
               function() {
-                
+
+              
               }
             );
           }else {
@@ -94,12 +81,7 @@ export default class Map extends React.Component {
         .catch(error => {
           console.error(error);
         });
-        
-      
-      console.log(marker.Business_id,"pin");
-      console.log("bla");
 
-      this.setState({Ismarker: true })
     }
 
     
@@ -107,13 +89,13 @@ export default class Map extends React.Component {
 
     render(){
       var  ShowView= <View style={{flex:1, flexDirection: 'row', justifyContent: 'flex-end'}} >
-      <ActiveDealMarker data={this.state.lmarker} UserData={this.state.UserData} />
-      </View>
+                        <ActiveDealMarker data={this.state.lmarker} UserData={this.state.UserData} />
+                    </View>
+
       if(this.state.location){
         console.log("inside map")
-        console.log(this.state.Ismarker)
+
         return(
-          // <ScrollView>
           <View style={styles.container}>
             <View style={styles.inputView} >
               <View style={styles.seconderView}>
@@ -125,17 +107,15 @@ export default class Map extends React.Component {
                   textAlign={"right"} />
                 </View>
                 <View >
-                  <SearchIcon name="search" size={35} color={"#003f5c"} title="Open camera"  />
+                  <SearchIcon name="search" size={35} color={"#003f5c"} title="Search"  />
                 </View>
               </View>
             </View>
             <View style={{flex:2, flexDirection: 'row', justifyContent: 'flex-end'}} >     
-            <Mapview item= {this.state.location} PressMarker={this.ShowDeal} /> 
+              <Mapview item={this.state.location} PressMarker={this.ShowDeal} UserData={this.state.UserData}/> 
             </View>
-            {this.state.Ismarker? ShowView : <View></View>}
-            
+            {this.state.lmarker.length ? ShowView : <View></View>} 
           </View>
-          /* </ScrollView> */
             
         );
       }

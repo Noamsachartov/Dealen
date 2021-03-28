@@ -11,51 +11,48 @@ export default class Marker1 extends React.Component {
   state={
     latitude:null,
     longitude: null,
+    isLoading: false
 
   }
 
   componentDidMount =() => {
     //Get User data From Async Storage
-    //this.Location();
-
-
-   
+    this.Location();   
   }
 
   Location = async () =>{
+    this.setState({isLoading: false})
+    console.log(this.props.Markeritem.Baddress,"from marker1")
+    try{
+      let u= await Location.geocodeAsync(this.props.Markeritem.Baddress)
+      this.setState({latitude: u[0].latitude });
+      this.setState({longitude: u[0].longitude });
+      console.log(u[0].latitude,u[0].longitude,"from marker111")
+    } catch (e){
+      alert(e)
+    } finally {
+      this.setState({isLoading: true})
 
-    let u= await Location.geocodeAsync(this.props.Markeritem.Baddress)
-    if(u){
-    console.log(u,'uri')
-    this.setState({latitude: u[0].latitude });
-    this.setState({longitude: u[0].longitude });
-
-  }
-    else{
-      
-      alert("no ,kc")
     }
-
-  }
-
+    // let u= await Location.geocodeAsync(this.props.Markeritem.Baddress)
+    // if(u){
+    // console.log(u,'uri')
+    // this.setState({latitude: u[0].latitude });
+    // this.setState({longitude: u[0].longitude });
+    
+  } 
 
 
   render(props){
-    console.log(this.props.Markeritem.Baddress)
 
-    if(this.state.latitude){
-      // console.log(this.props.loc)
-      console.log(this.props.Markeritem.Baddress,this.state.longitude)
+    if(this.state.isLoading){
 
-
-          //console.log(this.props.Markeritem,'map')
+      console.log(this.props.Markeritem.Baddress,this.state.longitude, "from render")
       return (
-        
               <Marker
               coordinate={{
                   latitude: this.state.latitude,
-                  longitude:this.state.longitude,
-                
+                  longitude:this.state.longitude,       
                 }}
                 title= {this.props.Markeritem.Baddress}
                 description={this.props.Markeritem.Baddress}
@@ -67,10 +64,7 @@ export default class Marker1 extends React.Component {
       
       else  {
         console.log("halas");
-    return( 
-      
-        <View></View> 
-        );
+    return(<View></View>)
       }
 
 
