@@ -24,19 +24,22 @@ export default class Markeritem extends React.Component {
 
   componentDidMount =() => {
 
+    // this.setState({dataloc: this.getalllocations().then(data => {return(data)})})
   }
   
   Location = async (loc) =>{
-    
     var u = await Location.geocodeAsync(loc);
     this.setState({loc: u });
     return u;
     } 
 
+    // getalllocations = () => {
+    //   return Promise.all(this.props.Markeritem.map(item => this.Location(item.Baddress)))
+    // }
+
   render(props){
    
         console.log(this.props.Markeritem,'marker')
-
         var martkerlist= this.props.Markeritem.map((item, index) => {
           return(
             <Marker1 Markeritem={item} key={index} PressMarker={this.props.PressMarker}/> 

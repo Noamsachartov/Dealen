@@ -32,7 +32,6 @@ export default class Marker1 extends React.Component {
       alert(e)
     } finally {
       this.setState({isLoading: true})
-
     }
     // let u= await Location.geocodeAsync(this.props.Markeritem.Baddress)
     // if(u){

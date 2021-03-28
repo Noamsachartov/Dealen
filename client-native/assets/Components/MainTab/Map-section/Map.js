@@ -26,8 +26,7 @@ export default class Map extends React.Component {
       this.Location();
       this.LoadUserData();
       // this.ShowDeal();
-      
-     
+ 
     }
 
     
