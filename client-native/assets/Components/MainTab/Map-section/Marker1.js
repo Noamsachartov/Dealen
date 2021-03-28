@@ -12,7 +12,6 @@ export default class Marker1 extends React.Component {
     latitude:35,
     longitude: null,
     isLoading: false
-
   }
 
   componentDidMount =() => {
@@ -52,14 +51,12 @@ export default class Marker1 extends React.Component {
               coordinate={{
                   latitude: this.state.latitude,
                   longitude: this.state.longitude,
-                  longitude:this.state.longitude,
-                
+                  longitude:this.state.longitude,               
                 }}
                 title= {this.props.Markeritem.Baddress}
                 description={this.props.Markeritem.Baddress}
                 key={this.props.Markeritem.bid}
-                onPress={()=>this.props.PressMarker(this.props.Markeritem)}
-                /> 
+                onPress={()=>this.props.PressMarker(this.props.Markeritem)}/> 
         );
         }
       
@@ -67,8 +64,6 @@ export default class Marker1 extends React.Component {
         console.log("halas");
     return(<View></View>)
       }
-
-
   }
 }
 
