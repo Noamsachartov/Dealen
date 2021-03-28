@@ -14,14 +14,14 @@ export default function Map_sec() {
   console.log("inside recommendation")
   const navigation = useNavigation(); 
     return (
-      <View style={{marginTop: 7}}>  
-          <StatusBar
+      <View>  
+          {/* <StatusBar
           animated={true}
           backgroundColor="#003f5c"
-           />
-          <ScrollView showsVerticalScrollIndicator={false} >
+           /> */}
+          {/* <ScrollView showsVerticalScrollIndicator={false} > */}
             <Map navigation={navigation} />  
-          </ScrollView>
+          {/* </ScrollView> */}
       </View>
     );
   }

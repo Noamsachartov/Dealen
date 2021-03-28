@@ -40,8 +40,8 @@ function MyTabs() {
         }}
       />
        <Tab.Screen
-        name="Map_sec"
-        component={Map_sec}
+        name="Map"
+        component={Map}
         options={{
           tabBarLabel: 'מפה',
           tabBarColor: '#003f5c',
