@@ -59,8 +59,8 @@ export default class Map extends React.Component {
       }
     }
 
-    ShowDeal= async ()=>{
-      // console.log(marker);
+    ShowDeal= async (marker)=>{
+      console.log(marker, "=====");
       this.setState({Ismarker: true })
 
 
