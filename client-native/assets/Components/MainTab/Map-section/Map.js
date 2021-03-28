@@ -69,7 +69,6 @@ export default class Map extends React.Component {
               },
               function() {
 
-              
               }
             );
           }else {
