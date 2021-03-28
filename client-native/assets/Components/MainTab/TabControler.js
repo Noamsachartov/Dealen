@@ -6,14 +6,17 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Recommendation from './Recommendation-section/Recommendation';
 import Search from './Search-section/Search';
-import Map from './Map-section/Map';
+import Map_sec from './Map-section/Map_sec';
 import Profile from './Profile-section/Profile';
 import { ScrollView } from 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import FullDealView from './Recommendation-section/Deals/FullDealView';
 import CategoryFullView from './Recommendation-section/Category/CategoryFullView';
 import DealApproval from './Recommendation-section/Deals/DealApproval';
+import FullDealViewMap from './Map-section/FullDealViewMap';
+
 const { width, height } = Dimensions.get('window');
+
 
 const Stack = createStackNavigator();
 
@@ -40,8 +43,8 @@ function MyTabs() {
         }}
       />
        <Tab.Screen
-        name="Map"
-        component={Map}
+        name="Map_sec"
+        component={Map_sec}
         options={{
           tabBarLabel: 'מפה',
           tabBarColor: '#003f5c',
@@ -83,6 +86,7 @@ export default function TabControler() {
      >
         <Stack.Screen name="MyTabs" options={{ headerShown: false}} component={MyTabs} />
         <Stack.Screen name="FullDealView" options={{ title: '', headerTintColor:'whitesmoke',headerStyle: {height: height/10.3, backgroundColor:'#003f5c'}}} component={FullDealView}  />
+        <Stack.Screen name="FullDealViewMap" options={{ title: '', headerTintColor:'whitesmoke',headerStyle: {height: height/10.3, backgroundColor:'#003f5c'}}} component={FullDealViewMap}  />
         <Stack.Screen name="CategoryFullView" options={{ title: ''}} component={CategoryFullView}  />
         <Stack.Screen name="DealApproval" options={{headerShown: false }} component={DealApproval}  />
       </Stack.Navigator>    

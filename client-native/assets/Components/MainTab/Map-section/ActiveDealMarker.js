@@ -17,12 +17,15 @@ export default class ActiveDealMarker extends React.Component {
     }
      
   render(){
+    console.log("activedealmarker")
+    console.log(this.props.UserData)
     if(this.props.data){
       return(
         <FlatList
         data={this.props.data}
         renderItem={({ item }) => {
-            return <DealOnMapItem UserData={this.props.UserData} item={item} key={item.Id}/> 
+          console.log(item)
+            return <DealOnMapItem UserData={this.props.UserData} item={item} key={item.Id} navigation={this.props.navigation} /> 
         }}
         keyExtractor={(item, index) => 'key' + index}
         scrollEventThrottle={16}

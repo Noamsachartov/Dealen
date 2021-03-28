@@ -2,17 +2,19 @@ import React from 'react'
 import { View, StyleSheet, Text, Image, Dimensions, Button } from 'react-native'
 import { TouchableHighlight, TouchableWithoutFeedback  } from 'react-native-gesture-handler';
 import TimerIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import DiscountIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import DiscountIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import FullDealViewMap from './FullDealViewMap'; 
+
 const { width, height } = Dimensions.get('window')
-import FullDealViewMap from './FullDealViewMap';  
 
 
 
-const DealItem = ({ UserData, item }) => {
-    
+const DealOnMapItem = ({ UserData, item, navigation }) => {
+    console.log(UserData)
 
     return (
-        <TouchableWithoutFeedback  >
+        <TouchableWithoutFeedback  onPress={() => navigation.navigate('FullDealViewMap',{categoryId: item.Cat_id, dealId: item.Id, CustomerId: UserData.Id})}   >
+           
             <View style={styles.cardView}  >
                 <Image style={styles.image} source={{ uri: item.Image }} />
                 <View style={styles.textView}>
@@ -95,4 +97,4 @@ const styles = StyleSheet.create({
     DiscountIcon: {color: '#00961e'}
 })
 
-export default DealItem
+export default DealOnMapItem

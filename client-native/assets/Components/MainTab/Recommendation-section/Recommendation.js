@@ -24,7 +24,7 @@ export default function Recommendation() {
            />
           <ScrollView showsVerticalScrollIndicator={false} > 
             <Carousel data = {DataForCarousel}/>
-            <Category navigation={navigation}  />  
+            <Category navigation={navigation} />  
             <Deal navigation={navigation} />  
           </ScrollView>
       </View>
