@@ -99,8 +99,8 @@ export default class Map extends React.Component {
 
     render(props){
       var  ShowView= <View style={{flex:1, flexDirection: 'row', justifyContent: 'flex-end'}} >
-      <ActiveDealMarker data={this.state.lactivedeals} UserData={this.state.UserData}  />
-      {/* navigation={this.props.navigation} */}
+      <ActiveDealMarker data={this.state.lactivedeals} UserData={this.state.UserData} navigation={this.props.navigation}
+ />
       </View>
       if(this.state.location){
         console.log("inside map")
