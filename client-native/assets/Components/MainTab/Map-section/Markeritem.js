@@ -14,15 +14,19 @@ import Marker1 from'./Marker1';
 export default class Markeritem extends React.Component {
   state={
     
-    itemscoords:[]
+    itemscoords:null,
+    loc: null
     //latitude:0,
    // longitude:0
 
    
   }
 
+
   componentDidMount =() => {}
-    //this.Location();
+    // this.Location();
+
+
     //console.log(this.props.Markeritem.Baddress)
     // let u= await Location.geocodeAsync(this.props.Markeritem.Baddress);
 
@@ -33,13 +37,15 @@ export default class Markeritem extends React.Component {
     //Get User data From Async Storage 
   
 
-  // Location = async () =>{
-  //   var martkerlist= this.props.Markeritem.map((item, index,props) => {
+  Location = async (loc) =>{
          
-  //     item.Baddress = await Location.geocodeAsync(item.Baddress)
-  //     this.setState({itemscoords:[...item]});
+     var u = await Location.geocodeAsync(loc);
+      this.setState({loc: u });
 
-  //   }      
+
+    } 
+  
+     
    
 
   // }
@@ -60,14 +66,15 @@ export default class Markeritem extends React.Component {
 
 
         var martkerlist= this.props.Markeritem.map((item, index) => {
-    
+          // this.Location(item.Baddress);
+          
 
           return(
             <Marker1 Markeritem={item} key={index} PressMarker={this.props.PressMarker}/>
          
              
           )
-        })
+        });
 
     return (
      <View>{martkerlist}</View>

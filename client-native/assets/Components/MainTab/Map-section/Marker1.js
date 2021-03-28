@@ -16,7 +16,7 @@ export default class Marker1 extends React.Component {
 
   componentDidMount =() => {
     //Get User data From Async Storage
-    this.Location();
+    //this.Location();
 
 
    
@@ -42,8 +42,9 @@ export default class Marker1 extends React.Component {
 
   render(props){
     console.log(this.props.Markeritem.Baddress)
-    if(this.state.latitude){
 
+    // if(this.state.latitude){
+      // console.log(this.props.loc)
       console.log(this.props.Markeritem.Baddress,this.state.longitude)
 
 
@@ -62,12 +63,14 @@ export default class Marker1 extends React.Component {
                 onPress={()=>this.props.PressMarker(this.props.Markeritem)}
                 /> 
         );
-      }
-      else  {
-
-        <Marker  /> 
-        );
-      }
+      
+    //   else  {
+    //     console.log("halas");
+    // return( 
+      
+    //     <View></View> 
+    //     );
+    //   }
 
 
   }

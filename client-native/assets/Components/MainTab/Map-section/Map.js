@@ -72,6 +72,30 @@ export default class Map extends React.Component {
 
     ShowDeal= (marker)=>{
       
+      var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Businesses/ActiveRest";
+        return fetch(apiUrl)
+        .then(response => response.json())
+        .then(responseJson => {
+          if(responseJson.length > 0){
+            this.setState(
+              {
+                isLoading: false,
+                lmarker: responseJson,
+              },
+              function() {
+                
+              }
+            );
+          }else {
+            alert("Sorry We there have been an error")
+          }
+
+        })
+        .catch(error => {
+          console.error(error);
+        });
+        
+      
       console.log(marker.Business_id,"pin");
       console.log("bla");
 
