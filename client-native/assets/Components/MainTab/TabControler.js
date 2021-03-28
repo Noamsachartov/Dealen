@@ -6,7 +6,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Recommendation from './Recommendation-section/Recommendation';
 import Search from './Search-section/Search';
-import Map from './Map-section/Map';
+import Map_sec from './Map-section/Map_sec';
 import Profile from './Profile-section/Profile';
 import { ScrollView } from 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -40,8 +40,8 @@ function MyTabs() {
         }}
       />
        <Tab.Screen
-        name="Map"
-        component={Map}
+        name="Map_sec"
+        component={Map_sec}
         options={{
           tabBarLabel: 'מפה',
           tabBarColor: '#003f5c',

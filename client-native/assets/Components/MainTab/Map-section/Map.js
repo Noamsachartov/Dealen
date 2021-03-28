@@ -9,6 +9,8 @@ import FullDealViewMap from './FullDealViewMap';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DealOnMapItem from'./DealOnMapItem';
 import ActiveDealMarker from './ActiveDealMarker';
+import { useNavigation } from '@react-navigation/native';
+
 
 
 
@@ -19,7 +21,7 @@ export default class Map extends React.Component {
       
       location: null,
       UserData: null,
-      Ismarker: false,
+      lactivedeals: false,
 
     }
   
@@ -70,9 +72,13 @@ export default class Map extends React.Component {
       }
     }
 
-    ShowDeal= (marker)=>{
-      
-      var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Businesses/ActiveRest";
+    ShowDeal= async (marker)=>{
+      console.log(marker);
+      this.setState({Ismarker: true })
+
+
+      var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/dealbyRest/"+marker.Bid;
+      console.log(apiUrl);
         return fetch(apiUrl)
         .then(response => response.json())
         .then(responseJson => {
@@ -80,7 +86,7 @@ export default class Map extends React.Component {
             this.setState(
               {
                 isLoading: false,
-                lmarker: responseJson,
+                lactivedeals: responseJson,
               },
               function() {
                 
@@ -94,20 +100,17 @@ export default class Map extends React.Component {
         .catch(error => {
           console.error(error);
         });
-        
-      
-      console.log(marker.Business_id,"pin");
-      console.log("bla");
-
-      this.setState({Ismarker: true })
+ 
+      //console.log(marker.Business_id,"pin");
+    
     }
 
     
 
 
-    render(){
+    render(props){
       var  ShowView= <View style={{flex:1, flexDirection: 'row', justifyContent: 'flex-end'}} >
-      <ActiveDealMarker data={this.state.lmarker} UserData={this.state.UserData} />
+      <ActiveDealMarker data={this.state.lactivedeals} UserData={this.state.UserData} navigation={this.props.navigation} />
       </View>
       if(this.state.location){
         console.log("inside map")

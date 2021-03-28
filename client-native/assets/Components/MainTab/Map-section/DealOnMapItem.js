@@ -8,11 +8,11 @@ import FullDealViewMap from './FullDealViewMap';
 
 
 
-const DealItem = ({ UserData, item }) => {
+const DealItem = ({ UserData, item, navigation }) => {
     
 
     return (
-        <TouchableWithoutFeedback  >
+        <TouchableWithoutFeedback  onPress={() => navigation.navigate('FullDealViewMap',{categoryId: item.Cat_id, dealId: item.Id, CustomerId: UserData.Id})} >
             <View style={styles.cardView}  >
                 <Image style={styles.image} source={{ uri: item.Image }} />
                 <View style={styles.textView}>

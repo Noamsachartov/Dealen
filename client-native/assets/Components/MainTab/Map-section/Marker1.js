@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class Marker1 extends React.Component {
   state={
-    latitude:null,
+    latitude:35,
     longitude: null,
 
   }
@@ -53,8 +53,8 @@ export default class Marker1 extends React.Component {
         
               <Marker
               coordinate={{
-                  latitude: this.state.latitude,
-                  longitude:this.state.longitude,
+                  latitude: 35,
+                  longitude:35,
                 
                 }}
                 title= {this.props.Markeritem.Baddress}
