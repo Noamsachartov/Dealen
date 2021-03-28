@@ -43,7 +43,7 @@ export default class Marker1 extends React.Component {
   render(props){
     console.log(this.props.Markeritem.Baddress)
 
-    // if(this.state.latitude){
+    if(this.state.latitude){
       // console.log(this.props.loc)
       console.log(this.props.Markeritem.Baddress,this.state.longitude)
 
@@ -63,14 +63,15 @@ export default class Marker1 extends React.Component {
                 onPress={()=>this.props.PressMarker(this.props.Markeritem)}
                 /> 
         );
+        }
       
-    //   else  {
-    //     console.log("halas");
-    // return( 
+      else  {
+        console.log("halas");
+    return( 
       
-    //     <View></View> 
-    //     );
-    //   }
+        <View></View> 
+        );
+      }
 
 
   }
