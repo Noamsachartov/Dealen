@@ -8,7 +8,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
-
 export default class Mapview extends React.Component {
 
 
@@ -78,9 +77,7 @@ export default class Mapview extends React.Component {
 
       componentDidMount =() => {
        
-        this.LoadUserData();
-
-
+        // this.LoadUserData();
         //Get Deals for User
         var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Businesses/ActiveRest";
         return fetch(apiUrl)
@@ -106,40 +103,22 @@ export default class Mapview extends React.Component {
         });
         }
 
-      LoadUserData = async () => {
-        console.log("try load")
-        try{
-            let UserData = await AsyncStorage.getItem("UserData");
-            if (UserData !== null){
-                this.setState({UserData: JSON.parse(UserData)})
-            }else{
-              this.setState({UserData: []});
-            }
-          
-        } catch (error){
-            alert(error);
-        }
-      }
-
-
 
   render(props){
 
-        //console.log(this.props.item.coords,'map')
 if(this.state.lmarker){
     return (
-      
         <View style={{flex:1 , flexDirection: 'row', justifyContent: 'flex-end' }}>
-        <MapView
-            style={{flex:1 , width: Dimensions.get ('window').width,}}
-            region={{
-              latitude:this.props.item.coords.latitude,
-              longitude: this.props.item.coords.longitude,
-              latitudeDelta: 0.02 ,
-              longitudeDelta: 0.02,
-            }} >
-            <Markeritem Markeritem={this.state.lmarker} PressMarker={this.props.PressMarker} /> 
-        </MapView>
+          <MapView
+              style={{flex:1 , width: Dimensions.get ('window').width}}
+              region={{
+                latitude:this.props.item.coords.latitude,
+                longitude: this.props.item.coords.longitude,
+                latitudeDelta: 0.03 ,
+                longitudeDelta: 0.03,
+              }} >
+              <Markeritem Markeritem={this.state.lmarker} PressMarker={this.props.PressMarker} /> 
+          </MapView>
         </View>
     )
   }

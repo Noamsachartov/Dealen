@@ -17,6 +17,7 @@ export default class ActiveDealMarker extends React.Component {
     }
      
   render(){
+    console.log("activedealmarker")
     if(this.props.data){
       return(
         <FlatList
