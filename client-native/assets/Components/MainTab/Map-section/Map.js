@@ -61,6 +61,7 @@ export default class Map extends React.Component {
 
     ShowDeal= async (marker)=>{
       console.log(marker);
+      console.log(marker, "=====");
       this.setState({Ismarker: true })
 
 
