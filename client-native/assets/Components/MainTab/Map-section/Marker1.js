@@ -26,7 +26,7 @@ export default class Marker1 extends React.Component {
 
     setTimeout(() => {
       this.Location();
-    }, this.props.index * 2000);
+    }, this.props.index * 1500);
   };
 
   Location = async () => {
