@@ -47,7 +47,7 @@ export default class SignUp extends React.Component {
             .then((response) => response.json())
             .then((responseJson) => {
               this.setState({userId: JSON.stringify(responseJson)})
-              navigation.navigate('ChoosePreferences')
+              navigation.navigate('ChoosePreferences',{userId: JSON.stringify(responseJson)})
             })
             .catch((error) => {
               alert(JSON.stringify(error));
