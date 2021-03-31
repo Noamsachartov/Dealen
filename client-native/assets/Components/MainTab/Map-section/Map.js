@@ -16,17 +16,19 @@ import { useNavigation } from '@react-navigation/native';
 
 export default class Map extends React.Component {
   state={
+    firstime:0,
     lmarker:[],    
-      location: null,
-      UserData: null,
-      lactivedeals: false,
+    location: null,
+    UserData: null,
+    lactivedeals: false,
 
-      Ismarker: false,
+    Ismarker: false,
     }
   
 
     componentDidMount =() => {
       //Get User data From Async Storage
+      
       this.Location();
       this.LoadUserData();
       //  this.ShowDeal();
@@ -36,13 +38,23 @@ export default class Map extends React.Component {
     
     
     Location = async () =>{
+      if(!this.state.firstime!=0){
+        console.log(this.state.firstime,'get in');
       let { status } = await Location.requestPermissionsAsync();
       if (status !== 'granted') {
         this.setState ({errorMessage : 'Permission to access location was denied', });
       }
-        let location = await Location.getCurrentPositionAsync({});
-        this.setState({ location});
+        let locationfunc = await Location.getCurrentPositionAsync({});
+        let location={
+            latitude: locationfunc.coords.latitude,
+            longitude:locationfunc.coords.longitude,  
+        }
+        console.log(location,'object')
+        this.setState({ location });
+        this.setState({ firstime:1 });
+      }
     }
+    
 
     LoadUserData = async () => {
       console.log("try load")
@@ -63,6 +75,16 @@ export default class Map extends React.Component {
       console.log(marker);
       console.log(marker, "=====");
       this.setState({Ismarker: true })
+      let locationfunc = await Location.geocodeAsync(
+        marker.Baddress
+      );
+      let location={
+        latitude: locationfunc[0].latitude,
+        longitude:locationfunc[0].longitude,
+      }
+
+      console.log(location)
+      this.setState({ location});
 
 
       var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/dealbyRest/"+marker.Bid;
@@ -94,8 +116,47 @@ export default class Map extends React.Component {
 
 
     }
-
+    FreeSearch = (text) => {
+      this.setState({
+        Search:text,
+      })
+  
+      console.log(this.state.Search)
+    }
     
+    onEndEditing = () => {
+      console.log("!!!!!!!!!!!!!!!")
+      if(this.state.Search == ""){
+        this.likecomponenetdidmount();
+      }else {
+        var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/SearchDeals/" + this.state.Search;
+        return fetch(apiUrl)
+        .then(response => response.json())
+        .then(responseJson => {
+          if(responseJson.length > 0){
+            this.setState(
+                    {
+                      lactivedeals: responseJson,
+                      isLodingCategory: false,
+                      isLoading: true
+                    },
+                    function() {
+                      
+                    }
+                  );
+                }else {
+                  alert("לא מצאנו מבצעים מתאימים לחיפוש")
+                  this.likecomponenetdidmount();
+                }
+          
+              })
+              .catch(error => {
+                console.error(error);
+              });
+      }
+      
+    }
+
     onMapLayout = () => {
       this.setState({ isMapReady: true });
     };
@@ -112,11 +173,14 @@ export default class Map extends React.Component {
             <View style={styles.inputView} >
               <View style={styles.seconderView}>
                 <View>
-                  <TextInput  
+                <TextInput  
                   style={styles.inputText}
                   placeholder="חיפוש..." 
                   placeholderTextColor="#003f5c"
-                  textAlign={"right"} />
+                  textAlign={"right"}
+                  onChangeText={text => this.FreeSearch(text)} 
+                  onEndEditing={() => this.onEndEditing()}
+                  />
                 </View>
                 <View >
                   <SearchIcon name="search" size={35} color={"#003f5c"} title="Search"  />
