@@ -110,12 +110,14 @@ if(this.state.lmarker){
         <View style={{flex:1 , flexDirection: 'row', justifyContent: 'flex-end' }}>
           <MapView
               style={{flex:1 , width: Dimensions.get ('window').width}}
+              showsUserLocation={true}
               region={{
-                latitude:this.props.item.coords.latitude,
-                longitude: this.props.item.coords.longitude,
+                latitude:this.props.item.latitude,
+                longitude: this.props.item.longitude,
                 latitudeDelta: 0.03 ,
                 longitudeDelta: 0.03,
               }} >
+       
               <Markeritem Markeritem={this.state.lmarker} PressMarker={this.props.PressMarker}  /> 
           </MapView>
         </View>
