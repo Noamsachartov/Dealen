@@ -165,6 +165,7 @@ class SignUp extends React.Component {
                 autoComplete="phone"
                 onChange={text => this.setState({phone: text.target.value})}
               />
+              
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
