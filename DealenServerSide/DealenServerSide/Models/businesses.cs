@@ -9,6 +9,7 @@ namespace DealenServerSide.Models
     {
         int bid;
         string bname;
+        string btypebus;
         string baddress;
         string bphone;
         string manager;
@@ -23,6 +24,7 @@ namespace DealenServerSide.Models
 
         public int Bid { get => bid; set => bid = value; }
         public string Bname { get => bname; set => bname = value; }
+        public string Btypebus { get => btypebus; set => btypebus = value; }
         public string Baddress { get => baddress; set => baddress = value; }
         public string Bphone { get => bphone; set => bphone = value; }
         public string Manager { get => manager; set => manager = value; }
@@ -32,13 +34,15 @@ namespace DealenServerSide.Models
         public TimeSpan Opentime { get => opentime; set => opentime = value; }
         public TimeSpan Closetime { get => closetime; set => closetime = value; }
         public string Bimage { get => bimage; set => bimage = value; }
+        
 
         public Businesses() { }
 
-        public Businesses(int bid, string bname, string baddress, string bphone, string manager, string bdescription, string bmail, string password, TimeSpan opentime, TimeSpan closetime, string bimage)
+        public Businesses(int bid, string bname, string btypebus, string baddress, string bphone, string manager, string bdescription, string bmail, string password, TimeSpan opentime, TimeSpan closetime, string bimage)
         {
             Bid = bid;
             Bname = bname;
+            Btypebus = btypebus;
             Baddress = baddress;
             Bphone = bphone;
             Manager = manager;
@@ -49,7 +53,6 @@ namespace DealenServerSide.Models
             Closetime = closetime;
             Bimage = bimage;
         }
-
 
         public int Insert()
         {
