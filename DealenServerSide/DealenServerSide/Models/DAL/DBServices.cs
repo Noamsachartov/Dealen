@@ -1381,11 +1381,12 @@ public class DBServices
     {
         String command;
         command = "INSERT INTO DataOfCust_2021 " +
-            "SELECT d.id, dic.dealincust_id, dib.business_id, c.id, dib.discount,DATEPART(dw,GETDATE()), CONVERT (TIME, GETDATE()) " +
+            "SELECT d.id, dic.dealincust_id, dib.business_id, c.id,t.Tag_Id dib.discount,DATEPART(dw,GETDATE()), CONVERT (TIME, GETDATE()) " +
             "FROM dealIncust_2021 AS dic INNER JOIN dealinbus_2021 AS dib ON dic.dealinbus_id=dib.id " +
             "INNER JOIN Businesses_2021 AS b ON b.bid=dib.business_id " +
             "INNER JOIN Deal_2021 AS d ON dib.deal_id=d.id " +
-            "INNER JOIN Category_2021 AS c ON d.cat_id=c.id " +
+            "INNER JOIN Category_2021 AS c ON d.cat_id=c.id "+
+            "INNER JOIN TagsInDeals_2021 AS t ON t.Deal_id=d.id "+
             "WHERE dic.coupon=" + coupon + " AND dic.Used='True'";
         String get_id = "SELECT SCOPE_IDENTITY();";
         command += get_id;
