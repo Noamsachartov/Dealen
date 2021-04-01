@@ -99,6 +99,7 @@ class SignUp extends React.Component {
         bmail: this.state.email,
         password: this.state.password,
         bimage: this.state.image,
+        btype: this.state.btype
       }),
       headers: {
         Accept: 'application/json',
@@ -117,6 +118,10 @@ class SignUp extends React.Component {
     alert("You are submitting " + this.state.username);
     console.log(this.state);
   }
+
+  handleChange = (event) => {
+    this.setState({btype: event.target.value});
+  };
 
 
   render() {
@@ -208,7 +213,7 @@ class SignUp extends React.Component {
                 onChange={text => this.setState({closetime: text.target.value})}
               />
             </Grid>
-            <Select defaultValue='cjr '      label="Single select" width={12}
+            <Select defaultValue='cjr '  onChange={this.handleChange}      label="Single select" width={12}
                 labelId="demo-customized-select-label"
                 id="demo-customized-select" >
                 <MenuItem value={0}>בחר סוג עסק</MenuItem>
