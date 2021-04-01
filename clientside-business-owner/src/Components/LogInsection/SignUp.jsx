@@ -1,5 +1,5 @@
 import React from 'react';
-import { Component } from 'react';
+import { Component,Fragment   } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,6 +14,11 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { grid } from '@material-ui/system';
+import Select from '@material-ui/core/Select';
+import { MenuItem } from '@material-ui/core';
+import NativeSelect from '@material-ui/core/NativeSelect';
+
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -94,6 +99,7 @@ class SignUp extends React.Component {
         bmail: this.state.email,
         password: this.state.password,
         bimage: this.state.image,
+        btype: this.state.btype
       }),
       headers: {
         Accept: 'application/json',
@@ -112,6 +118,10 @@ class SignUp extends React.Component {
     alert("You are submitting " + this.state.username);
     console.log(this.state);
   }
+
+  handleChange = (event) => {
+    this.setState({btype: event.target.value});
+  };
 
 
   render() {
@@ -165,6 +175,7 @@ class SignUp extends React.Component {
                 autoComplete="phone"
                 onChange={text => this.setState({phone: text.target.value})}
               />
+              
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -202,6 +213,16 @@ class SignUp extends React.Component {
                 onChange={text => this.setState({closetime: text.target.value})}
               />
             </Grid>
+            <Select defaultValue='cjr '  onChange={this.handleChange}      label="Single select" width={12}
+                labelId="demo-customized-select-label"
+                id="demo-customized-select" >
+                <MenuItem value={0}>בחר סוג עסק</MenuItem>
+                <MenuItem value={1}>מסעדה</MenuItem>
+                <MenuItem value={2}>בר מסעדה </MenuItem>
+                <MenuItem value={3}>בר/מועדון</MenuItem>
+                <MenuItem value={4}>בית קפה </MenuItem>
+              </Select>
+           
             <Grid item xs={12}>
             <TextField
                 variant="outlined"

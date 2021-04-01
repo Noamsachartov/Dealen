@@ -36,34 +36,36 @@ export default class MyForm extends React.Component {
 
   componentDidMount(){
     this.getCategory();
+    this.getTags();
 }
 getCategory=()=>{
     const cats = [];
     const url ="http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Category"
+
     fetch(url)
     .then(response => response.json())
     .then(data => {
         data.forEach((item) => {
-            cats.push(item.Id);
+            cats.push(item);
         });
         this.setState({Categories:[...cats]});
     });
     console.log(this.state.Categories)
-    alert(this.state.Categories)
 }
 
 getTags=()=>{
-  const ings = [];
-  const url ="http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Category"
+  const tag = [];
+  const url ="http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/GetTags"
+
   fetch(url)
   .then(response => response.json())
   .then(data => {
       data.forEach((item) => {
-          ings.push(item.Id);
+          tag.push(item);
       });
-      this.setState({ingredients:[...ings]});
+      this.setState({Tags:[...tag]});
   });
-  console.log(this.state.ingredients)
+  console.log(this.state.Tags)
 }
 
   onImageChange = event => {
@@ -116,16 +118,23 @@ getTags=()=>{
     this.setState({username: event.target.value});
   }
 
-  changedCheckedValues=(itemId,checked)=>{
+  changedCheckedValuescat=(itemId,checked)=>{
     let ings = [...this.state.ingredients];
     ings.find(item=>item.ing.id===itemId).checked = checked;
     this.setState({ingredients:[...ings]});
 }
 
+changedCheckedValuestag=(itemId,checked)=>{
+  let ings = [...this.state.ingredients];
+  ings.find(item=>item.ing.id===itemId).checked = checked;
+  this.setState({ingredients:[...ings]});
+}
+
 
   render() {
-    if(this.state.Categories)
+    if(this.state.Categories&&this.state.Tags)
     { 
+      console.log(this.state.Tags)
     return (
       <form onSubmit={this.mySubmitHandler}>
       <h1>פרסום מבצע </h1>
@@ -134,11 +143,21 @@ getTags=()=>{
         onChange={text => this.setState({deal_name: text.target.value})}
       />
       <label className="col-sm-0 control-label"> : שם המבצע <br></br><br></br></label>
+      <label className="col-sm-0 control-label"> : בחר קטגוריות <br></br><br></br></label>
+
       {
                         this.state.Categories?.length>0&&
-                        this.state.Categories?.map((item,key)=><CheckInput checked={item.checked} changeChecked={this.changedCheckedValues} id={item.ing.id} key={key} label={item.ing.name}/>)
+                        this.state.Categories?.map((item,key)=><CheckInput checked={item.checked} changeChecked={this.changedCheckedValuescat} id={item.Id} key={key} label={item.Name}/>)
                     }
       <br></br>
+      <br></br>
+
+      <label className="col-sm-0 control-label"> : בחר תגיות לחיפוש מבצע <br></br><br></br></label>
+
+      {
+                        this.state.Tags?.length>0&&
+                        this.state.Tags?.map((item,key)=><CheckInput checked={item.checked} changeChecked={this.changedCheckedValuestag} id={item.Id} key={key} label={item.Name}/>)
+                    }
       <br></br>
       <input
         type='text'
