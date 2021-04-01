@@ -26,7 +26,9 @@ export default class MyForm extends React.Component {
         description: '',
         image: null,
         Categories: [],
-        Tags: []
+        Tags: [],
+        select_cats: [],
+        select_tags: []
      };
      this.onImageChange = this.onImageChange.bind(this);
      this.apiUrl = 'http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal';
@@ -88,8 +90,7 @@ getTags=()=>{
         business_id: is_logged,
         business_Name: "Uri ha maniak", // Remember to change
         date: "", // Remember to change
-        category: "אסייתי", // Remember to change
-        cat_id: 1, // Remember to change
+        categories: "אסייתי", // Remember to change
         name: this.state.deal_name,
         startime: this.state.start_time,
         endtime: this.state.end_time,
@@ -119,9 +120,12 @@ getTags=()=>{
   }
 
   changedCheckedValuescat=(itemId,checked)=>{
-    let ings = [...this.state.ingredients];
-    ings.find(item=>item.ing.id===itemId).checked = checked;
-    this.setState({ingredients:[...ings]});
+    let cats = [...this.state.select_cats];
+    cats.find(item=>item.ing.id===itemId).checked = checked;
+    this.setState({select_cats:[...cats]});
+    console.log(this.state.select_cats);
+    var b= new Date();
+    console.log(b)
 }
 
 changedCheckedValuestag=(itemId,checked)=>{
