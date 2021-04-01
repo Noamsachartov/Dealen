@@ -217,10 +217,10 @@ class SignUp extends React.Component {
                 labelId="demo-customized-select-label"
                 id="demo-customized-select" >
                 <MenuItem value={0}>בחר סוג עסק</MenuItem>
-                <MenuItem value={1}>מסעדה</MenuItem>
-                <MenuItem value={2}>בר מסעדה </MenuItem>
-                <MenuItem value={3}>בר/מועדון</MenuItem>
-                <MenuItem value={4}>בית קפה </MenuItem>
+                <MenuItem value={'מסעדה'}>מסעדה</MenuItem>
+                <MenuItem value={'בר מסעדה'}>בר מסעדה </MenuItem>
+                <MenuItem value={'בר/מועדון'}>בר/מועדון</MenuItem>
+                <MenuItem value={'בית קפה'}>בית קפה </MenuItem>
               </Select>
            
             <Grid item xs={12}>
