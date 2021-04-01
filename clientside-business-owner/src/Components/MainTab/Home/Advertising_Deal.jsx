@@ -50,7 +50,6 @@ getCategory=()=>{
         this.setState({Categories:[...cats]});
     });
     console.log(this.state.Categories)
-    alert(this.state.Categories)
 }
 
 getTags=()=>{
