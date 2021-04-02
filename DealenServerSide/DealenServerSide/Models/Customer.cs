@@ -16,11 +16,10 @@ namespace DealenServerSide.Models
         DateTime birthdate;
         string cust_mail;
         string password;
-        //System.Data.Spatial.DbGeography location;
         string image;
         string p_category;
-        string p_typebus;
-        float p_distance;
+        string p_type;
+        string p_distance;
 
 
         public int Cust_id { get => cust_id; set => cust_id = value; }
@@ -33,17 +32,16 @@ namespace DealenServerSide.Models
         public string Image { get => image; set => image = value; }
         public string Cust_lname { get => cust_lname; set => cust_lname = value; }
         public string P_category { get => p_category; set => p_category = value; }
-        public string P_typebus { get => p_typebus; set => p_typebus = value; }
-        public float P_distance { get => p_distance; set => p_distance = value; }
-
-        //internal Spatial.DbGeography Location { get => location; set => location = value; }
+        public string P_type { get => p_type; set => p_type = value; }
+        public string P_distance { get => p_distance; set => p_distance = value; }
 
 
 
-       
+
+
         public Customer() { }
 
-        public Customer(int cust_id, string cust_fname, string cust_address, string cust_phone, DateTime birthdate, string cust_mail, string password, string image, string cust_lname, string p_category, string p_typebus, float p_distance)
+        public Customer(int cust_id, string cust_fname, string cust_lname, string cust_address, string cust_phone, DateTime birthdate, string cust_mail, string password, string image, string p_category, string p_type, string p_distance)
         {
             Cust_id = cust_id;
             Cust_fname = cust_fname;
@@ -55,8 +53,9 @@ namespace DealenServerSide.Models
             Image = image;
             Cust_lname = cust_lname;
             P_category = p_category;
-            P_typebus = p_typebus;
+            P_type = p_type;
             P_distance = p_distance;
+            
         }
 
         public List<Customer> CheckIfLog(string mail, string password)
@@ -70,7 +69,11 @@ namespace DealenServerSide.Models
         {
             DBServices dbs = new DBServices();
             return dbs.Insert(this);
-
+        }
+        public int UpdateIntialPreferences(int id, Customer customer)
+        {
+            DBServices dbs = new DBServices();
+            return dbs.UpdateIntialPreferences(id, customer);
         }
     }
 }
