@@ -21,7 +21,9 @@ export default class ChoosePreferences extends React.Component {
         toggleCheckBox_Resturant: false,
         toggleCheckBox_Bar: false,
         toggleCheckBox_Caffe: false,
-        isLoading: true
+        isLoading: true,
+        categoryAdd: [],
+        typearr: "",
       }
 
 
@@ -32,6 +34,14 @@ export default class ChoosePreferences extends React.Component {
 
       newCategoryPreferences = (item) => {
         console.log(item.Id,"added")
+        let connected;
+        if(!this.state.categoryAdd.includes(item.Id)){
+          let connected = this.state.categoryAdd.concat(item.Id);
+          this.setState({categoryAdd: connected});
+        }
+        console.log(this.state.categoryAdd)
+
+
       }
 
       onValueChange(value) {
@@ -40,8 +50,54 @@ export default class ChoosePreferences extends React.Component {
 
       handlePostPreferences = ()=>{
         console.log("post")
-        const { navigation } = this.props;
-        navigation.navigate('Login')
+        
+        if(this.state.toggleCheckBox_Resturant){
+          var resturant = "מסעדה";
+        }else{
+          var resturant = "";
+        }
+
+        if(this.state.toggleCheckBox_Bar){
+          var bar = "בר";
+        }else{
+          var bar = "";
+        }
+
+        if(this.state.toggleCheckBox_Caffe){
+          var caffe = "בית קפה";
+        }else{
+          var caffe = "";
+        }
+        var join = `${resturant},${bar},${caffe}`;
+        this.setState({typearr: join })
+
+
+       
+        const { navigation, route } = this.props;
+        var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Customer/" +route.params.userId;
+        fetch(apiUrl, {
+          method: 'PUT',
+          body: JSON.stringify({
+            P_category: this.state.categoryAdd.toString(),
+            P_type: join,
+            P_distance: this.state.radios.toString(),
+          }),
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        })
+          .then((response) => response.json())
+          .then((responseJson) => {
+            console.log(responseJson)
+            navigation.navigate('Login')
+          })
+          .catch((error) => {
+            alert(JSON.stringify(error));
+            console.error(error);
+          });
+
+        // navigation.navigate('Login')
       }
 
     componentDidMount =() => {

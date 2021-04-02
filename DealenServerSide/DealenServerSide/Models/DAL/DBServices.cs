@@ -158,11 +158,61 @@ public class DBServices
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
         var f = customer.Birthdate.ToString("yyyy-MM-dd");
-        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', '{4}', '{5}','{6}','{7}','{8}','{9}','{10}');", customer.Cust_fname, customer.Cust_address, customer.Cust_phone, customer.Cust_mail, f, customer.Password, customer.Image, customer.Cust_lname,customer.P_category, customer.P_typebus, customer.P_distance);
+        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', '{4}', '{5}','{6}','{7}','{8}','{9}','{10}');", customer.Cust_fname, customer.Cust_address, customer.Cust_phone, customer.Cust_mail, f, customer.Password, customer.Image, customer.Cust_lname,customer.P_category, customer.P_type, customer.P_distance);
         String prefixc = "INSERT INTO [Customer_2021] " + "([cust_fname],[cust_address],[cust_phone],[cust_mail],[birthdate],[password],[image],[cust_lname],[P_Category],[P_TypeBus],[P_Distance])";
         String get_id = "SELECT SCOPE_IDENTITY();";
         command = prefixc + sb.ToString() + get_id;
 
+        return command;
+    }
+
+    //הכנסת לקוח - Dealen
+    public int UpdateIntialPreferences(int id, Customer customer)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String cStr = BuildUpdateCommand(id,customer);      // helper method to build the insert string
+
+        cmd = CreateCommand(cStr, con);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery();
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+    //--------------------------------------------------------------------
+    private String BuildUpdateCommand(int id, Customer customer)
+    {
+        String command;
+        command = "UPDATE Customer_2021 set P_Category = '"+ customer.P_category +"', P_TypeBus='"+ customer.P_type +"', P_Distance='" + customer.P_distance + "' where cust_id = " + id.ToString();
         return command;
     }
 
