@@ -9,6 +9,8 @@ import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import Checkbox from './CheckInput';
 import CheckInput from './CheckInput';
+import TimePicker from 'react-time-picker';
+
 
 
 
@@ -20,15 +22,16 @@ export default class MyForm extends React.Component {
     super(props);
     this.state = { 
         deal_name: '',
-        start_time: '',
-        end_time: '',
+        start_time: new Date(),
+        end_time: new Date(),
         discount: '',
         description: '',
         image: null,
         Categories: [],
         Tags: [],
         select_cats: [],
-        select_tags: []
+        select_tags: [],
+        today: new Date()
      };
      this.onImageChange = this.onImageChange.bind(this);
      this.apiUrl = 'http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal';
@@ -48,10 +51,12 @@ getCategory=()=>{
     .then(response => response.json())
     .then(data => {
         data.forEach((item) => {
+          item.checked=false;
             cats.push(item);
         });
         this.setState({Categories:[...cats]});
     });
+
     console.log(this.state.Categories)
 }
 
@@ -63,6 +68,7 @@ getTags=()=>{
   .then(response => response.json())
   .then(data => {
       data.forEach((item) => {
+          item.checked=false;
           tag.push(item);
       });
       this.setState({Tags:[...tag]});
@@ -79,18 +85,21 @@ getTags=()=>{
     }
   };
 
+
   mySubmitHandler = (event) => {
     event.preventDefault(); //
-    
+    const CatsToDB = this.state.Categories.filter(item=>item.checked).map((item)=>item.Id);
+    const TagsToDB = this.state.Tags.filter(item=>item.checked).map((item)=>item.Id);
+
     var is_logged = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
     var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal"
     fetch(apiUrl, {
       method: 'POST',
       body: JSON.stringify({
         business_id: is_logged,
-        business_Name: "Uri ha maniak", // Remember to change
-        date: "", // Remember to change
-        categories: "אסייתי", // Remember to change
+        date: this.today, // Remember to change
+        categories: CatsToDB, // Remember to change
+        tags: TagsToDB, // Remember to change
         name: this.state.deal_name,
         startime: this.state.start_time,
         endtime: this.state.end_time,
@@ -120,18 +129,21 @@ getTags=()=>{
   }
 
   changedCheckedValuescat=(itemId,checked)=>{
-    let cats = [...this.state.select_cats];
-    cats.find(item=>item.ing.id===itemId).checked = checked;
-    this.setState({select_cats:[...cats]});
-    console.log(this.state.select_cats);
+    let cats = [...this.state.Categories];
+
+    console.log(itemId)
+    cats.find(item=>item.Id==itemId).checked = checked;
+    this.setState({Categories:[...cats]});
+    console.log(this.state.Categories);
     var b= new Date();
     console.log(b)
+
 }
 
 changedCheckedValuestag=(itemId,checked)=>{
-  let ings = [...this.state.ingredients];
-  ings.find(item=>item.ing.id===itemId).checked = checked;
-  this.setState({ingredients:[...ings]});
+  let tags = [...this.state.Tags];
+  tags.find(item=>item.Id==itemId).checked = checked;
+  this.setState({Tags:[...tags]});
 }
 
 
@@ -163,20 +175,29 @@ changedCheckedValuestag=(itemId,checked)=>{
                         this.state.Tags?.map((item,key)=><CheckInput checked={item.checked} changeChecked={this.changedCheckedValuestag} id={item.Id} key={key} label={item.Name}/>)
                     }
       <br></br>
-      <input
+   
+      {/* <input
         type='text'
         onChange={text => this.setState({start_time: text.target.value})}
         placeholder="09:00 AM"
         pattern="(0[1-9])|(1[0-2]):([0-5][0-9])\s((a|p|A|P)(m|M))"
+      /> */}
+         <TimePicker
+        onChange={time=>this.setState({start_time: time})}
+         value={ this.state.start_time}
       />
      
       <label className="col-sm-0 control-label"> : שעת תחילת מבצע <br></br> <br></br></label>
 
-      <input
+      {/* <input
         type='text'
         onChange={text => this.setState({end_time: text.target.value})}
         placeholder="09:00 AM"
         pattern="(0[1-9])|(1[0-2]):([0-5][0-9])\s((a|p|A|P)(m|M))"
+      /> */}
+         <TimePicker
+        onChange={time=>this.setState({end_time: time})}
+         value={ this.state.end_time}
       />
       <label className="col-sm-0 control-label"> : שעת סיום מבצע <br></br><br></br> </label>
       
