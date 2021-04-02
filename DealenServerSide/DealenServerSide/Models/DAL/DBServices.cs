@@ -5,6 +5,7 @@ using System.Data;
 using System.Text;
 using System.Collections.Generic;
 using DealenServerSide.Models;
+using System.Device.Location;
 using System.Globalization;
 using System.Runtime.Remoting.Messaging;
 

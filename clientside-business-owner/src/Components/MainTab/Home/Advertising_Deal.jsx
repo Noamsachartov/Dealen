@@ -26,7 +26,9 @@ export default class MyForm extends React.Component {
         description: '',
         image: null,
         Categories: [],
-        Tags: []
+        Tags: [],
+        select_cats: [],
+        select_tags: []
      };
      this.onImageChange = this.onImageChange.bind(this);
      this.apiUrl = 'http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal';
@@ -36,34 +38,36 @@ export default class MyForm extends React.Component {
 
   componentDidMount(){
     this.getCategory();
+    this.getTags();
 }
 getCategory=()=>{
     const cats = [];
     const url ="http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Category"
+
     fetch(url)
     .then(response => response.json())
     .then(data => {
         data.forEach((item) => {
-            cats.push(item.Id);
+            cats.push(item);
         });
         this.setState({Categories:[...cats]});
     });
     console.log(this.state.Categories)
-    alert(this.state.Categories)
 }
 
 getTags=()=>{
-  const ings = [];
-  const url ="http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Category"
+  const tag = [];
+  const url ="http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/GetTags"
+
   fetch(url)
   .then(response => response.json())
   .then(data => {
       data.forEach((item) => {
-          ings.push(item.Id);
+          tag.push(item);
       });
-      this.setState({ingredients:[...ings]});
+      this.setState({Tags:[...tag]});
   });
-  console.log(this.state.ingredients)
+  console.log(this.state.Tags)
 }
 
   onImageChange = event => {
@@ -86,8 +90,7 @@ getTags=()=>{
         business_id: is_logged,
         business_Name: "Uri ha maniak", // Remember to change
         date: "", // Remember to change
-        category: "אסייתי", // Remember to change
-        cat_id: 1, // Remember to change
+        categories: "אסייתי", // Remember to change
         name: this.state.deal_name,
         startime: this.state.start_time,
         endtime: this.state.end_time,
@@ -116,16 +119,26 @@ getTags=()=>{
     this.setState({username: event.target.value});
   }
 
-  changedCheckedValues=(itemId,checked)=>{
-    let ings = [...this.state.ingredients];
-    ings.find(item=>item.ing.id===itemId).checked = checked;
-    this.setState({ingredients:[...ings]});
+  changedCheckedValuescat=(itemId,checked)=>{
+    let cats = [...this.state.select_cats];
+    cats.find(item=>item.ing.id===itemId).checked = checked;
+    this.setState({select_cats:[...cats]});
+    console.log(this.state.select_cats);
+    var b= new Date();
+    console.log(b)
+}
+
+changedCheckedValuestag=(itemId,checked)=>{
+  let ings = [...this.state.ingredients];
+  ings.find(item=>item.ing.id===itemId).checked = checked;
+  this.setState({ingredients:[...ings]});
 }
 
 
   render() {
-    if(this.state.Categories)
+    if(this.state.Categories&&this.state.Tags)
     { 
+      console.log(this.state.Tags)
     return (
       <form onSubmit={this.mySubmitHandler}>
       <h1>פרסום מבצע </h1>
@@ -134,11 +147,21 @@ getTags=()=>{
         onChange={text => this.setState({deal_name: text.target.value})}
       />
       <label className="col-sm-0 control-label"> : שם המבצע <br></br><br></br></label>
+      <label className="col-sm-0 control-label"> : בחר קטגוריות <br></br><br></br></label>
+
       {
                         this.state.Categories?.length>0&&
-                        this.state.Categories?.map((item,key)=><CheckInput checked={item.checked} changeChecked={this.changedCheckedValues} id={item.ing.id} key={key} label={item.ing.name}/>)
+                        this.state.Categories?.map((item,key)=><CheckInput checked={item.checked} changeChecked={this.changedCheckedValuescat} id={item.Id} key={key} label={item.Name}/>)
                     }
       <br></br>
+      <br></br>
+
+      <label className="col-sm-0 control-label"> : בחר תגיות לחיפוש מבצע <br></br><br></br></label>
+
+      {
+                        this.state.Tags?.length>0&&
+                        this.state.Tags?.map((item,key)=><CheckInput checked={item.checked} changeChecked={this.changedCheckedValuestag} id={item.Id} key={key} label={item.Name}/>)
+                    }
       <br></br>
       <input
         type='text'
