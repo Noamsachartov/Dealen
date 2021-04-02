@@ -100,8 +100,8 @@ public class DBServices
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', '{4}','{5}','{6}','{7}','{8}','{9}','{10}');", businesses.Bname, businesses.Baddress, businesses.Bphone, businesses.Manager,businesses.Bmail, businesses.Password,businesses.Opentime,businesses.Closetime, businesses.Bimage, businesses.Bdescription,businesses.Btypebus);
-        String prefixc = "INSERT INTO [Businesses_2021] " + "([bname],[baddress],[bphone],[manager],[bmail],[password],[opentime],[closetime],[bimage],[bdescription],[btype])";
+        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', '{4}','{5}','{6}','{7}','{8}','{9}');", businesses.Bname, businesses.Baddress, businesses.Bphone, businesses.Manager,businesses.Bmail, businesses.Password,businesses.Opentime,businesses.Closetime, businesses.Bimage, businesses.Bdescription);
+        String prefixc = "INSERT INTO [Businesses_2021] " + "([bname],[baddress],[bphone],[manager],[bmail],[password],[opentime],[closetime],[bimage],[bdescription])";
         String get_id = "SELECT SCOPE_IDENTITY();";
         command = prefixc + sb.ToString() + get_id;
 
@@ -159,8 +159,8 @@ public class DBServices
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
         var f = customer.Birthdate.ToString("yyyy-MM-dd");
-        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', '{4}', '{5}','{6}','{7}','{8}','{9}','{10}');", customer.Cust_fname, customer.Cust_address, customer.Cust_phone, customer.Cust_mail, f, customer.Password, customer.Image, customer.Cust_lname,customer.P_category, customer.P_type, customer.P_distance);
-        String prefixc = "INSERT INTO [Customer_2021] " + "([cust_fname],[cust_address],[cust_phone],[cust_mail],[birthdate],[password],[image],[cust_lname],[P_Category],[P_TypeBus],[P_Distance])";
+        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', '{4}', '{5}','{6}','{7}');", customer.Cust_fname, customer.Cust_address, customer.Cust_phone, customer.Cust_mail, f, customer.Password, customer.Image, customer.Cust_lname);
+        String prefixc = "INSERT INTO [Customer_2021] " + "([cust_fname],[cust_address],[cust_phone],[cust_mail],[birthdate],[password],[image],[cust_lname])";
         String get_id = "SELECT SCOPE_IDENTITY();";
         command = prefixc + sb.ToString() + get_id;
 
@@ -249,6 +249,9 @@ public class DBServices
                 String cStr3 = BuildInsertCommandTags(deal, numEffected2);      // helper method to build the insert tags
                 cmd = CreateCommand(cStr3, con);
                 int numEffected3 = cmd.ExecuteNonQuery();
+                String cStr4 = BuildInsertCommandCats(deal, numEffected2);      // helper method to build the insert tags
+                cmd = CreateCommand(cStr4, con);
+                int numEffected4 = cmd.ExecuteNonQuery();
                 return numEffected;
 
 
@@ -300,7 +303,7 @@ public class DBServices
         StringBuilder sb = new StringBuilder();
         var d = deal.Date.ToString("yyyy-MM-dd");
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values({0}, {1},{2},'True','{3}','{4}','{5}');", deal.Business_id, deal_id, deal.Discount, deal.Startime,deal.Endtime,d);
+        sb.AppendFormat("Values({0}, {1},{2},'True','{3}','{4}','{5}');", deal.Business_id, deal_id, deal.Discount, deal.Startime,deal.Endtime,deal.Date);
         String prefixc = "INSERT INTO [dealInbus_2021] " + "([business_id],[deal_id],[discount],[active],[startime],[endtime],[date])";
         String get_id = "SELECT SCOPE_IDENTITY();";
         command = prefixc + sb.ToString() + get_id;
@@ -318,6 +321,31 @@ public class DBServices
         foreach (var item in deal.Tags)
         {
             TagsInsert += " (" + item.ToString() +"," +deal_id.ToString() + ") ,";
+        }
+        TagsInsert = TagsInsert.Remove(TagsInsert.Length - 1);
+
+        StringBuilder sb = new StringBuilder();
+        sb.AppendFormat(" Values " + TagsInsert);
+        String prefixc = "Insert into TagsInDeals_2021 (Tag_Id,Deal_id)";
+        //String get_id = "SELECT SCOPE_IDENTITY();";
+        //command = prefixc + sb.ToString() + get_id;
+        command = prefixc + sb.ToString();
+
+        return command;
+
+
+
+    }
+
+    private String BuildInsertCommandCats(Deal deal, int deal_id)
+    {
+        String command;
+        command = "";
+
+        string TagsInsert = "";
+        foreach (var item in deal.Tags)
+        {
+            TagsInsert += " (" + item.ToString() + "," + deal_id.ToString() + ") ,";
         }
         TagsInsert = TagsInsert.Remove(TagsInsert.Length - 1);
 
@@ -1432,7 +1460,7 @@ public class DBServices
     {
         String command;
         command = "INSERT INTO DataOfCust_2021 " +
-            "SELECT d.id, dic.dealincust_id, dib.business_id, c.id,t.Tag_Id, dib.discount, CONVERT (TIME, GETDATE()) ,DATEPART(dw,GETDATE()) , b.btype " +
+            "SELECT d.id, dic.dealincust_id, dib.business_id, c.id,t.Tag_Id dib.discount,DATEPART(dw,GETDATE()), CONVERT (TIME, GETDATE()) " +
             "FROM dealIncust_2021 AS dic INNER JOIN dealinbus_2021 AS dib ON dic.dealinbus_id=dib.id " +
             "INNER JOIN Businesses_2021 AS b ON b.bid=dib.business_id " +
             "INNER JOIN Deal_2021 AS d ON dib.deal_id=d.id " +
