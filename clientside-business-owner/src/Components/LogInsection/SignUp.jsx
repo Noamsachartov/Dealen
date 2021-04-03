@@ -83,9 +83,9 @@ class SignUp extends React.Component {
 
   mySubmitHandler = (event) => {
     event.preventDefault(); //
+    console.log(this.state.btype)
     
-    
-    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/businesses"
+    var apiUrl = "http://localhost:57075/api/businesses"
     fetch(apiUrl, {
       method: 'POST',
       body: JSON.stringify({
@@ -99,7 +99,7 @@ class SignUp extends React.Component {
         bmail: this.state.email,
         password: this.state.password,
         bimage: this.state.image,
-        btype: this.state.btype
+        Btypebus: this.state.btype
       }),
       headers: {
         Accept: 'application/json',

@@ -17,7 +17,7 @@ namespace DealenServerSide.Models
         TimeSpan startime;
         TimeSpan endtime;
         string image; 
-        int cat_id;
+        int[] cat_id;
         int discount;
         Businesses bus_rest;
         DateTime date;
@@ -35,7 +35,7 @@ namespace DealenServerSide.Models
         public TimeSpan Startime { get => startime; set => startime = value; }
         public TimeSpan Endtime { get => endtime; set => endtime = value; }
         public string Image { get => image; set => image = value; }
-        public int Cat_id { get => cat_id; set => cat_id = value; }
+        public int[] Cat_id { get => cat_id; set => cat_id = value; }
         public int Business_id { get => business_id; set => business_id = value; }
         public int Discount { get => discount; set => discount = value; }
         public DateTime Date { get => date; set => date = value; }
@@ -47,7 +47,7 @@ namespace DealenServerSide.Models
 
         public Deal() { }
 
-        public Deal(int id, string name, string description, string business_Name, string category, TimeSpan startime, TimeSpan endtime, string image, int cat_id, int business_id, int discount, DateTime date, int coupon, int[] tags, bool isLike)
+        public Deal(int id, string name, string description, string business_Name, string category, TimeSpan startime, TimeSpan endtime, string image, int[] cat_id, int business_id, int discount, DateTime date, int coupon, int[] tags, bool isLike)
         {
             Id = id;
             Name = name;

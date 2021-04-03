@@ -92,13 +92,13 @@ getTags=()=>{
     const TagsToDB = this.state.Tags.filter(item=>item.checked).map((item)=>item.Id);
 
     var is_logged = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
-    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal"
+    var apiUrl = "http://localhost:57075/api/Deal"
     fetch(apiUrl, {
       method: 'POST',
       body: JSON.stringify({
-        business_id: is_logged,
+        business_id: 29,
         date: this.today, // Remember to change
-        categories: CatsToDB, // Remember to change
+        cat_id: CatsToDB, // Remember to change
         tags: TagsToDB, // Remember to change
         name: this.state.deal_name,
         startime: this.state.start_time,
