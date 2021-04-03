@@ -5,9 +5,10 @@ using System.Data;
 using System.Text;
 using System.Collections.Generic;
 using DealenServerSide.Models;
-using System.Device.Location;
+using static System.Device.Location.GeoCoordinate;
 using System.Globalization;
 using System.Runtime.Remoting.Messaging;
+
 
 public class DBServices
 {
@@ -97,11 +98,15 @@ public class DBServices
     {
         String command;
         command = "";
+      
+        //System.Device.Location.GeoCoordinate location1 = new System.Device.Location.GeoCoordinate(-29.83245, 31.04034);
+        //System.Device.Location.GeoCoordinate location2 = new System.Device.Location.GeoCoordinate(-51.39792, -0.12084);
+        //double distance = location1.GetDistanceTo(location2);
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', '{4}','{5}','{6}','{7}','{8}','{9}');", businesses.Bname, businesses.Baddress, businesses.Bphone, businesses.Manager,businesses.Bmail, businesses.Password,businesses.Opentime,businesses.Closetime, businesses.Bimage, businesses.Bdescription);
-        String prefixc = "INSERT INTO [Businesses_2021] " + "([bname],[baddress],[bphone],[manager],[bmail],[password],[opentime],[closetime],[bimage],[bdescription])";
+        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', '{4}','{5}','{6}','{7}','{8}','{9}','{10}',{11},{12});", businesses.Bname, businesses.Baddress, businesses.Bphone, businesses.Manager,businesses.Bmail, businesses.Password,businesses.Opentime,businesses.Closetime, businesses.Bimage, businesses.Bdescription, businesses.Btypebus, businesses.Latitude,businesses.Longitude);
+        String prefixc = "INSERT INTO [Businesses_2021] " + "([bname],[baddress],[bphone],[manager],[bmail],[password],[opentime],[closetime],[bimage],[bdescription],[btype],[latitude],[longitude])";
         String get_id = "SELECT SCOPE_IDENTITY();";
         command = prefixc + sb.ToString() + get_id;
 
@@ -209,13 +214,38 @@ public class DBServices
         }
 
     }
-    //--------------------------------------------------------------------
+
     private String BuildUpdateCommand(int id, Customer customer)
     {
         String command;
-        command = "UPDATE Customer_2021 set P_Category = '"+ customer.P_category +"', P_TypeBus='"+ customer.P_type +"', P_Distance='" + customer.P_distance + "' where cust_id = " + id.ToString();
+        command = "";
+
+        string CatsInsert = "";
+        foreach (var item in customer.P_category)
+        {
+            CatsInsert += " (" + id.ToString() + "," + item.ToString() + ") ,";
+        }
+        CatsInsert = CatsInsert.Remove(CatsInsert.Length - 1);
+
+        StringBuilder sb = new StringBuilder();
+        sb.AppendFormat(" Values " + CatsInsert);
+        String prefixc = "Insert into CatInCust_2021 (Cust_id,Cat_id)";
+        //String get_id = "SELECT SCOPE_IDENTITY();";
+        //command = prefixc + sb.ToString() + get_id;
+        command = prefixc + sb.ToString();
+
         return command;
+
+
+
     }
+    //--------------------------------------------------------------------
+    //private String BuildUpdateCommand(int id, Customer customer)
+    //{
+    //    String command;
+    //    command = "UPDATE Customer_2021 set P_Category = '"+ customer.P_category +"', P_TypeBus='"+ customer.P_type +"', P_Distance='" + customer.P_distance + "' where cust_id = " + id.ToString();
+    //    return command;
+    //}
 
     //הכנסה מבצע חדש
     public int Insert(Deal deal)
@@ -249,7 +279,7 @@ public class DBServices
                 String cStr3 = BuildInsertCommandTags(deal, numEffected2);      // helper method to build the insert tags
                 cmd = CreateCommand(cStr3, con);
                 int numEffected3 = cmd.ExecuteNonQuery();
-                String cStr4 = BuildInsertCommandCats(deal, numEffected2);      // helper method to build the insert tags
+                String cStr4 = BuildInsertCommandCats(deal, numEffected);      // helper method to build the insert tags
                 cmd = CreateCommand(cStr4, con);
                 int numEffected4 = cmd.ExecuteNonQuery();
                 return numEffected;
@@ -342,16 +372,16 @@ public class DBServices
         String command;
         command = "";
 
-        string TagsInsert = "";
-        foreach (var item in deal.Tags)
+        string CatsInsert = "";
+        foreach (var item in deal.Cat_id)
         {
-            TagsInsert += " (" + item.ToString() + "," + deal_id.ToString() + ") ,";
+            CatsInsert += " (" + deal_id.ToString() + "," + item.ToString() + ") ,";
         }
-        TagsInsert = TagsInsert.Remove(TagsInsert.Length - 1);
+        CatsInsert = CatsInsert.Remove(CatsInsert.Length - 1);
 
         StringBuilder sb = new StringBuilder();
-        sb.AppendFormat(" Values " + TagsInsert);
-        String prefixc = "Insert into CatsInDeals_2021 (Deal_id, Cag_Id)";
+        sb.AppendFormat(" Values " + CatsInsert);
+        String prefixc = "Insert into CatInDeal_2021 (Deal_id, Cat_id)";
         //String get_id = "SELECT SCOPE_IDENTITY();";
         //command = prefixc + sb.ToString() + get_id;
         command = prefixc + sb.ToString();

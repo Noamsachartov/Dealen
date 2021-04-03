@@ -19,6 +19,8 @@ namespace DealenServerSide.Models
         TimeSpan opentime;
         TimeSpan closetime;
         string bimage;
+        double latitude;
+        double longitude;
         
             
 
@@ -34,11 +36,12 @@ namespace DealenServerSide.Models
         public TimeSpan Opentime { get => opentime; set => opentime = value; }
         public TimeSpan Closetime { get => closetime; set => closetime = value; }
         public string Bimage { get => bimage; set => bimage = value; }
-        
+        public double Latitude { get => latitude; set => latitude = value; }
+        public double Longitude { get => longitude; set => longitude = value; }
 
         public Businesses() { }
 
-        public Businesses(int bid, string bname, string btypebus, string baddress, string bphone, string manager, string bdescription, string bmail, string password, TimeSpan opentime, TimeSpan closetime, string bimage)
+        public Businesses(int bid, string bname, string btypebus, string baddress, string bphone, string manager, string bdescription, string bmail, string password, TimeSpan opentime, TimeSpan closetime, string bimage, double latitude, double longitude)
         {
             Bid = bid;
             Bname = bname;
@@ -52,6 +55,8 @@ namespace DealenServerSide.Models
             Opentime = opentime;
             Closetime = closetime;
             Bimage = bimage;
+            Latitude = latitude;
+            Longitude = longitude;
         }
 
         public int Insert()
