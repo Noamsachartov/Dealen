@@ -1595,7 +1595,7 @@ public class DBServices
         List<Deal> dlist = new List<Deal>();
         SqlConnection con = null;
 
-        var prametre = new List<string>() { /* "Type_Bus" , */ "Id_Cat", "Time", "Discount" };
+        var prametre = new List<string>() { "Type_Bus" , "Id_Cat", "Dist_id",  };
        // var Sort_Pram = new List<string>() {};
         var all_results = new Dictionary<string, int>() { }; 
         var Weight_per_value= new Dictionary<int, int>() { };
