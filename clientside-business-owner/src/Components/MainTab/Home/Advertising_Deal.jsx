@@ -89,14 +89,16 @@ getTags=()=>{
   mySubmitHandler = (event) => {
     event.preventDefault(); //
     const CatsToDB = this.state.Categories.filter(item=>item.checked).map((item)=>item.Id);
+    console.log(CatsToDB);
     const TagsToDB = this.state.Tags.filter(item=>item.checked).map((item)=>item.Id);
+    console.log(TagsToDB);
 
     var is_logged = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
-    var apiUrl = "http://localhost:57075/api/Deal"
+    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal"
     fetch(apiUrl, {
       method: 'POST',
       body: JSON.stringify({
-        business_id: 29,
+        business_id: is_logged,
         date: this.today, // Remember to change
         cat_id: CatsToDB, // Remember to change
         tags: TagsToDB, // Remember to change
@@ -196,7 +198,7 @@ changedCheckedValuestag=(itemId,checked)=>{
         pattern="(0[1-9])|(1[0-2]):([0-5][0-9])\s((a|p|A|P)(m|M))"
       /> */}
          <TimePicker
-        onChange={time=>this.setState({end_time: time})}
+        onChange={time1=>this.setState({end_time: time1})}
          value={ this.state.end_time}
       />
       <label className="col-sm-0 control-label"> : שעת סיום מבצע <br></br><br></br> </label>

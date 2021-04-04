@@ -70,7 +70,9 @@ class SignUp extends React.Component {
       opentime: '',
       closetime: '',
       email: '',
-      password: ''
+      password: '',
+      latitude:0,
+      longitude:0
     };
     
     this.onImageChange = this.onImageChange.bind(this);
@@ -85,9 +87,7 @@ class SignUp extends React.Component {
     }
   };
 
-  mySubmitHandler = (event) => {
-    event.preventDefault(); //
-    
+  convertaddress = async () => {
     Geocode.fromAddress(this.state.address).then(
       (response) => {
         const { lat, lng } = response.results[0].geometry.location;
@@ -100,42 +100,51 @@ class SignUp extends React.Component {
       }
     );
 
+
+
+  }
+  mySubmitHandler = (event) => {
+    event.preventDefault(); //
+    this.convertaddress();
     
-    var apiUrl = "http://localhost:57075/api/businesses"
-    fetch(apiUrl, {
-      method: 'POST',
-      body: JSON.stringify({
-        bname: this.state.BusinessName,
-        manager: this.state.managerName,
-        bphone: this.state.phone,
-        baddress: this.state.address,
-        bdescription: this.state.description,
-        opentime: this.state.opentime,
-        closetime: this.state.closetime,
-        bmail: this.state.email,
-        password: this.state.password,
-        bimage: this.state.image,
-        Btypebus: this.state.btype,
-        latitude: this.state.latitude,
-        longitude: this.state.longitude
+    if(this.state.latitude && this.state.longitude){
+    
+      var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1n/api/businesses"
+      fetch(apiUrl, {
+        method: 'POST',
+        body: JSON.stringify({
+          bname: this.state.BusinessName,
+          manager: this.state.managerName,
+          bphone: this.state.phone,
+          baddress: this.state.address,
+          bdescription: this.state.description,
+          opentime: this.state.opentime,
+          closetime: this.state.closetime,
+          bmail: this.state.email,
+          password: this.state.password,
+          bimage: this.state.image,
+          Btypebus: this.state.btype,
+          latitude: this.state.latitude,
+          longitude: this.state.longitude
 
-      }),
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson);
+        }),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
       })
-      .catch((error) => {
-        alert(JSON.stringify(error));
-        console.error(error);
-      });
+        .then((response) => response.json())
+        .then((responseJson) => {
+          console.log(responseJson);
+        })
+        .catch((error) => {
+          alert(JSON.stringify(error));
+          console.error(error);
+        });
 
-    alert("You are submitting " + this.state.username);
-    console.log(this.state);
+      alert("You are submitting " + this.state.username);
+      console.log(this.state);
+    }
   }
 
   handleChange = (event) => {

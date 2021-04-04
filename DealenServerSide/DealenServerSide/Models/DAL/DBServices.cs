@@ -339,7 +339,7 @@ public class DBServices
         StringBuilder sb = new StringBuilder();
         var d = deal.Date.ToString("yyyy-MM-dd");
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values({0}, {1},{2},'True','{3}','{4}','{5}');", deal.Business_id, deal_id, deal.Discount, deal.Startime,deal.Endtime,deal.Date);
+        sb.AppendFormat("Values({0}, {1},{2},'True','{3}','{4}','{5}');", deal.Business_id, deal_id, deal.Discount, deal.Startime,deal.Endtime,d);
         String prefixc = "INSERT INTO [dealInbus_2021] " + "([business_id],[deal_id],[discount],[active],[startime],[endtime],[date])";
         String get_id = "SELECT SCOPE_IDENTITY();";
         command = prefixc + sb.ToString() + get_id;
@@ -651,7 +651,7 @@ public class DBServices
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat(" SELECT dealInbus_2021.id,dealInbus_2021.business_id, Businesses_2021.bname, dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount, Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name, FROM Businesses_2021 INNER JOIN dealInbus_2021 ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id ");
+            sb.AppendFormat(" SELECT dealInbus_2021.id,dealInbus_2021.business_id, Businesses_2021.bname, dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount, Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name FROM Businesses_2021 INNER JOIN dealInbus_2021 ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id ");
                 selectSTR = sb.ToString(); 
         
 
@@ -766,7 +766,7 @@ public class DBServices
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat("SELECT DISTINCT dealInbus_2021.id,Businesses_2021.bname, dealInbus_2021.business_id, dealInbus_2021.discount, dealInbus_2021.active, dealInbus_2021.startime, " +
+            sb.AppendFormat("SELECT DISTINCT dealInbus_2021.id, Businesses_2021.bname, dealInbus_2021.business_id, dealInbus_2021.discount, dealInbus_2021.active, dealInbus_2021.startime, " +
                 "dealInbus_2021.endtime, dealInbus_2021.date, Deal_2021.name as deal_name , Deal_2021.description, Deal_2021.image " +
                 "FROM dealInbus_2021 INNER JOIN " +
                 "Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.Id INNER JOIN " +
@@ -1392,7 +1392,7 @@ public class DBServices
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat("SELECT C.id, C.name, C.image " +
+            sb.AppendFormat("SELECT Category_2021.id, Category_2021.name, Category_2021.image " +
                 "FROM  Category_2021 INNER JOIN CatInDeal_2021 ON Category_2021.id = CatInDeal_2021.Cat_id INNER JOIN Deal_2021 as D ON CatInDeal_2021.Deal_id = D.Id " +
                 "INNER JOIN dealInbus_2021 as db on db.deal_id=D.id " +
                 " WHERE db.date=CONVERT(date, GETDATE()) and CONVERT(time, GETDATE()) BETWEEN db.startime and db.endtime");

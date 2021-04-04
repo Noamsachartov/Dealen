@@ -9,7 +9,7 @@ namespace DealenServerSide.Models
     {
         int bid;
         string bname;
-        string btypebus;
+        int btypebus;
         string baddress;
         string bphone;
         string manager;
@@ -26,7 +26,7 @@ namespace DealenServerSide.Models
 
         public int Bid { get => bid; set => bid = value; }
         public string Bname { get => bname; set => bname = value; }
-        public string Btypebus { get => btypebus; set => btypebus = value; }
+        public int Btypebus { get => btypebus; set => btypebus = value; }
         public string Baddress { get => baddress; set => baddress = value; }
         public string Bphone { get => bphone; set => bphone = value; }
         public string Manager { get => manager; set => manager = value; }
@@ -41,7 +41,7 @@ namespace DealenServerSide.Models
 
         public Businesses() { }
 
-        public Businesses(int bid, string bname, string btypebus, string baddress, string bphone, string manager, string bdescription, string bmail, string password, TimeSpan opentime, TimeSpan closetime, string bimage, double latitude, double longitude)
+        public Businesses(int bid, string bname, int btypebus, string baddress, string bphone, string manager, string bdescription, string bmail, string password, TimeSpan opentime, TimeSpan closetime, string bimage, double latitude, double longitude)
         {
             Bid = bid;
             Bname = bname;
