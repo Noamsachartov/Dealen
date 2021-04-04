@@ -4,10 +4,13 @@ using System.Web.Configuration;
 using System.Data;
 using System.Text;
 using System.Collections.Generic;
+using System.Linq;
 using DealenServerSide.Models;
 using System.Device.Location;
 using System.Globalization;
 using System.Runtime.Remoting.Messaging;
+using System.Drawing;
+using System.Web.WebPages;
 
 public class DBServices
 {
@@ -91,7 +94,7 @@ public class DBServices
 
     }
 
-   //קריאה להכנסת בעל עסק
+    //קריאה להכנסת בעל עסק
 
     private String BuildInsertCommand(Businesses businesses)
     {
@@ -100,7 +103,7 @@ public class DBServices
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', '{4}','{5}','{6}','{7}','{8}','{9}','{10}');", businesses.Bname, businesses.Baddress, businesses.Bphone, businesses.Manager,businesses.Bmail, businesses.Password,businesses.Opentime,businesses.Closetime, businesses.Bimage, businesses.Bdescription,businesses.Btypebus);
+        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', '{4}','{5}','{6}','{7}','{8}','{9}','{10}');", businesses.Bname, businesses.Baddress, businesses.Bphone, businesses.Manager, businesses.Bmail, businesses.Password, businesses.Opentime, businesses.Closetime, businesses.Bimage, businesses.Bdescription, businesses.Btypebus);
         String prefixc = "INSERT INTO [Businesses_2021] " + "([bname],[baddress],[bphone],[manager],[bmail],[password],[opentime],[closetime],[bimage],[bdescription],[btype])";
         String get_id = "SELECT SCOPE_IDENTITY();";
         command = prefixc + sb.ToString() + get_id;
@@ -159,7 +162,7 @@ public class DBServices
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
         var f = customer.Birthdate.ToString("yyyy-MM-dd");
-        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', '{4}', '{5}','{6}','{7}','{8}','{9}','{10}');", customer.Cust_fname, customer.Cust_address, customer.Cust_phone, customer.Cust_mail, f, customer.Password, customer.Image, customer.Cust_lname,customer.P_category, customer.P_type, customer.P_distance);
+        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', '{4}', '{5}','{6}','{7}','{8}','{9}','{10}');", customer.Cust_fname, customer.Cust_address, customer.Cust_phone, customer.Cust_mail, f, customer.Password, customer.Image, customer.Cust_lname, customer.P_category, customer.P_type, customer.P_distance);
         String prefixc = "INSERT INTO [Customer_2021] " + "([cust_fname],[cust_address],[cust_phone],[cust_mail],[birthdate],[password],[image],[cust_lname],[P_Category],[P_TypeBus],[P_Distance])";
         String get_id = "SELECT SCOPE_IDENTITY();";
         command = prefixc + sb.ToString() + get_id;
@@ -184,7 +187,7 @@ public class DBServices
             throw (ex);
         }
 
-        String cStr = BuildUpdateCommand(id,customer);      // helper method to build the insert string
+        String cStr = BuildUpdateCommand(id, customer);      // helper method to build the insert string
 
         cmd = CreateCommand(cStr, con);             // create the command
 
@@ -213,7 +216,7 @@ public class DBServices
     private String BuildUpdateCommand(int id, Customer customer)
     {
         String command;
-        command = "UPDATE Customer_2021 set P_Category = '"+ customer.P_category +"', P_TypeBus='"+ customer.P_type +"', P_Distance='" + customer.P_distance + "' where cust_id = " + id.ToString();
+        command = "UPDATE Customer_2021 set P_Category = '" + customer.P_category + "', P_TypeBus='" + customer.P_type + "', P_Distance='" + customer.P_distance + "' where cust_id = " + id.ToString();
         return command;
     }
 
@@ -243,7 +246,7 @@ public class DBServices
             int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // execute the command
             try
             {
-                String cStr1 = BuildInsertCommandlink(deal,numEffected);      // helper method to build the insert string
+                String cStr1 = BuildInsertCommandlink(deal, numEffected);      // helper method to build the insert string
                 cmd = CreateCommand(cStr1, con);
                 int numEffected2 = Convert.ToInt32(cmd.ExecuteScalar());
                 String cStr3 = BuildInsertCommandTags(deal, numEffected2);      // helper method to build the insert tags
@@ -288,11 +291,11 @@ public class DBServices
         command = prefixc + sb.ToString() + get_id;
 
         return command;
-        
+
     }
 
     // לבניית קריאה לטבלה מקשרת של מבצעים ובעלי עסקים Dealen
-    private String BuildInsertCommandlink(Deal deal,int deal_id)
+    private String BuildInsertCommandlink(Deal deal, int deal_id)
     {
         String command;
         command = "";
@@ -300,13 +303,13 @@ public class DBServices
         StringBuilder sb = new StringBuilder();
         var d = deal.Date.ToString("yyyy-MM-dd");
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values({0}, {1},{2},'True','{3}','{4}','{5}');", deal.Business_id, deal_id, deal.Discount, deal.Startime,deal.Endtime,d);
+        sb.AppendFormat("Values({0}, {1},{2},'True','{3}','{4}','{5}');", deal.Business_id, deal_id, deal.Discount, deal.Startime, deal.Endtime, d);
         String prefixc = "INSERT INTO [dealInbus_2021] " + "([business_id],[deal_id],[discount],[active],[startime],[endtime],[date])";
         String get_id = "SELECT SCOPE_IDENTITY();";
         command = prefixc + sb.ToString() + get_id;
 
         return command;
-        
+
     }
 
     private String BuildInsertCommandTags(Deal deal, int deal_id)
@@ -317,7 +320,7 @@ public class DBServices
         string TagsInsert = "";
         foreach (var item in deal.Tags)
         {
-            TagsInsert += " (" + item.ToString() +"," +deal_id.ToString() + ") ,";
+            TagsInsert += " (" + item.ToString() + "," + deal_id.ToString() + ") ,";
         }
         TagsInsert = TagsInsert.Remove(TagsInsert.Length - 1);
 
@@ -356,8 +359,8 @@ public class DBServices
 
         try
         {
-            return  Convert.ToInt32(cmd.ExecuteScalar()); // execute the command
-   
+            return Convert.ToInt32(cmd.ExecuteScalar()); // execute the command
+
         }
         catch (SqlException ex)
         {
@@ -393,7 +396,7 @@ public class DBServices
         // use a string builder to create the dynamic string
         sb.AppendFormat("Values({0}, {1},'{2}','False',GETDATE());", r, busInCust.Dealinbus_id, busInCust.Dealincust_id);
         String prefixc = "INSERT INTO [dealIncust_2021] " + "([coupon],[dealinbus_id],[dealincust_id],[used],[timegetcoupon])";
-        String get_id = "SELECT "+r+";";
+        String get_id = "SELECT " + r + ";";
         command = prefixc + sb.ToString() + get_id;
 
         return command;
@@ -414,7 +417,7 @@ public class DBServices
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-            String selectSTR = "select cust_id,[cust_fname],[cust_lname],cust_address,cust_phone,birthdate,cust_mail, password,[image] from Customer_2021 where cust_mail = '" + mail.ToString()+ "' and [password] = '" +password.ToString() + "'";
+            String selectSTR = "select cust_id,[cust_fname],[cust_lname],cust_address,cust_phone,birthdate,cust_mail, password,[image] from Customer_2021 where cust_mail = '" + mail.ToString() + "' and [password] = '" + password.ToString() + "'";
             SqlCommand cmd = new SqlCommand(selectSTR, con);
 
             // get a reader
@@ -423,14 +426,14 @@ public class DBServices
             while (dr.Read())
             {   // Read till the end of the data into a row
                 Customer c = new Customer();
-                
-                    c.Cust_id = Convert.ToInt32(dr["cust_id"]);
-                    c.Cust_fname = (string)dr["cust_fname"];
-                    c.Cust_lname = (string)dr["cust_lname"];
-                    c.Cust_address = (string)dr["cust_address"];
-                    c.Cust_mail = (string)dr["cust_mail"];
-                    c.Cust_phone = (string)dr["cust_phone"];
-                    c.Password = (string)dr["password"];
+
+                c.Cust_id = Convert.ToInt32(dr["cust_id"]);
+                c.Cust_fname = (string)dr["cust_fname"];
+                c.Cust_lname = (string)dr["cust_lname"];
+                c.Cust_address = (string)dr["cust_address"];
+                c.Cust_mail = (string)dr["cust_mail"];
+                c.Cust_phone = (string)dr["cust_phone"];
+                c.Password = (string)dr["password"];
 
                 if (!dr.IsDBNull(6))
                 {
@@ -440,7 +443,7 @@ public class DBServices
                 {
                     c.Image = string.Empty;
                 }
-                
+
                 customers.Add(c);
             }
 
@@ -460,7 +463,7 @@ public class DBServices
 
         }
     }
-    
+
     //Dealen-בדיקה האם בעל עסק קיים במערכת
     public List<Businesses> CheckIfbExits(string bmail, string password)
     {
@@ -483,7 +486,7 @@ public class DBServices
 
                 b.Bid = Convert.ToInt32(dr["bid"]);
                 b.Bname = (string)dr["bname"];
-                b.Baddress= (string)dr["baddress"];
+                b.Baddress = (string)dr["baddress"];
                 b.Bphone = (string)dr["bphone"];
                 b.Manager = (string)dr["manager"];
                 b.Bmail = (string)dr["bmail"];
@@ -491,9 +494,9 @@ public class DBServices
                 b.Opentime = (TimeSpan)dr["opentime"];
                 b.Closetime = (TimeSpan)dr["closetime"];
                 b.Bimage = (string)dr["bimage"];
-                b.Bdescription= (string)dr["bdescription"];
+                b.Bdescription = (string)dr["bdescription"];
 
-  
+
                 blist.Add(b);
             }
 
@@ -585,12 +588,12 @@ public class DBServices
         try
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
-           
-                StringBuilder sb = new StringBuilder();
 
-                sb.AppendFormat(" SELECT dealInbus_2021.id,dealInbus_2021.business_id, Businesses_2021.bname, dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount, Category_2021.name AS catgeory_name, Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name, Deal_2021.cat_id as cat_id  FROM Businesses_2021 INNER JOIN dealInbus_2021 ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id INNER JOIN Category_2021 ON Deal_2021.cat_id = Category_2021.id");
-                selectSTR = sb.ToString(); 
-        
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat(" SELECT dealInbus_2021.id,dealInbus_2021.business_id, Businesses_2021.bname, dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount, Category_2021.name AS catgeory_name, Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name, Deal_2021.cat_id as cat_id  FROM Businesses_2021 INNER JOIN dealInbus_2021 ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id INNER JOIN Category_2021 ON Deal_2021.cat_id = Category_2021.id");
+            selectSTR = sb.ToString();
+
 
             SqlCommand cmd = new SqlCommand(selectSTR, con);
 
@@ -602,9 +605,9 @@ public class DBServices
                 d.Id = Convert.ToInt32(dr["id"]);
                 d.Name = (string)dr["deal_name"];
                 d.Business_Name = (string)dr["bname"];
-                d.Business_id= Convert.ToInt32(dr["business_id"]);
+                d.Business_id = Convert.ToInt32(dr["business_id"]);
                 d.Category = (string)dr["catgeory_name"];
-                d.Cat_id= Convert.ToInt32(dr["cat_id"]);
+                d.Cat_id = Convert.ToInt32(dr["cat_id"]);
                 d.Startime = (TimeSpan)dr["startime"];
                 d.Endtime = (TimeSpan)dr["endtime"];
                 d.Image = (string)dr["image"];
@@ -693,7 +696,7 @@ public class DBServices
 
     }
     //קבלת מבצע לפי קטגוריה
-    public List<Deal> getDealsByCat( int cat_id)
+    public List<Deal> getDealsByCat(int cat_id)
     {
         List<Deal> dlist = new List<Deal>();
         SqlConnection con = null;
@@ -726,7 +729,7 @@ public class DBServices
                 d.Endtime = (TimeSpan)dr["endtime"];
                 d.Image = (string)dr["image"];
                 d.Description = (string)dr["description"];
-                d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"])*100);
+                d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
                 dlist.Add(d);
                 //string starttimeString24Hour = Convert.ToDateTime(context.Request.QueryString["starttime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
                 //string endtimeString24Hour = Convert.ToDateTime(context.Request.QueryString["endtime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
@@ -822,12 +825,12 @@ public class DBServices
 
             sb.AppendFormat("SELECT TOP (10) dealIncust_2021.coupon ,dealInbus_2021.id, dealInbus_2021.business_id, dealInbus_2021.discount, dealInbus_2021.date, dealInbus_2021.endtime, " +
                 "dealInbus_2021.startime, Deal_2021.description, Deal_2021.name as deal_name, Deal_2021.image, Category_2021.name AS catgeory_name,  Businesses_2021.bname " +
-                "FROM  dealIncust_2021 INNER JOIN "+
-                         "dealInbus_2021 ON dealIncust_2021.dealinbus_id = dealInbus_2021.id INNER JOIN "+
-                         "Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id INNER JOIN "+
+                "FROM  dealIncust_2021 INNER JOIN " +
+                         "dealInbus_2021 ON dealIncust_2021.dealinbus_id = dealInbus_2021.id INNER JOIN " +
+                         "Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id INNER JOIN " +
                          "Category_2021 ON Deal_2021.cat_id = Category_2021.id  INNER JOIN " +
-                         "Businesses_2021 ON dealInbus_2021.business_id = Businesses_2021.bid "+
-                 "WHERE(dealIncust_2021.used = 'True') AND(dealIncust_2021.dealincust_id = " + cust_id+ ")  order by dealIncust_2021.timeusecoupon");
+                         "Businesses_2021 ON dealInbus_2021.business_id = Businesses_2021.bid " +
+                 "WHERE(dealIncust_2021.used = 'True') AND(dealIncust_2021.dealincust_id = " + cust_id + ")  order by dealIncust_2021.timeusecoupon");
             selectSTR = sb.ToString();
 
 
@@ -909,9 +912,9 @@ public class DBServices
                 b.Closetime = (TimeSpan)dr["closetime"];
                 b.Bimage = (string)dr["bimage"];
                 b.Bdescription = (string)dr["bdescription"];
-                
+
                 d.Bus_rest = b;
-                
+
                 d.Id = Convert.ToInt32(dr["id"]);
                 d.Name = (string)dr["deal_name"];
                 d.Business_Name = (string)dr["bname"];
@@ -959,7 +962,7 @@ public class DBServices
 
             sb.AppendFormat("select islike " +
                             "from cust_like_2021 " +
-                            "where cust_id = '"+ cust_id + "' and dealInbus_id = '"+ deal_id + "' ");
+                            "where cust_id = '" + cust_id + "' and dealInbus_id = '" + deal_id + "' ");
             selectSTR = sb.ToString();
 
 
@@ -970,7 +973,7 @@ public class DBServices
             while (dr.Read())
             {   // Read till the end of the data into a row
                 Deal d = new Deal();
-               
+
                 d.IsLike = (bool)dr["islike"];
                 dlist.Add(d);
 
@@ -1008,7 +1011,7 @@ public class DBServices
             sb.AppendFormat("SELECT db.id, b.bname, db.business_id as business_id,db.startime, db.endtime, db.discount, c.name AS catgeory_name, d.image, d.description, d.name AS deal_name, d.cat_id as cat_id " +
                             "FROM Businesses_2021 AS b INNER JOIN dealInbus_2021 AS db ON b.bid = db.business_id INNER JOIN Deal_2021 AS d ON " +
                             "db.deal_id = d.id INNER JOIN Category_2021 AS c ON d.cat_id = c.id " +
-                            "WHERE b.bname LIKE '%"+Letter+"%' OR d.name LIKE '%"+Letter+"%' OR c.name LIKE '%"+Letter+"%'");
+                            "WHERE b.bname LIKE '%" + Letter + "%' OR d.name LIKE '%" + Letter + "%' OR c.name LIKE '%" + Letter + "%'");
 
             selectSTR = sb.ToString();
 
@@ -1147,7 +1150,7 @@ public class DBServices
                 Deal d = new Deal();
                 d.Id = Convert.ToInt32(dr["Tag_Id"]);
                 d.Name = (string)dr["name"];
-                
+
                 dlist.Add(d);
             }
 
@@ -1199,7 +1202,7 @@ public class DBServices
                 "inner join TagsInDeals_2021 as TagDeal on deals.id = TagDeal.Deal_id " +
                 "inner join Tags_2021 as Tags on TagDeal.Tag_Id = Tags.Tag_Id " +
                 "where Tags.[name] = '" + TagName + "'  ");
-            }else
+            } else
             {
                 sb.AppendFormat("select deals.id,Tags.[name], b.bname, deal.[name] as deal_name, deal.[description],deal.[image], deal.cat_id, deals.business_id, deals.discount, " +
                 "deals.deal_id, deals.active, deals.startime, deals.endtime, deals.[date] " +
@@ -1209,7 +1212,7 @@ public class DBServices
                 "inner join Tags_2021 as Tags on TagDeal.Tag_Id = Tags.Tag_Id " +
                 "where " + TagsNames);
             }
-           
+
             selectSTR = sb.ToString();
 
 
@@ -1287,7 +1290,7 @@ public class DBServices
                 c.Name = (string)dr["name"];
                 c.Image = (string)dr["image"];
                 clist.Add(c);
-            
+
             }
 
             return clist;
@@ -1346,7 +1349,7 @@ public class DBServices
 
             return clist;
         }
-            catch (Exception ex)
+        catch (Exception ex)
         {
             // write to log
             throw (ex);
@@ -1436,8 +1439,8 @@ public class DBServices
             "FROM dealIncust_2021 AS dic INNER JOIN dealinbus_2021 AS dib ON dic.dealinbus_id=dib.id " +
             "INNER JOIN Businesses_2021 AS b ON b.bid=dib.business_id " +
             "INNER JOIN Deal_2021 AS d ON dib.deal_id=d.id " +
-            "INNER JOIN Category_2021 AS c ON d.cat_id=c.id "+
-            "INNER JOIN TagsInDeals_2021 AS t ON t.Deal_id=d.id "+
+            "INNER JOIN Category_2021 AS c ON d.cat_id=c.id " +
+            "INNER JOIN TagsInDeals_2021 AS t ON t.Deal_id=d.id " +
             "WHERE dic.coupon=" + coupon + " AND dic.Used='True'";
         String get_id = "SELECT SCOPE_IDENTITY();";
         command += get_id;
@@ -1585,5 +1588,125 @@ public class DBServices
             Console.WriteLine("'{0}' is not in the proper format.", value);
         }
     }
-}
 
+
+    public List<Deal> getRecommendSDeals(int cust_id)
+    {
+        List<Deal> dlist = new List<Deal>();
+        SqlConnection con = null;
+
+        var prametre = new List<string>() { /* "Type_Bus" , */ "Id_Cat", "Time", "Discount" };
+       // var Sort_Pram = new List<string>() {};
+        var all_results = new Dictionary<string, int>() { }; 
+        var Weight_per_value= new Dictionary<int, int>() { };
+
+
+        string selectSTR = null;
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            foreach (string p in prametre)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendFormat("select top 1 count (id) as num "+
+                "from DataOfCust_2021 " +
+                "where Id_Dealincust = '"+cust_id+"' "+
+                "group by " + p + " order by count(id) DESC; ");
+
+                selectSTR = sb.ToString();
+                SqlCommand cmd_cat = new SqlCommand(selectSTR, con);
+              //  SqlDataReader d = cmd_cat.ExecuteReader(CommandBehavior.CloseConnection);
+       
+                var result = Convert.ToInt32(cmd_cat.ExecuteScalar());
+                all_results.Add(p, result); // Categroy, TOP1
+       
+            };
+
+            //string max_param = all_results.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
+            IEnumerable<KeyValuePair<string, int>> sorted_results = all_results.OrderByDescending(r => r.Value);
+            //   prametre.Remove(max_param);
+
+            int[,] matrix = new int[6, 4];
+            int current_index = 0;
+            foreach (KeyValuePair<string, int> item in sorted_results)
+            {
+                string max_param = item.Key;
+
+                StringBuilder sb2 = new StringBuilder();
+                sb2.AppendFormat("select " + max_param + ", round(('6' * (COUNT(id) * 100 / (select COUNT(*) from DataOfCust_2021)) / 100.0),0,0) AS SIT " +
+                "from DataOfCust_2021 " +
+                "where Id_Dealincust = '" + cust_id + "' " +
+                "group by " + max_param + " order by count(id) DESC");
+
+                selectSTR = sb2.ToString();
+                SqlCommand cmd_param = new SqlCommand(selectSTR, con);
+                using (SqlDataReader dr = cmd_param.ExecuteReader())
+                {
+
+                    while (dr.Read())
+                    {
+                        Weight_per_value.Add(Convert.ToInt32(dr[max_param]), Convert.ToInt32(dr["SIT"]));
+                    }
+                    //dr.Close();
+                }
+
+                // int j_pram = prametre.IndexOf(prametre.Single(i => i.Contains(max_param)));
+                int j_pram = current_index++;
+
+                {
+
+                    int i = 0;
+                    foreach (KeyValuePair<int, int> entry in Weight_per_value)
+                    {
+                        for (int j = 0; j < entry.Value; j++)
+                            matrix[i++, j_pram] = entry.Key;
+                    }
+                }
+            }
+            //    selectSTR = sb.ToString();
+
+            //SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            //// get a reader
+            //SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+            //while (dr.Read())
+            //{   // Read till the end of the data into a row
+            //    Deal d = new Deal();
+            //    d.Id = Convert.ToInt32(dr["id"]);
+            //    d.Business_Name = (string)dr["bname"];
+            //    d.Business_id = Convert.ToInt32(dr["business_id"]);
+            //    d.Category = (string)dr["catgeory_name"];
+            //    d.Startime = (TimeSpan)dr["startime"];
+            //    d.Endtime = (TimeSpan)dr["endtime"];
+            //    d.Image = (string)dr["image"];
+            //    d.Description = (string)dr["description"];
+            //    d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
+            //    d.Name = (string)dr["deal_name"];
+            //    d.Coupon = Convert.ToInt32(dr["coupon"]);
+            //    //string starttimeString24Hour = Convert.ToDateTime(context.Request.QueryString["starttime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
+            //    //string endtimeString24Hour = Convert.ToDateTime(context.Request.QueryString["endtime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
+            //    //edit.endtime = endtimeString24Hour;
+            //    dlist.Add(d);
+
+            //}
+
+            return dlist;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+
+    }
+
+    }
