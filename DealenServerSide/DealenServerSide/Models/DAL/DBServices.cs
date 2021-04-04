@@ -108,7 +108,6 @@ public class DBServices
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-<<<<<< uri_cat_server
         sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', '{4}','{5}','{6}','{7}','{8}','{9}','{10}',{11},{12});", businesses.Bname, businesses.Baddress, businesses.Bphone, businesses.Manager,businesses.Bmail, businesses.Password,businesses.Opentime,businesses.Closetime, businesses.Bimage, businesses.Bdescription, businesses.Btypebus, businesses.Latitude,businesses.Longitude);
         String prefixc = "INSERT INTO [Businesses_2021] " + "([bname],[baddress],[bphone],[manager],[bmail],[password],[opentime],[closetime],[bimage],[bdescription],[btype],[latitude],[longitude])";
 
@@ -650,8 +649,9 @@ public class DBServices
         try
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+            StringBuilder sb = new StringBuilder();
 
-                sb.AppendFormat(" SELECT dealInbus_2021.id,dealInbus_2021.business_id, Businesses_2021.bname, dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount, Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name, FROM Businesses_2021 INNER JOIN dealInbus_2021 ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id ");
+            sb.AppendFormat(" SELECT dealInbus_2021.id,dealInbus_2021.business_id, Businesses_2021.bname, dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount, Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name, FROM Businesses_2021 INNER JOIN dealInbus_2021 ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id ");
                 selectSTR = sb.ToString(); 
         
 
@@ -1512,11 +1512,10 @@ public class DBServices
                    "dealInbus_2021 ON dealIncust_2021.dealinbus_id = dealInbus_2021.id ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN "+
                    "CatInDeal_2021 INNER JOIN "+
                    "Deal_2021 ON CatInDeal_2021.Deal_id = Deal_2021.Id ON dealInbus_2021.deal_id = Deal_2021.Id "+
-                   "ORDER BY dealIncust_2021.coupon "+
-                   "WHERE dealIncust_2021.coupon=" + coupon + " AND dealIncust_2021.Used='True'";
-
-        String get_id = "SELECT SCOPE_IDENTITY();";
-        command += get_id;
+                   "WHERE dealIncust_2021.coupon=" + coupon + " AND dealIncust_2021.Used='True' "+
+                   "ORDER BY dealIncust_2021.coupon ";
+                   String get_id = "SELECT SCOPE_IDENTITY();";
+                    command += get_id;
 
         return command;
     }
