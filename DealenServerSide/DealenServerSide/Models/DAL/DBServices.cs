@@ -1493,14 +1493,19 @@ public class DBServices
     private String BuildInsertCommandData(int coupon)
     {
         String command;
-        command = "INSERT INTO DataOfCust_2021 " +
-            "SELECT d.id, dic.dealincust_id, dib.business_id, c.id, t.Tag_Id, dib.discount,DATEPART(dw,GETDATE()), CONVERT (TIME, GETDATE()) " +
-            "FROM dealIncust_2021 AS dic INNER JOIN dealinbus_2021 AS dib ON dic.dealinbus_id=dib.id " +
-            "INNER JOIN Businesses_2021 AS b ON b.bid=dib.business_id " +
-            "INNER JOIN Deal_2021 AS d ON dib.deal_id=d.id " +
-            "INNER JOIN Category_2021 AS c ON d.cat_id=c.id "+
-            "INNER JOIN TagsInDeals_2021 AS t ON t.Deal_id=d.id "+
-            "WHERE dic.coupon=" + coupon + " AND dic.Used='True'";
+        command = "INSERT INTO DataOfCust_2021 "+
+                  "SELECT dealIncust_2021.coupon, dealIncust_2021.dealinbus_id,dealIncust_2021.dealincust_id ,dealInbus_2021.business_id, Businesses_2021.btype, dealInbus_2021.discount, CatInDeal_2021.Cat_id,DATEPART(dw, GETDATE()) as 'Date', CONVERT(TIME, GETDATE()) as 'Time', "+
+                   "CASE WHEN dealIncust_2021.distance BETWEEN 0 AND 500 THEN 1 WHEN dealIncust_2021.distance BETWEEN 0 AND 500 THEN 1 WHEN dealIncust_2021.distance BETWEEN 500 AND "+
+                   "1000 THEN 2 WHEN dealIncust_2021.distance BETWEEN 1000 AND 1500 THEN 3 WHEN dealIncust_2021.distance BETWEEN 1500 AND 2000 THEN 4 WHEN dealIncust_2021.distance BETWEEN 2000 AND "+
+                   "2500 THEN 5 WHEN dealIncust_2021.distance BETWEEN 2500 AND 3500 THEN 6 WHEN dealIncust_2021.distance BETWEEN 3500 AND 4500 THEN 7 WHEN dealIncust_2021.distance BETWEEN 4500 AND "+
+                   "10000 THEN 8 WHEN dealIncust_2021.distance > 10000 THEN 9 ELSE 0 END AS dist_id "+
+                   "FROM            Businesses_2021 INNER JOIN "+
+                   "dealIncust_2021 INNER JOIN "+
+                   "dealInbus_2021 ON dealIncust_2021.dealinbus_id = dealInbus_2021.id ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN "+
+                   "CatInDeal_2021 INNER JOIN "+
+                   "Deal_2021 ON CatInDeal_2021.Deal_id = Deal_2021.Id ON dealInbus_2021.deal_id = Deal_2021.Id "+
+                   "ORDER BY dealIncust_2021.coupon "+
+                   "WHERE dealIncust_2021.coupon=" + coupon + " AND dealIncust_2021.Used='True'";
         String get_id = "SELECT SCOPE_IDENTITY();";
         command += get_id;
 
