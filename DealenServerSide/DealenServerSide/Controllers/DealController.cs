@@ -131,6 +131,22 @@ namespace DealenServerSide.Controllers
                 return Content(HttpStatusCode.BadRequest, e);
             }
         }
+        [HttpGet]
+        [Route("api/Deal/RecommendDeal/{cust_id}")]
+        public IHttpActionResult GetRecommendDeal(int cust_id)
+        {
+            try
+            {
+                Deal deal = new Deal();
+                List<Deal> deals = deal.ReadRecommendDeal(cust_id);
+                return Ok(deals);
+
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
 
 
         [HttpGet]
