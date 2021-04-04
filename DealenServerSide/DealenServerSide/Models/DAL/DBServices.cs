@@ -6,11 +6,12 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using DealenServerSide.Models;
-using System.Device.Location;
+using static System.Device.Location.GeoCoordinate;
 using System.Globalization;
 using System.Runtime.Remoting.Messaging;
 using System.Drawing;
 using System.Web.WebPages;
+
 
 public class DBServices
 {
@@ -100,11 +101,17 @@ public class DBServices
     {
         String command;
         command = "";
+      
+        //System.Device.Location.GeoCoordinate location1 = new System.Device.Location.GeoCoordinate(-29.83245, 31.04034);
+        //System.Device.Location.GeoCoordinate location2 = new System.Device.Location.GeoCoordinate(-51.39792, -0.12084);
+        //double distance = location1.GetDistanceTo(location2);
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', '{4}','{5}','{6}','{7}','{8}','{9}','{10}');", businesses.Bname, businesses.Baddress, businesses.Bphone, businesses.Manager, businesses.Bmail, businesses.Password, businesses.Opentime, businesses.Closetime, businesses.Bimage, businesses.Bdescription, businesses.Btypebus);
-        String prefixc = "INSERT INTO [Businesses_2021] " + "([bname],[baddress],[bphone],[manager],[bmail],[password],[opentime],[closetime],[bimage],[bdescription],[btype])";
+<<<<<< uri_cat_server
+        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', '{4}','{5}','{6}','{7}','{8}','{9}','{10}',{11},{12});", businesses.Bname, businesses.Baddress, businesses.Bphone, businesses.Manager,businesses.Bmail, businesses.Password,businesses.Opentime,businesses.Closetime, businesses.Bimage, businesses.Bdescription, businesses.Btypebus, businesses.Latitude,businesses.Longitude);
+        String prefixc = "INSERT INTO [Businesses_2021] " + "([bname],[baddress],[bphone],[manager],[bmail],[password],[opentime],[closetime],[bimage],[bdescription],[btype],[latitude],[longitude])";
+
         String get_id = "SELECT SCOPE_IDENTITY();";
         command = prefixc + sb.ToString() + get_id;
 
@@ -162,8 +169,9 @@ public class DBServices
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
         var f = customer.Birthdate.ToString("yyyy-MM-dd");
-        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', '{4}', '{5}','{6}','{7}','{8}','{9}','{10}');", customer.Cust_fname, customer.Cust_address, customer.Cust_phone, customer.Cust_mail, f, customer.Password, customer.Image, customer.Cust_lname, customer.P_category, customer.P_type, customer.P_distance);
-        String prefixc = "INSERT INTO [Customer_2021] " + "([cust_fname],[cust_address],[cust_phone],[cust_mail],[birthdate],[password],[image],[cust_lname],[P_Category],[P_TypeBus],[P_Distance])";
+        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', '{4}', '{5}','{6}','{7}');", customer.Cust_fname, customer.Cust_address, customer.Cust_phone, customer.Cust_mail, f, customer.Password, customer.Image, customer.Cust_lname);
+        String prefixc = "INSERT INTO [Customer_2021] " + "([cust_fname],[cust_address],[cust_phone],[cust_mail],[birthdate],[password],[image],[cust_lname])";
+
         String get_id = "SELECT SCOPE_IDENTITY();";
         command = prefixc + sb.ToString() + get_id;
 
@@ -212,13 +220,39 @@ public class DBServices
         }
 
     }
-    //--------------------------------------------------------------------
+
     private String BuildUpdateCommand(int id, Customer customer)
     {
         String command;
-        command = "UPDATE Customer_2021 set P_Category = '" + customer.P_category + "', P_TypeBus='" + customer.P_type + "', P_Distance='" + customer.P_distance + "' where cust_id = " + id.ToString();
+        command = "";
+
+        string CatsInsert = "";
+        foreach (var item in customer.P_category)
+        {
+            CatsInsert += " (" + id.ToString() + "," + item.ToString() + ") ,";
+        }
+        CatsInsert = CatsInsert.Remove(CatsInsert.Length - 1);
+
+        StringBuilder sb = new StringBuilder();
+        sb.AppendFormat(" Values " + CatsInsert);
+        String prefixc = "Insert into CatInCust_2021 (Cust_id,Cat_id)";
+        //String get_id = "SELECT SCOPE_IDENTITY();";
+        //command = prefixc + sb.ToString() + get_id;
+        command = prefixc + sb.ToString();
+
+
         return command;
+
+
+
     }
+    //--------------------------------------------------------------------
+    //private String BuildUpdateCommand(int id, Customer customer)
+    //{
+    //    String command;
+    //    command = "UPDATE Customer_2021 set P_Category = '"+ customer.P_category +"', P_TypeBus='"+ customer.P_type +"', P_Distance='" + customer.P_distance + "' where cust_id = " + id.ToString();
+    //    return command;
+    //}
 
     //הכנסה מבצע חדש
     public int Insert(Deal deal)
@@ -252,6 +286,9 @@ public class DBServices
                 String cStr3 = BuildInsertCommandTags(deal, numEffected2);      // helper method to build the insert tags
                 cmd = CreateCommand(cStr3, con);
                 int numEffected3 = cmd.ExecuteNonQuery();
+                String cStr4 = BuildInsertCommandCats(deal, numEffected);      // helper method to build the insert tags
+                cmd = CreateCommand(cStr4, con);
+                int numEffected4 = cmd.ExecuteNonQuery();
                 return numEffected;
 
 
@@ -285,8 +322,8 @@ public class DBServices
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}', '{1}','{2}',{3});", deal.Name, deal.Description, deal.Image, deal.Cat_id);
-        String prefixc = "INSERT INTO [Deal_2021] " + "([name],[description],[image],[cat_id])";
+        sb.AppendFormat("Values('{0}', '{1}','{2}');", deal.Name, deal.Description, deal.Image);
+        String prefixc = "INSERT INTO [Deal_2021] " + "([name],[description],[image])";
         String get_id = "SELECT SCOPE_IDENTITY();";
         command = prefixc + sb.ToString() + get_id;
 
@@ -303,7 +340,7 @@ public class DBServices
         StringBuilder sb = new StringBuilder();
         var d = deal.Date.ToString("yyyy-MM-dd");
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values({0}, {1},{2},'True','{3}','{4}','{5}');", deal.Business_id, deal_id, deal.Discount, deal.Startime, deal.Endtime, d);
+        sb.AppendFormat("Values({0}, {1},{2},'True','{3}','{4}','{5}');", deal.Business_id, deal_id, deal.Discount, deal.Startime,deal.Endtime,deal.Date);
         String prefixc = "INSERT INTO [dealInbus_2021] " + "([business_id],[deal_id],[discount],[active],[startime],[endtime],[date])";
         String get_id = "SELECT SCOPE_IDENTITY();";
         command = prefixc + sb.ToString() + get_id;
@@ -327,6 +364,31 @@ public class DBServices
         StringBuilder sb = new StringBuilder();
         sb.AppendFormat(" Values " + TagsInsert);
         String prefixc = "Insert into TagsInDeals_2021 (Tag_Id,Deal_id)";
+        //String get_id = "SELECT SCOPE_IDENTITY();";
+        //command = prefixc + sb.ToString() + get_id;
+        command = prefixc + sb.ToString();
+
+        return command;
+
+
+
+    }
+
+    private String BuildInsertCommandCats(Deal deal, int deal_id)
+    {
+        String command;
+        command = "";
+
+        string CatsInsert = "";
+        foreach (var item in deal.Cat_id)
+        {
+            CatsInsert += " (" + deal_id.ToString() + "," + item.ToString() + ") ,";
+        }
+        CatsInsert = CatsInsert.Remove(CatsInsert.Length - 1);
+
+        StringBuilder sb = new StringBuilder();
+        sb.AppendFormat(" Values " + CatsInsert);
+        String prefixc = "Insert into CatInDeal_2021 (Deal_id, Cat_id)";
         //String get_id = "SELECT SCOPE_IDENTITY();";
         //command = prefixc + sb.ToString() + get_id;
         command = prefixc + sb.ToString();
@@ -589,10 +651,9 @@ public class DBServices
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-            StringBuilder sb = new StringBuilder();
-
-            sb.AppendFormat(" SELECT dealInbus_2021.id,dealInbus_2021.business_id, Businesses_2021.bname, dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount, Category_2021.name AS catgeory_name, Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name, Deal_2021.cat_id as cat_id  FROM Businesses_2021 INNER JOIN dealInbus_2021 ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id INNER JOIN Category_2021 ON Deal_2021.cat_id = Category_2021.id");
-            selectSTR = sb.ToString();
+                sb.AppendFormat(" SELECT dealInbus_2021.id,dealInbus_2021.business_id, Businesses_2021.bname, dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount, Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name, FROM Businesses_2021 INNER JOIN dealInbus_2021 ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id ");
+                selectSTR = sb.ToString(); 
+        
 
 
             SqlCommand cmd = new SqlCommand(selectSTR, con);
@@ -606,8 +667,6 @@ public class DBServices
                 d.Name = (string)dr["deal_name"];
                 d.Business_Name = (string)dr["bname"];
                 d.Business_id = Convert.ToInt32(dr["business_id"]);
-                d.Category = (string)dr["catgeory_name"];
-                d.Cat_id = Convert.ToInt32(dr["cat_id"]);
                 d.Startime = (TimeSpan)dr["startime"];
                 d.Endtime = (TimeSpan)dr["endtime"];
                 d.Image = (string)dr["image"];
@@ -648,9 +707,9 @@ public class DBServices
             StringBuilder sb = new StringBuilder();
 
             sb.AppendFormat(" SELECT db.id,db.business_id, b.bname, db.startime, db.endtime, db.discount, c.name AS catgeory_name, " +
-                            " d.image, d.description, d.name AS deal_name, d.cat_id as cat_id  " +
+                            " d.image, d.description, d.name AS deal_name  " +
                             " FROM Businesses_2021 AS b INNER JOIN dealInbus_2021 AS db ON b.bid = db.business_id INNER JOIN Deal_2021 AS d ON" +
-                            " db.deal_id = d.id INNER JOIN Category_2021 AS c ON d.cat_id = c.id " +
+                            " db.deal_id = d.id  " +
                             "WHERE db.date=CONVERT(date, GETDATE()) and CONVERT(time,GETDATE()) BETWEEN db.startime and db.endtime");
 
             selectSTR = sb.ToString();
@@ -668,7 +727,6 @@ public class DBServices
                 d.Business_Name = (string)dr["bname"];
                 d.Business_id = Convert.ToInt32(dr["business_id"]);
                 d.Category = (string)dr["catgeory_name"];
-                d.Cat_id = Convert.ToInt32(dr["cat_id"]);
                 d.Startime = (TimeSpan)dr["startime"];
                 d.Endtime = (TimeSpan)dr["endtime"];
                 d.Image = (string)dr["image"];
@@ -708,7 +766,14 @@ public class DBServices
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat("SELECT dealInbus_2021.id, Businesses_2021.bname, dealInbus_2021.business_id as business_id,dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount, Category_2021.name AS catgeory_name, Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name, Deal_2021.cat_id as cat_id FROM Businesses_2021 INNER JOIN dealInbus_2021 ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id INNER JOIN Category_2021 ON Deal_2021.cat_id = Category_2021.id where Deal_2021.cat_id=" + cat_id);
+            sb.AppendFormat("SELECT DISTINCT dealInbus_2021.id,Businesses_2021.bname, dealInbus_2021.business_id, dealInbus_2021.discount, dealInbus_2021.active, dealInbus_2021.startime, " +
+                "dealInbus_2021.endtime, dealInbus_2021.date, Deal_2021.name as deal_name , Deal_2021.description, Deal_2021.image " +
+                "FROM dealInbus_2021 INNER JOIN " +
+                "Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.Id INNER JOIN " +
+                "CatInDeal_2021 ON Deal_2021.Id = CatInDeal_2021.Deal_id inner join Businesses_2021 on Businesses_2021.bid = dealInbus_2021.business_id " +
+                "WHERE dealInbus_2021.date = CONVERT(date, GETDATE()) and CONVERT(time, GETDATE()) BETWEEN dealInbus_2021.startime and " +
+                "dealInbus_2021.endtime and CatInDeal_2021.Cat_id = " + cat_id);
+
             selectSTR = sb.ToString();
 
 
@@ -723,8 +788,6 @@ public class DBServices
                 d.Name = (string)dr["deal_name"];
                 d.Business_Name = (string)dr["bname"];
                 d.Business_id = Convert.ToInt32(dr["business_id"]);
-                d.Category = (string)dr["catgeory_name"];
-                d.Cat_id = Convert.ToInt32(dr["cat_id"]);
                 d.Startime = (TimeSpan)dr["startime"];
                 d.Endtime = (TimeSpan)dr["endtime"];
                 d.Image = (string)dr["image"];
@@ -767,7 +830,10 @@ public class DBServices
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat("SELECT dealInbus_2021.id, Businesses_2021.bname, dealInbus_2021.business_id as business_id,dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount, Category_2021.name AS catgeory_name, Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name, Deal_2021.cat_id as cat_id FROM Businesses_2021 INNER JOIN dealInbus_2021 ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id INNER JOIN Category_2021 ON Deal_2021.cat_id = Category_2021.id where dealInbus_2021.date=CONVERT(date, GETDATE()) and CONVERT(time, GETDATE()) BETWEEN dealInbus_2021.startime and dealInbus_2021.endtime AND dealInbus_2021.business_id=" + rest_id);
+            sb.AppendFormat("SELECT dealInbus_2021.id, Businesses_2021.bname, dealInbus_2021.business_id as business_id,dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount,  Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name " +
+                "FROM Businesses_2021 INNER JOIN" +
+                " dealInbus_2021 ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id  " +
+                "where dealInbus_2021.date=CONVERT(date, GETDATE()) and CONVERT(time, GETDATE()) BETWEEN dealInbus_2021.startime and dealInbus_2021.endtime AND dealInbus_2021.business_id=" + rest_id);
             selectSTR = sb.ToString();
 
 
@@ -782,8 +848,6 @@ public class DBServices
                 d.Name = (string)dr["deal_name"];
                 d.Business_Name = (string)dr["bname"];
                 d.Business_id = Convert.ToInt32(dr["business_id"]);
-                d.Category = (string)dr["catgeory_name"];
-                d.Cat_id = Convert.ToInt32(dr["cat_id"]);
                 d.Startime = (TimeSpan)dr["startime"];
                 d.Endtime = (TimeSpan)dr["endtime"];
                 d.Image = (string)dr["image"];
@@ -824,13 +888,13 @@ public class DBServices
             StringBuilder sb = new StringBuilder();
 
             sb.AppendFormat("SELECT TOP (10) dealIncust_2021.coupon ,dealInbus_2021.id, dealInbus_2021.business_id, dealInbus_2021.discount, dealInbus_2021.date, dealInbus_2021.endtime, " +
-                "dealInbus_2021.startime, Deal_2021.description, Deal_2021.name as deal_name, Deal_2021.image, Category_2021.name AS catgeory_name,  Businesses_2021.bname " +
-                "FROM  dealIncust_2021 INNER JOIN " +
-                         "dealInbus_2021 ON dealIncust_2021.dealinbus_id = dealInbus_2021.id INNER JOIN " +
-                         "Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id INNER JOIN " +
-                         "Category_2021 ON Deal_2021.cat_id = Category_2021.id  INNER JOIN " +
-                         "Businesses_2021 ON dealInbus_2021.business_id = Businesses_2021.bid " +
-                 "WHERE(dealIncust_2021.used = 'True') AND(dealIncust_2021.dealincust_id = " + cust_id + ")  order by dealIncust_2021.timeusecoupon");
+                "dealInbus_2021.startime, Deal_2021.description, Deal_2021.name as deal_name, Deal_2021.image,  Businesses_2021.bname " +
+                "FROM  dealIncust_2021 INNER JOIN "+
+                         "dealInbus_2021 ON dealIncust_2021.dealinbus_id = dealInbus_2021.id INNER JOIN "+
+                         "Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id INNER JOIN "+
+                         "Businesses_2021 ON dealInbus_2021.business_id = Businesses_2021.bid "+
+                 "WHERE(dealIncust_2021.used = 'True') AND (dealIncust_2021.dealincust_id = " + cust_id+ ")  order by dealIncust_2021.timeusecoupon");
+
             selectSTR = sb.ToString();
 
 
@@ -844,7 +908,6 @@ public class DBServices
                 d.Id = Convert.ToInt32(dr["id"]);
                 d.Business_Name = (string)dr["bname"];
                 d.Business_id = Convert.ToInt32(dr["business_id"]);
-                d.Category = (string)dr["catgeory_name"];
                 d.Startime = (TimeSpan)dr["startime"];
                 d.Endtime = (TimeSpan)dr["endtime"];
                 d.Image = (string)dr["image"];
@@ -890,7 +953,12 @@ public class DBServices
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat("SELECT dealInbus_2021.id, Businesses_2021.bid,Businesses_2021.bname,Businesses_2021.baddress, Businesses_2021.bphone, Businesses_2021.bmail, Businesses_2021.opentime, Businesses_2021.closetime, Businesses_2021.bimage, Businesses_2021.bdescription, dealInbus_2021.business_id as business_id,dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount, Category_2021.name AS catgeory_name, Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name, Deal_2021.cat_id as cat_id FROM Businesses_2021 INNER JOIN dealInbus_2021 ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id INNER JOIN Category_2021 ON Deal_2021.cat_id = Category_2021.id where dealInbus_2021.id=" + id);
+            sb.AppendFormat("SELECT dealInbus_2021.id, Businesses_2021.bid,Businesses_2021.bname,Businesses_2021.baddress, Businesses_2021.bphone," +
+                " Businesses_2021.bmail, Businesses_2021.opentime, Businesses_2021.closetime, Businesses_2021.bimage, Businesses_2021.bdescription, " +
+                "dealInbus_2021.business_id as business_id,dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount," +
+                " Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name " +
+                "FROM Businesses_2021 INNER JOIN dealInbus_2021 ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN" +
+                " Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id where dealInbus_2021.id=" + id);
             selectSTR = sb.ToString();
 
 
@@ -919,8 +987,6 @@ public class DBServices
                 d.Name = (string)dr["deal_name"];
                 d.Business_Name = (string)dr["bname"];
                 d.Business_id = Convert.ToInt32(dr["business_id"]);
-                d.Category = (string)dr["catgeory_name"];
-                d.Cat_id = Convert.ToInt32(dr["cat_id"]);
                 d.Startime = (TimeSpan)dr["startime"];
                 d.Endtime = (TimeSpan)dr["endtime"];
                 d.Image = (string)dr["image"];
@@ -1008,10 +1074,13 @@ public class DBServices
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat("SELECT db.id, b.bname, db.business_id as business_id,db.startime, db.endtime, db.discount, c.name AS catgeory_name, d.image, d.description, d.name AS deal_name, d.cat_id as cat_id " +
+            sb.AppendFormat("SELECT db.id, b.bname, db.business_id as business_id,db.startime, db.endtime, db.discount, d.image, d.description, d.name AS deal_name " +
                             "FROM Businesses_2021 AS b INNER JOIN dealInbus_2021 AS db ON b.bid = db.business_id INNER JOIN Deal_2021 AS d ON " +
-                            "db.deal_id = d.id INNER JOIN Category_2021 AS c ON d.cat_id = c.id " +
-                            "WHERE b.bname LIKE '%" + Letter + "%' OR d.name LIKE '%" + Letter + "%' OR c.name LIKE '%" + Letter + "%'");
+                            "db.deal_id = d.id INNER JOIN "+
+                            "CatInDeal_2021 ON CatInDeal_2021.Deal_id = d.Id " +
+                        "   INNER JOIN Category_2021 AS c ON CatInDeal_2021.cat_id = c.id " +
+                            "WHERE b.bname LIKE '%"+Letter+"%' OR d.name LIKE '%"+Letter+"%' OR c.name LIKE '%"+Letter+"%'");
+
 
             selectSTR = sb.ToString();
 
@@ -1027,8 +1096,6 @@ public class DBServices
                 d.Name = (string)dr["deal_name"];
                 d.Business_Name = (string)dr["bname"];
                 d.Business_id = Convert.ToInt32(dr["business_id"]);
-                d.Category = (string)dr["catgeory_name"];
-                d.Cat_id = Convert.ToInt32(dr["cat_id"]);
                 d.Startime = (TimeSpan)dr["startime"];
                 d.Endtime = (TimeSpan)dr["endtime"];
                 d.Image = (string)dr["image"];
@@ -1195,7 +1262,7 @@ public class DBServices
             StringBuilder sb = new StringBuilder();
             if (TagName != "")
             {
-                sb.AppendFormat("select deals.id,Tags.[name], b.bname, deal.[name] as deal_name, deal.[description],deal.[image], deal.cat_id, deals.business_id, deals.discount, " +
+                sb.AppendFormat("select deals.id,Tags.[name], b.bname, deal.[name] as deal_name, deal.[description],deal.[image], deals.business_id, deals.discount, " +
                 "deals.deal_id, deals.active, deals.startime, deals.endtime, deals.[date] " +
                 "from Businesses_2021 AS b inner join dealInbus_2021 as deals on b.bid = deals.business_id " +
                 "inner join Deal_2021 as Deal on Deal.id = deals.deal_id " +
@@ -1204,7 +1271,7 @@ public class DBServices
                 "where Tags.[name] = '" + TagName + "'  ");
             } else
             {
-                sb.AppendFormat("select deals.id,Tags.[name], b.bname, deal.[name] as deal_name, deal.[description],deal.[image], deal.cat_id, deals.business_id, deals.discount, " +
+                sb.AppendFormat("select deals.id,Tags.[name], b.bname, deal.[name] as deal_name, deal.[description],deal.[image], deals.business_id, deals.discount, " +
                 "deals.deal_id, deals.active, deals.startime, deals.endtime, deals.[date] " +
                 "from Businesses_2021 AS b inner join dealInbus_2021 as deals on b.bid = deals.business_id " +
                 "inner join Deal_2021 as Deal on Deal.id = deals.deal_id " +
@@ -1233,7 +1300,6 @@ public class DBServices
                 d.Name = (string)dr["deal_name"];
                 d.Business_Name = (string)dr["bname"];
                 d.Business_id = Convert.ToInt32(dr["business_id"]);
-                d.Cat_id = Convert.ToInt32(dr["cat_id"]);
                 d.Startime = (TimeSpan)dr["startime"];
                 d.Endtime = (TimeSpan)dr["endtime"];
                 d.Image = (string)dr["image"];
@@ -1327,7 +1393,7 @@ public class DBServices
             StringBuilder sb = new StringBuilder();
 
             sb.AppendFormat("SELECT C.id, C.name, C.image " +
-                "FROM Category_2021 as C INNER JOIN Deal_2021 as D ON C.Id=D.Cat_id " +
+                "FROM  Category_2021 INNER JOIN CatInDeal_2021 ON Category_2021.id = CatInDeal_2021.Cat_id INNER JOIN Deal_2021 as D ON CatInDeal_2021.Deal_id = D.Id " +
                 "INNER JOIN dealInbus_2021 as db on db.deal_id=D.id " +
                 " WHERE db.date=CONVERT(date, GETDATE()) and CONVERT(time, GETDATE()) BETWEEN db.startime and db.endtime");
             selectSTR = sb.ToString();
@@ -1434,14 +1500,21 @@ public class DBServices
     private String BuildInsertCommandData(int coupon)
     {
         String command;
-        command = "INSERT INTO DataOfCust_2021 " +
-            "SELECT d.id, dic.dealincust_id, dib.business_id, c.id,t.Tag_Id, dib.discount, CONVERT (TIME, GETDATE()) ,DATEPART(dw,GETDATE()) , b.btype " +
-            "FROM dealIncust_2021 AS dic INNER JOIN dealinbus_2021 AS dib ON dic.dealinbus_id=dib.id " +
-            "INNER JOIN Businesses_2021 AS b ON b.bid=dib.business_id " +
-            "INNER JOIN Deal_2021 AS d ON dib.deal_id=d.id " +
-            "INNER JOIN Category_2021 AS c ON d.cat_id=c.id " +
-            "INNER JOIN TagsInDeals_2021 AS t ON t.Deal_id=d.id " +
-            "WHERE dic.coupon=" + coupon + " AND dic.Used='True'";
+
+        command = "INSERT INTO DataOfCust_2021 "+
+                  "SELECT dealIncust_2021.coupon, dealIncust_2021.dealinbus_id,dealIncust_2021.dealincust_id ,dealInbus_2021.business_id, Businesses_2021.btype, dealInbus_2021.discount, CatInDeal_2021.Cat_id,DATEPART(dw, GETDATE()) as 'Date', CONVERT(TIME, GETDATE()) as 'Time', "+
+                   "CASE WHEN dealIncust_2021.distance BETWEEN 0 AND 500 THEN 1 WHEN dealIncust_2021.distance BETWEEN 0 AND 500 THEN 1 WHEN dealIncust_2021.distance BETWEEN 500 AND "+
+                   "1000 THEN 2 WHEN dealIncust_2021.distance BETWEEN 1000 AND 1500 THEN 3 WHEN dealIncust_2021.distance BETWEEN 1500 AND 2000 THEN 4 WHEN dealIncust_2021.distance BETWEEN 2000 AND "+
+                   "2500 THEN 5 WHEN dealIncust_2021.distance BETWEEN 2500 AND 3500 THEN 6 WHEN dealIncust_2021.distance BETWEEN 3500 AND 4500 THEN 7 WHEN dealIncust_2021.distance BETWEEN 4500 AND "+
+                   "10000 THEN 8 WHEN dealIncust_2021.distance > 10000 THEN 9 ELSE 0 END AS dist_id "+
+                   "FROM            Businesses_2021 INNER JOIN "+
+                   "dealIncust_2021 INNER JOIN "+
+                   "dealInbus_2021 ON dealIncust_2021.dealinbus_id = dealInbus_2021.id ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN "+
+                   "CatInDeal_2021 INNER JOIN "+
+                   "Deal_2021 ON CatInDeal_2021.Deal_id = Deal_2021.Id ON dealInbus_2021.deal_id = Deal_2021.Id "+
+                   "ORDER BY dealIncust_2021.coupon "+
+                   "WHERE dealIncust_2021.coupon=" + coupon + " AND dealIncust_2021.Used='True'";
+
         String get_id = "SELECT SCOPE_IDENTITY();";
         command += get_id;
 

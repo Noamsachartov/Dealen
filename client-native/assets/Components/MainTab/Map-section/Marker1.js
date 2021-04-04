@@ -62,7 +62,7 @@ export default class Marker1 extends React.Component {
       return (
         <Marker
           coordinate={{
-            latitude: this.state.ֱ,
+            latitude: this.state.latitude,
             longitude: this.state.longitude,
           }}
           title={this.props.Markeritem.Baddress}
