@@ -1735,7 +1735,7 @@ public class DBServices
             {
                 StringBuilder sb3 = new StringBuilder();
                 
-                sb3.AppendFormat("SELECT db.id, d.name AS deal_name, db.business_id, b.bname, db.startime, db.endtime, db.discount, Dist " +
+                sb3.AppendFormat("SELECT db.id, d.name AS deal_name, db.business_id, b.bname, db.startime, db.endtime, db.discount, " +
                 "round ((SELECT geography::Point(" + latitude + ", " + longitude + ", 4326).STDistance(geography::Point(b.latitude, b.longitude, 4326))),0) AS Distance, "+
                 "c.name AS catgeory_name, cd.cat_id as cat_id, d.image, d.description " +
                 "FROM Businesses_2021 AS b INNER JOIN dealInbus_2021 AS db ON b.bid = db.business_id " +
@@ -1744,7 +1744,7 @@ public class DBServices
                 "WHERE 1 = 1 " +
                 "AND cd.cat_id = '" + matrix[i, index_cat]+"' "+
                 "AND b.btype =  '" + matrix[i, index_type]+ "' " +
-                "AND(SELECT geography::Point(" + latitude + ", " + longitude + ", 4326).STDistance(geography::Point(b.latitude, b.longitude, 4326)) AS Distance) < (select max from Distance_2021 where dist_id = '" + matrix[i, index_dist] + "') " +
+                "AND(SELECT geography::Point(" + latitude + ", " + longitude + ", 4326).STDistance(geography::Point(b.latitude, b.longitude, 4326))) < (select max from Distance_2021 where dist_id = '" + matrix[i, index_dist] + "') " +
                 //"AND(SELECT geography::Point(" + latitude + ", " + longitude + ", 4326).STDistance(geography::Point(b.latitude, b.longitude, 4326))) between(select min from Distance_2021 where dist_id = '" + matrix[i, index_dist] + "') AND(select max from Distance_2021 where dist_id = '" + matrix[i, index_dist] + "') " +
                 "--AND db.date = CONVERT(date, GETDATE()) and CONVERT(time, GETDATE()) BETWEEN db.startime and db.endtime " +
                 "order by discount DESC");
