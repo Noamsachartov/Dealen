@@ -1281,7 +1281,7 @@ public class DBServices
             } else
             {
                 sb.AppendFormat("select deals.id,Tags.[name], b.bname, deal.[name] as deal_name, deal.[description],deal.[image], deals.business_id, deals.discount, " +
-                "deals.deal_id, deals.active, deals.startime, deals.endtime, deals.[date], , b.latitude, b.longitude  " +
+                "deals.deal_id, deals.active, deals.startime, deals.endtime, deals.[date], b.latitude, b.longitude  " +
                 "from Businesses_2021 AS b inner join dealInbus_2021 as deals on b.bid = deals.business_id " +
                 "inner join Deal_2021 as Deal on Deal.id = deals.deal_id " +
                 "inner join TagsInDeals_2021 as TagDeal on deals.id = TagDeal.Deal_id " +
