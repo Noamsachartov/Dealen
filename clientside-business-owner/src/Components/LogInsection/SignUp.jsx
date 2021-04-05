@@ -136,13 +136,15 @@ class SignUp extends React.Component {
         .then((response) => response.json())
         .then((responseJson) => {
           console.log(responseJson);
+          window.location = "/Login";
+
         })
         .catch((error) => {
           alert(JSON.stringify(error));
           console.error(error);
         });
 
-      alert("You are submitting " + this.state.username);
+      //alert("You are submitting " + this.state.username);
       console.log(this.state);
     }
   }
