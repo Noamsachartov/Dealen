@@ -78,7 +78,7 @@ export default class ChoosePreferences extends React.Component {
         fetch(apiUrl, {
           method: 'PUT',
           body: JSON.stringify({
-            P_category: this.state.categoryAdd.toString(),
+            P_category: this.state.categoryAdd,
             P_type: join,
             P_distance: this.state.radios.toString(),
           }),

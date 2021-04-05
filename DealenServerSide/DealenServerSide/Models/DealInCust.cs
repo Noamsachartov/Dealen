@@ -13,8 +13,9 @@ namespace DealenServerSide.Models
         DateTime timegetcoupon;
         DateTime timeusecoupon;
         bool used;
+        double distance;
 
-        public DealInCust(int coupon, int dealinbus_id, int dealincust_id, DateTime timegetcoupon, DateTime timeusecoupon, bool used)
+        public DealInCust(int coupon, int dealinbus_id, int dealincust_id, DateTime timegetcoupon, DateTime timeusecoupon, bool used, double distance)
         {
             Coupon = coupon;
             Dealinbus_id = dealinbus_id;
@@ -22,6 +23,7 @@ namespace DealenServerSide.Models
             Timegetcoupon = timegetcoupon;
             Timeusecoupon = timeusecoupon;
             Used = used;
+            Distance = distance;
         }
 
         public int Coupon { get => coupon; set => coupon = value; }
@@ -30,6 +32,8 @@ namespace DealenServerSide.Models
         public DateTime Timegetcoupon { get => timegetcoupon; set => timegetcoupon = value; }
         public DateTime Timeusecoupon { get => timeusecoupon; set => timeusecoupon = value; }
         public bool Used { get => used; set => used = value; }
+        public double Distance { get => distance; set => distance = value; }
+
         public DealInCust() { }
 
         //User want the Deal and get a coupon

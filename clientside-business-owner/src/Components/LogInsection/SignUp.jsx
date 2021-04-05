@@ -1,5 +1,5 @@
 import React from 'react';
-import { Component,Fragment   } from 'react';
+import { Component,Fragment, Text  } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,6 +9,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+import FormLabel from '@material-ui/core/FormLabel';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
@@ -17,7 +18,10 @@ import { grid } from '@material-ui/system';
 import Select from '@material-ui/core/Select';
 import { MenuItem } from '@material-ui/core';
 import NativeSelect from '@material-ui/core/NativeSelect';
+import Geocode from "react-geocode";
 
+
+Geocode.setApiKey("AIzaSyCEsFVwrIkmWHXV6EOJB_mSNu8QTYRxedU");
 
 
 const useStyles = makeStyles((theme) => ({
@@ -66,7 +70,9 @@ class SignUp extends React.Component {
       opentime: '',
       closetime: '',
       email: '',
-      password: ''
+      password: '',
+      latitude:0,
+      longitude:0
     };
     
     this.onImageChange = this.onImageChange.bind(this);
@@ -81,46 +87,70 @@ class SignUp extends React.Component {
     }
   };
 
+  convertaddress = async () => {
+    Geocode.fromAddress(this.state.address).then(
+      (response) => {
+        const { lat, lng } = response.results[0].geometry.location;
+        console.log(lat, lng);
+        this.setState({latitude: lat});
+        this.setState({longitude: lng})
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+
+
+
+  }
   mySubmitHandler = (event) => {
     event.preventDefault(); //
+    this.convertaddress();
     
+    if(this.state.latitude && this.state.longitude){
     
-    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/businesses"
-    fetch(apiUrl, {
-      method: 'POST',
-      body: JSON.stringify({
-        bname: this.state.BusinessName,
-        manager: this.state.managerName,
-        bphone: this.state.phone,
-        baddress: this.state.address,
-        bdescription: this.state.description,
-        opentime: this.state.opentime,
-        closetime: this.state.closetime,
-        bmail: this.state.email,
-        password: this.state.password,
-        bimage: this.state.image,
-        btype: this.state.btype
-      }),
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson);
-      })
-      .catch((error) => {
-        alert(JSON.stringify(error));
-        console.error(error);
-      });
+      var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1n/api/businesses"
+      fetch(apiUrl, {
+        method: 'POST',
+        body: JSON.stringify({
+          bname: this.state.BusinessName,
+          manager: this.state.managerName,
+          bphone: this.state.phone,
+          baddress: this.state.address,
+          bdescription: this.state.description,
+          opentime: this.state.opentime,
+          closetime: this.state.closetime,
+          bmail: this.state.email,
+          password: this.state.password,
+          bimage: this.state.image,
+          Btypebus: this.state.btype,
+          latitude: this.state.latitude,
+          longitude: this.state.longitude
 
-    alert("You are submitting " + this.state.username);
-    console.log(this.state);
+        }),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          console.log(responseJson);
+        })
+        .catch((error) => {
+          alert(JSON.stringify(error));
+          console.error(error);
+        });
+
+      alert("You are submitting " + this.state.username);
+      console.log(this.state);
+    }
   }
 
   handleChange = (event) => {
     this.setState({btype: event.target.value});
+    console.log(this.state.btype)
+
   };
 
 
@@ -213,16 +243,21 @@ class SignUp extends React.Component {
                 onChange={text => this.setState({closetime: text.target.value})}
               />
             </Grid>
-            <Select defaultValue='cjr '  onChange={this.handleChange}      label="Single select" width={12}
-                labelId="demo-customized-select-label"
-                id="demo-customized-select" >
-                <MenuItem value={0}>בחר סוג עסק</MenuItem>
-                <MenuItem value={'מסעדה'}>מסעדה</MenuItem>
-                <MenuItem value={'בר מסעדה'}>בר מסעדה </MenuItem>
-                <MenuItem value={'בר/מועדון'}>בר/מועדון</MenuItem>
-                <MenuItem value={'בית קפה'}>בית קפה </MenuItem>
-              </Select>
-           
+            <Grid item xs={12} >
+              <Select            labelId="demo-simple-select-label"
+          id="demo-simple-select"       label="שעת סגירה" value={this.state.btype}
+   variant="outlined"
+                required
+                fullWidth defaultValue={0}  onChange={this.handleChange}      label="Single select" width={12}
+                  labelId="demo-customized-select-label"
+                  id="demo-customized-select" >
+                  <MenuItem value={0}>בחר סוג עסק*</MenuItem>
+                  <MenuItem value={1}>מסעדה</MenuItem>
+                  <MenuItem value={2}>בר מסעדה </MenuItem>
+                  <MenuItem value={3}>בית קפה </MenuItem>
+                </Select>
+            </Grid>
+
             <Grid item xs={12}>
             <TextField
                 variant="outlined"

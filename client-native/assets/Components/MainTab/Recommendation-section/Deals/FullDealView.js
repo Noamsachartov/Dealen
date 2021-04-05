@@ -91,7 +91,7 @@ export default class FullDealView extends React.Component {
       this._isMounted = true;
       this.islikealready();
       const { navigation, route } = this.props;
-      this.setState({categoryId: JSON.stringify(route.params.categoryId), dealId: JSON.stringify(route.params.dealId) ,CustomerId: JSON.stringify(route.params.CustomerId)})
+      this.setState({ dealId: JSON.stringify(route.params.dealId) ,CustomerId: JSON.stringify(route.params.CustomerId)})
       //Get Deal Data By Deal Id
       var DealId = JSON.stringify(route.params.dealId);
       var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/deal/" + DealId;
