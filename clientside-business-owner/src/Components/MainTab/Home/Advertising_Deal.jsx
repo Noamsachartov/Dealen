@@ -117,6 +117,8 @@ getTags=()=>{
       .then((response) => response.json())
       .then((responseJson) => {
         console.log(responseJson);
+        window.location = "/";
+
       })
       .catch((error) => {
         alert(JSON.stringify(error));
