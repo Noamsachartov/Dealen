@@ -104,12 +104,12 @@ class SignUp extends React.Component {
 
   }
   mySubmitHandler = (event) => {
-    event.preventDefault(); //
+    event.preventDefault(); 
     this.convertaddress();
     
     if(this.state.latitude && this.state.longitude){
     
-      var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1n/api/businesses"
+      var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/businesses"
       fetch(apiUrl, {
         method: 'POST',
         body: JSON.stringify({
