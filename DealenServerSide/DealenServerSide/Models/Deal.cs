@@ -147,6 +147,7 @@ namespace DealenServerSide.Models
                     res.Add(item.Name);
                 }
             }
+
             dlist = dbs.getDealsByTag("",res);
             return dlist;
         }
