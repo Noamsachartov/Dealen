@@ -651,7 +651,7 @@ public class DBServices
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat(" SELECT dealInbus_2021.id,dealInbus_2021.business_id, Businesses_2021.bname, dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount, Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name FROM Businesses_2021 INNER JOIN dealInbus_2021 ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id ");
+            sb.AppendFormat(" SELECT dealInbus_2021.id,dealInbus_2021.business_id, Businesses_2021.bname, dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount, Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name, Businesses_2021.latitude, Businesses_2021.longitude FROM Businesses_2021 INNER JOIN dealInbus_2021 ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id ");
                 selectSTR = sb.ToString(); 
         
 
@@ -662,6 +662,7 @@ public class DBServices
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
             while (dr.Read())
             {   // Read till the end of the data into a row
+                Businesses b = new Businesses();
                 Deal d = new Deal();
                 d.Id = Convert.ToInt32(dr["id"]);
                 d.Name = (string)dr["deal_name"];
@@ -672,6 +673,10 @@ public class DBServices
                 d.Image = (string)dr["image"];
                 d.Description = (string)dr["description"];
                 d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
+                b.Latitude = Convert.ToDouble(dr["latitude"]);
+                b.Longitude = Convert.ToDouble(dr["longitude"]);
+                d.Bus_rest = b;
+
 
                 dlist.Add(d);
             }
@@ -767,7 +772,7 @@ public class DBServices
             StringBuilder sb = new StringBuilder();
 
             sb.AppendFormat("SELECT DISTINCT dealInbus_2021.id, Businesses_2021.bname, dealInbus_2021.business_id, dealInbus_2021.discount, dealInbus_2021.active, dealInbus_2021.startime, " +
-                "dealInbus_2021.endtime, dealInbus_2021.date, Deal_2021.name as deal_name , Deal_2021.description, Deal_2021.image " +
+                "dealInbus_2021.endtime, dealInbus_2021.date, Deal_2021.name as deal_name , Deal_2021.description, Deal_2021.image, Businesses_2021.latitude, Businesses_2021.longitude  " +
                 "FROM dealInbus_2021 INNER JOIN " +
                 "Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.Id INNER JOIN " +
                 "CatInDeal_2021 ON Deal_2021.Id = CatInDeal_2021.Deal_id inner join Businesses_2021 on Businesses_2021.bid = dealInbus_2021.business_id " +
@@ -784,6 +789,7 @@ public class DBServices
             while (dr.Read())
             {   // Read till the end of the data into a row
                 Deal d = new Deal();
+                Businesses b = new Businesses();
                 d.Id = Convert.ToInt32(dr["id"]);
                 d.Name = (string)dr["deal_name"];
                 d.Business_Name = (string)dr["bname"];
@@ -793,6 +799,9 @@ public class DBServices
                 d.Image = (string)dr["image"];
                 d.Description = (string)dr["description"];
                 d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
+                b.Latitude = Convert.ToDouble(dr["latitude"]);
+                b.Longitude = Convert.ToDouble(dr["longitude"]);
+                d.Bus_rest = b;
                 dlist.Add(d);
                 //string starttimeString24Hour = Convert.ToDateTime(context.Request.QueryString["starttime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
                 //string endtimeString24Hour = Convert.ToDateTime(context.Request.QueryString["endtime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
@@ -1263,7 +1272,7 @@ public class DBServices
             if (TagName != "")
             {
                 sb.AppendFormat("select deals.id,Tags.[name], b.bname, deal.[name] as deal_name, deal.[description],deal.[image], deals.business_id, deals.discount, " +
-                "deals.deal_id, deals.active, deals.startime, deals.endtime, deals.[date] " +
+                "deals.deal_id, deals.active, deals.startime, deals.endtime, deals.[date], b.latitude, b.longitude " +
                 "from Businesses_2021 AS b inner join dealInbus_2021 as deals on b.bid = deals.business_id " +
                 "inner join Deal_2021 as Deal on Deal.id = deals.deal_id " +
                 "inner join TagsInDeals_2021 as TagDeal on deals.id = TagDeal.Deal_id " +
@@ -1272,7 +1281,7 @@ public class DBServices
             } else
             {
                 sb.AppendFormat("select deals.id,Tags.[name], b.bname, deal.[name] as deal_name, deal.[description],deal.[image], deals.business_id, deals.discount, " +
-                "deals.deal_id, deals.active, deals.startime, deals.endtime, deals.[date] " +
+                "deals.deal_id, deals.active, deals.startime, deals.endtime, deals.[date], , b.latitude, b.longitude  " +
                 "from Businesses_2021 AS b inner join dealInbus_2021 as deals on b.bid = deals.business_id " +
                 "inner join Deal_2021 as Deal on Deal.id = deals.deal_id " +
                 "inner join TagsInDeals_2021 as TagDeal on deals.id = TagDeal.Deal_id " +
@@ -1294,6 +1303,9 @@ public class DBServices
 
                 //b.Bid = Convert.ToInt32(dr["business_id"]);
                 //b.Bname = (string)dr["bname"];
+
+                b.Latitude = Convert.ToDouble(dr["latitude"]);
+                b.Longitude = Convert.ToDouble(dr["longitude"]);
                 d.Bus_rest = b;
 
                 d.Id = Convert.ToInt32(dr["id"]);
@@ -1736,6 +1748,7 @@ public class DBServices
                 StringBuilder sb3 = new StringBuilder();
                 
                 sb3.AppendFormat("SELECT db.id, d.name AS deal_name, db.business_id, b.bname, db.startime, db.endtime, db.discount, " +
+                "round ((SELECT geography::Point(" + latitude + ", " + longitude + ", 4326).STDistance(geography::Point(b.latitude, b.longitude, 4326))),0) AS Distance, "+
                 "c.name AS catgeory_name, cd.cat_id as cat_id, d.image, d.description " +
                 "FROM Businesses_2021 AS b INNER JOIN dealInbus_2021 AS db ON b.bid = db.business_id " +
                 "INNER JOIN Deal_2021 AS d ON db.deal_id = d.id INNER JOIN CatInDeal_2021 AS cd ON cd.Deal_id = d.Id " +
@@ -1743,7 +1756,8 @@ public class DBServices
                 "WHERE 1 = 1 " +
                 "AND cd.cat_id = '" + matrix[i, index_cat]+"' "+
                 "AND b.btype =  '" + matrix[i, index_type]+ "' " +
-                "AND(SELECT geography::Point(" + latitude + ", " + longitude + ", 4326).STDistance(geography::Point(b.latitude, b.longitude, 4326))) between(select min from Distance_2021 where dist_id = '" + matrix[i, index_dist] + "') AND(select max from Distance_2021 where dist_id = '" + matrix[i, index_dist] + "') " +
+                "AND(SELECT geography::Point(" + latitude + ", " + longitude + ", 4326).STDistance(geography::Point(b.latitude, b.longitude, 4326))) < (select max from Distance_2021 where dist_id = '" + matrix[i, index_dist] + "') " +
+                //"AND(SELECT geography::Point(" + latitude + ", " + longitude + ", 4326).STDistance(geography::Point(b.latitude, b.longitude, 4326))) between(select min from Distance_2021 where dist_id = '" + matrix[i, index_dist] + "') AND(select max from Distance_2021 where dist_id = '" + matrix[i, index_dist] + "') " +
                 "--AND db.date = CONVERT(date, GETDATE()) and CONVERT(time, GETDATE()) BETWEEN db.startime and db.endtime " +
                 "order by discount DESC");
 
@@ -1763,10 +1777,12 @@ public class DBServices
                     d.Description = (string)dr2["description"];
                     d.Discount = Convert.ToInt32(Convert.ToDouble(dr2["discount"]) * 100);
                     d.Name = (string)dr2["deal_name"];
-                    dlist.Add(d);
+                    if(!dlist.Contains(d))
+                          dlist.Add(d);
 
                 }
                 dr2.Close();
+
             }
 
             return dlist;
