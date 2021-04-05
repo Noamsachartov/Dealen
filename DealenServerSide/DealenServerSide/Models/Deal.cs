@@ -104,10 +104,10 @@ namespace DealenServerSide.Models
             List<Deal> dlist = dbs.getDealslastDeals(cust_id);
             return dlist;
         }
-        public List<Deal> ReadRecommendDeal(int cust_id)
+        public List<Deal> ReadRecommendDeal(int cust_id, float latitude, float longitude)
         {
             DBServices dbs = new DBServices();
-            List<Deal> dlist = dbs.getRecommendSDeals(cust_id);
+            List<Deal> dlist = dbs.getRecommendSDeals(cust_id, latitude, longitude);
             return dlist;
         }
         public List<Deal> CheckIsLike(int deal_id,int cust_id)
