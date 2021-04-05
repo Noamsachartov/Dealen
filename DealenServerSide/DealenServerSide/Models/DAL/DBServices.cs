@@ -1777,9 +1777,8 @@ public class DBServices
                     d.Description = (string)dr2["description"];
                     d.Discount = Convert.ToInt32(Convert.ToDouble(dr2["discount"]) * 100);
                     d.Name = (string)dr2["deal_name"];
-                    if(!dlist.Contains(d))
-                          dlist.Add(d);
-
+                    if (!dlist.Where(p => p.Id == d.Id).Any())
+                        dlist.Add(d);
                 }
                 dr2.Close();
 
