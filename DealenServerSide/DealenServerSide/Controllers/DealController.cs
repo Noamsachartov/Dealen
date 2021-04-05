@@ -1,9 +1,7 @@
 ﻿using DealenServerSide.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace DealenServerSide.Controllers
@@ -132,13 +130,16 @@ namespace DealenServerSide.Controllers
             }
         }
         [HttpGet]
-        [Route("api/Deal/RecommendDeal/{cust_id}")]
-        public IHttpActionResult GetRecommendDeal(int cust_id)
+        [Route("api/Deal/RecommendDeal/{cust_id}/{latitude}/{longitude}/")]
+        public IHttpActionResult GetRecommendDeal(int cust_id, float latitude, float longitude)
         {
             try
             {
+                //float lat, longi;
+                //lat = float.Parse(latitude);
+                //longi = float.Parse(longitude);
                 Deal deal = new Deal();
-                List<Deal> deals = deal.ReadRecommendDeal(cust_id);
+                List<Deal> deals = deal.ReadRecommendDeal(cust_id, latitude, longitude);
                 return Ok(deals);
 
             }

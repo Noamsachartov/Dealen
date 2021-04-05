@@ -1501,21 +1501,21 @@ public class DBServices
     {
         String command;
 
-        command = "INSERT INTO DataOfCust_2021 "+
-                  "SELECT dealIncust_2021.coupon, dealIncust_2021.dealinbus_id,dealIncust_2021.dealincust_id ,dealInbus_2021.business_id, Businesses_2021.btype, dealInbus_2021.discount, CatInDeal_2021.Cat_id,DATEPART(dw, GETDATE()) as 'Date', CONVERT(TIME, GETDATE()) as 'Time', "+
-                   "CASE WHEN dealIncust_2021.distance BETWEEN 0 AND 500 THEN 1 WHEN dealIncust_2021.distance BETWEEN 0 AND 500 THEN 1 WHEN dealIncust_2021.distance BETWEEN 500 AND "+
-                   "1000 THEN 2 WHEN dealIncust_2021.distance BETWEEN 1000 AND 1500 THEN 3 WHEN dealIncust_2021.distance BETWEEN 1500 AND 2000 THEN 4 WHEN dealIncust_2021.distance BETWEEN 2000 AND "+
-                   "2500 THEN 5 WHEN dealIncust_2021.distance BETWEEN 2500 AND 3500 THEN 6 WHEN dealIncust_2021.distance BETWEEN 3500 AND 4500 THEN 7 WHEN dealIncust_2021.distance BETWEEN 4500 AND "+
-                   "10000 THEN 8 WHEN dealIncust_2021.distance > 10000 THEN 9 ELSE 0 END AS dist_id "+
-                   "FROM            Businesses_2021 INNER JOIN "+
-                   "dealIncust_2021 INNER JOIN "+
-                   "dealInbus_2021 ON dealIncust_2021.dealinbus_id = dealInbus_2021.id ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN "+
-                   "CatInDeal_2021 INNER JOIN "+
-                   "Deal_2021 ON CatInDeal_2021.Deal_id = Deal_2021.Id ON dealInbus_2021.deal_id = Deal_2021.Id "+
-                   "WHERE dealIncust_2021.coupon=" + coupon + " AND dealIncust_2021.Used='True' "+
-                   "ORDER BY dealIncust_2021.coupon ";
-                   String get_id = "SELECT SCOPE_IDENTITY();";
-                    command += get_id;
+        command = "INSERT INTO DataOfCust_2021 " +
+            "SELECT dic.coupon, d.id, dic.dealincust_id, dib.business_id, b.btype, cd.Cat_id, dib.discount, CONVERT (TIME, GETDATE()) AS Time ,DATEPART(dw,GETDATE()) AS Date, " +
+             "CASE WHEN dic.distance BETWEEN 0 AND 500 THEN 1 WHEN dic.distance BETWEEN 0 AND 500 THEN 1 WHEN dic.distance BETWEEN 500 AND " +
+                   "1000 THEN 2 WHEN dic.distance BETWEEN 1000 AND 1500 THEN 3 WHEN dic.distance BETWEEN 1500 AND 2000 THEN 4 WHEN dic.distance BETWEEN 2000 AND " +
+                   "2500 THEN 5 WHEN dic.distance BETWEEN 2500 AND 3500 THEN 6 WHEN dic.distance BETWEEN 3500 AND 4500 THEN 7 WHEN dic.distance BETWEEN 4500 AND " +
+                   "10000 THEN 8 WHEN dic.distance > 10000 THEN 9 ELSE 0 END AS dist_id " +
+            "FROM dealIncust_2021 AS dic INNER JOIN dealinbus_2021 AS dib ON dic.dealinbus_id=dib.id " +
+            "INNER JOIN Businesses_2021 AS b ON b.bid=dib.business_id " +
+            "INNER JOIN Deal_2021 AS d ON dib.deal_id=d.id " +
+            "INNER JOIN CatInDeal_2021 AS cd ON cd.Deal_id=d.id " +
+            "WHERE dic.coupon=" + coupon + " AND dic.Used='True'";
+        String get_id = "SELECT SCOPE_IDENTITY();";
+        command += get_id;
+
+
 
         return command;
     }
@@ -1662,106 +1662,112 @@ public class DBServices
     }
 
 
-    public List<Deal> getRecommendSDeals(int cust_id)
+    public List<Deal> getRecommendSDeals(int cust_id, float latitude, float longitude)
     {
         List<Deal> dlist = new List<Deal>();
         SqlConnection con = null;
 
         var prametre = new List<string>() { "Type_Bus" , "Id_Cat", "Dist_id",  };
-       // var Sort_Pram = new List<string>() {};
-        var all_results = new Dictionary<string, int>() { }; 
-        var Weight_per_value= new Dictionary<int, int>() { };
-
+        var all_results = new Dictionary<string, int>() { };
 
         string selectSTR = null;
         try
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
-
             foreach (string p in prametre)
             {
                 StringBuilder sb = new StringBuilder();
-                sb.AppendFormat("select top 1 count (id) as num "+
+                sb.AppendFormat("select top 1 count (distinct coupon) as num " +
                 "from DataOfCust_2021 " +
                 "where Id_Dealincust = '"+cust_id+"' "+
-                "group by " + p + " order by count(id) DESC; ");
+                "group by " + p + " order by count(coupon) DESC; ");
 
                 selectSTR = sb.ToString();
                 SqlCommand cmd_cat = new SqlCommand(selectSTR, con);
               //  SqlDataReader d = cmd_cat.ExecuteReader(CommandBehavior.CloseConnection);
        
                 var result = Convert.ToInt32(cmd_cat.ExecuteScalar());
-                all_results.Add(p, result); // Categroy, TOP1
-       
+                all_results.Add(p, result); 
             };
 
             //string max_param = all_results.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
             IEnumerable<KeyValuePair<string, int>> sorted_results = all_results.OrderByDescending(r => r.Value);
-            //   prametre.Remove(max_param);
 
-            int[,] matrix = new int[6, 4];
+            int[,] matrix = new int[6, 3];
             int current_index = 0;
+            
             foreach (KeyValuePair<string, int> item in sorted_results)
             {
+                var Weight_per_value = new Dictionary<int, int>() { };
+                string dis = "distinct";
                 string max_param = item.Key;
+                if (max_param == "Id_Cat")
+                    dis = "";
 
                 StringBuilder sb2 = new StringBuilder();
-                sb2.AppendFormat("select " + max_param + ", round(('6' * (COUNT(id) * 100 / (select COUNT(*) from DataOfCust_2021)) / 100.0),0,0) AS SIT " +
-                "from DataOfCust_2021 " +
-                "where Id_Dealincust = '" + cust_id + "' " +
-                "group by " + max_param + " order by count(id) DESC");
+                sb2.AppendFormat("select " + max_param + ", round(('6' * (COUNT( coupon) * 100 / (select COUNT(" + dis + " coupon) from DataOfCust_2021 where Id_Dealincust = '" + cust_id + "' )) / 100.0),0,0) AS SIT " +
+                "from(select "+dis+" (coupon), "+ max_param + " from DataOfCust_2021 where Id_Dealincust = '53') AS D "+
+                "group by " + max_param + " order by count(coupon) DESC");
 
                 selectSTR = sb2.ToString();
                 SqlCommand cmd_param = new SqlCommand(selectSTR, con);
-                using (SqlDataReader dr = cmd_param.ExecuteReader())
+                SqlDataReader dr = cmd_param.ExecuteReader();
+                while (dr.Read())
                 {
-
-                    while (dr.Read())
-                    {
-                        Weight_per_value.Add(Convert.ToInt32(dr[max_param]), Convert.ToInt32(dr["SIT"]));
-                    }
-                    //dr.Close();
+                    Weight_per_value.Add(Convert.ToInt32(dr[max_param]), Convert.ToInt32(dr["SIT"]));
                 }
+                dr.Close();
 
                 // int j_pram = prametre.IndexOf(prametre.Single(i => i.Contains(max_param)));
                 int j_pram = current_index++;
-
+                int i = 0;
+                foreach (KeyValuePair<int, int> entry in Weight_per_value)
                 {
-
-                    int i = 0;
-                    foreach (KeyValuePair<int, int> entry in Weight_per_value)
-                    {
-                        for (int j = 0; j < entry.Value; j++)
-                            matrix[i++, j_pram] = entry.Key;
-                    }
+                    for (int j = 0; j < entry.Value; j++)
+                        matrix[i++, j_pram] = entry.Key;
                 }
             }
-            //    selectSTR = sb.ToString();
+            int index_dist = sorted_results.Select(x => x.Key).ToList().FindIndex(x => x == "Dist_id");
+            int index_type = sorted_results.Select(x => x.Key).ToList().FindIndex(x => x == "Type_Bus");
+            int index_cat = sorted_results.Select(x => x.Key).ToList().FindIndex(x => x == "Id_Cat");
 
-            //SqlCommand cmd = new SqlCommand(selectSTR, con);
+            for (int i=0; i < matrix.GetLength(0); i++) 
+            {
+                StringBuilder sb3 = new StringBuilder();
+                
+                sb3.AppendFormat("SELECT db.id, d.name AS deal_name, db.business_id, b.bname, db.startime, db.endtime, db.discount, " +
+                "c.name AS catgeory_name, cd.cat_id as cat_id, d.image, d.description " +
+                "FROM Businesses_2021 AS b INNER JOIN dealInbus_2021 AS db ON b.bid = db.business_id " +
+                "INNER JOIN Deal_2021 AS d ON db.deal_id = d.id INNER JOIN CatInDeal_2021 AS cd ON cd.Deal_id = d.Id " +
+                "INNER JOIN Category_2021 AS c ON cd.Cat_id = c.id " +
+                "WHERE 1 = 1 " +
+                "AND cd.cat_id = '" + matrix[i, index_cat]+"' "+
+                "AND b.btype =  '" + matrix[i, index_type]+ "' " +
+                "AND(SELECT geography::Point(" + latitude + ", " + longitude + ", 4326).STDistance(geography::Point(b.latitude, b.longitude, 4326))) between(select min from Distance_2021 where dist_id = '" + matrix[i, index_dist] + "') AND(select max from Distance_2021 where dist_id = '" + matrix[i, index_dist] + "') " +
+                "--AND db.date = CONVERT(date, GETDATE()) and CONVERT(time, GETDATE()) BETWEEN db.startime and db.endtime " +
+                "order by discount DESC");
 
-            //// get a reader
-            //SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
-            //while (dr.Read())
-            //{   // Read till the end of the data into a row
-            //    Deal d = new Deal();
-            //    d.Id = Convert.ToInt32(dr["id"]);
-            //    d.Business_Name = (string)dr["bname"];
-            //    d.Business_id = Convert.ToInt32(dr["business_id"]);
-            //    d.Category = (string)dr["catgeory_name"];
-            //    d.Startime = (TimeSpan)dr["startime"];
-            //    d.Endtime = (TimeSpan)dr["endtime"];
-            //    d.Image = (string)dr["image"];
-            //    d.Description = (string)dr["description"];
-            //    d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
-            //    d.Name = (string)dr["deal_name"];
-            //    d.Coupon = Convert.ToInt32(dr["coupon"]);
-            //    //string starttimeString24Hour = Convert.ToDateTime(context.Request.QueryString["starttime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
-            //    //string endtimeString24Hour = Convert.ToDateTime(context.Request.QueryString["endtime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
-            //    //edit.endtime = endtimeString24Hour;
-            //    dlist.Add(d);
+                selectSTR = sb3.ToString();
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                SqlDataReader dr2 = cmd.ExecuteReader(); 
+                while (dr2.Read())
+                {   
+                    Deal d = new Deal();
+                    d.Id = Convert.ToInt32(dr2["id"]);
+                    d.Business_Name = (string)dr2["bname"];
+                    d.Business_id = Convert.ToInt32(dr2["business_id"]);
+                    d.Category = (string)dr2["catgeory_name"];
+                    d.Startime = (TimeSpan)dr2["startime"];
+                    d.Endtime = (TimeSpan)dr2["endtime"];
+                    d.Image = (string)dr2["image"];
+                    d.Description = (string)dr2["description"];
+                    d.Discount = Convert.ToInt32(Convert.ToDouble(dr2["discount"]) * 100);
+                    d.Name = (string)dr2["deal_name"];
+                    dlist.Add(d);
 
-            //}
+                }
+                dr2.Close();
+            }
 
             return dlist;
         }
