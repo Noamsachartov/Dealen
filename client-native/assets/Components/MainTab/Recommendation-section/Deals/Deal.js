@@ -3,7 +3,7 @@ import { StyleSheet, Text, View,TextInput,TouchableOpacity, FlatList, Button} fr
 import DealItem from './DealItem'
 import FullDealView from './FullDealView';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import * as Location from 'expo-location';
 
 
 export default class Deal extends React.Component {
@@ -17,9 +17,40 @@ export default class Deal extends React.Component {
       componentDidMount =() => {
         //Get User data From Async Storage
         this.LoadUserData();
-
-
+        this.Location();
+      
         //Get Deals for User
+        // var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal";
+        // return fetch(apiUrl)
+        // .then(response => response.json())
+        // .then(responseJson => {
+        //   if(responseJson.length > 0){
+        //     this.setState(
+        //       {
+        //         isLoading: false,
+        //         Data: responseJson,
+        //       },
+        //       function() {
+                
+        //       }
+        //     );
+        //   }else {
+        //     alert("Sorry We there have been an error")
+        //   }
+  
+        // })
+        // .catch(error => {
+        //   console.error(error);
+        // });
+      }
+
+      getrecommendDeal = (location) =>{
+        console.log("Location: from api", location)
+        console.log("User data from api: " ,this.state.UserData.Id);
+        // New algorithem call
+        var apinew = `http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/RecommendDeal/${this.state.UserData.Id}/${location.latitude}/${location.longitude}/`
+        console.log("algorithem: ", apinew)
+        //Old api call 
         var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal";
         return fetch(apiUrl)
         .then(response => response.json())
@@ -57,6 +88,22 @@ export default class Deal extends React.Component {
         } catch (error){
             alert(error);
         }
+      }
+
+      Location = async () =>{
+        console.log("get location");
+        let { status } = await Location.requestPermissionsAsync();
+        if (status !== 'granted') {
+          this.setState ({errorMessage : 'Permission to access location was denied', });
+        }
+          let locationfunc = await Location.getCurrentPositionAsync({});
+          let location={
+              latitude: locationfunc.coords.latitude,
+              longitude:locationfunc.coords.longitude,  
+          }
+          console.log(location,'object')
+          this.setState({ location });
+          this.getrecommendDeal(location)
       }
 
 
