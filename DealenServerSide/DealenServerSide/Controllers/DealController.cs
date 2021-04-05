@@ -132,13 +132,13 @@ namespace DealenServerSide.Controllers
             }
         }
         [HttpGet]
-        [Route("api/Deal/RecommendDeal/{cust_id}")]
-        public IHttpActionResult GetRecommendDeal(int cust_id)
+        [Route("api/Deal/RecommendDeal/{cust_id}/Loction/{Latitude}/Loction/{Longitude}")]
+        public IHttpActionResult GetRecommendDeal(int cust_id,float C_Latitude,float C_Longitude)
         {
             try
             {
                 Deal deal = new Deal();
-                List<Deal> deals = deal.ReadRecommendDeal(cust_id);
+                List<Deal> deals = deal.ReadRecommendDeal(cust_id, C_Latitude, C_Longitude);
                 return Ok(deals);
 
             }

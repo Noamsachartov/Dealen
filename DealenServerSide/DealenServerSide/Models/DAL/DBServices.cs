@@ -1745,7 +1745,7 @@ public class DBServices
             "WHERE 1 = 1 "+
             "AND b.btype = '1' "+
             "AND cd.cat_id = '1' "+
-            "AND(SELECT geography::Point(32.08080, 34.77933, 4326).STDistance(geography::Point(32.08081, 34.77540, 4326))) between(select min from Distance_2021 where dist_id = '1') AND(select max from Distance_2021 where dist_id = '1') "+
+            "AND(SELECT geography::Point(32.08080, 34.77933, 4326).STDistance(geography::Point(b.latitude, b.longitude, 4326))) between(select min from Distance_2021 where dist_id = '1') AND(select max from Distance_2021 where dist_id = '1') " +
             "--AND db.date = CONVERT(date, GETDATE()) and CONVERT(time, GETDATE()) BETWEEN db.startime and db.endtime "+
             "order by discount DESC");
             selectSTR = sb.ToString();
