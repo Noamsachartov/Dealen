@@ -18,30 +18,6 @@ export default class Deal extends React.Component {
         //Get User data From Async Storage
         this.LoadUserData();
         this.Location();
-      
-        //Get Deals for User
-        // var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal";
-        // return fetch(apiUrl)
-        // .then(response => response.json())
-        // .then(responseJson => {
-        //   if(responseJson.length > 0){
-        //     this.setState(
-        //       {
-        //         isLoading: false,
-        //         Data: responseJson,
-        //       },
-        //       function() {
-                
-        //       }
-        //     );
-        //   }else {
-        //     alert("Sorry We there have been an error")
-        //   }
-  
-        // })
-        // .catch(error => {
-        //   console.error(error);
-        // });
       }
 
       getrecommendDeal = (location) =>{
