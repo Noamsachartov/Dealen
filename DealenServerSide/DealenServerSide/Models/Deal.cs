@@ -78,12 +78,14 @@ namespace DealenServerSide.Models
             List<Deal> dlist = dbs.getDealsActive();
             return dlist;
         }
-        public List<Deal> ReadbyRest(int rest_id)
+        public List<Deal> ReadbyRest(int rest_id, float latitude, float longitude)
         {
             DBServices dbs = new DBServices();
-            List<Deal> dlist = dbs.getDealsByRest(rest_id);
+            List<Deal> dlist = dbs.getDealsByRest(rest_id, latitude, longitude);
             return dlist;
         }
+
+
         public List<Deal> Readbycat(int cat_id)
         {
             DBServices dbs = new DBServices();

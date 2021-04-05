@@ -79,12 +79,12 @@ namespace DealenServerSide.Controllers
 
         [HttpGet]
         [Route("api/Deal/dealbyRest/{rest_id}")]
-        public IHttpActionResult GetByRest(int rest_id)
+        public IHttpActionResult GetByRest(int rest_id, float latitude, float longitude)
         {
             try
             {
                 Deal deal = new Deal();
-                List<Deal> deals = deal.ReadbyRest(rest_id);
+                List<Deal> deals = deal.ReadbyRest(rest_id, latitude, longitude);
                 return Ok(deals);
 
             }

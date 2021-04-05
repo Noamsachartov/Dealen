@@ -827,7 +827,7 @@ public class DBServices
     }
 
     //return deals by rest
-    public List<Deal> getDealsByRest(int rest_id)
+    public List<Deal> getDealsByRest(int rest_id, float latitude, float longitude)
     {
         List<Deal> dlist = new List<Deal>();
         SqlConnection con = null;
@@ -840,7 +840,8 @@ public class DBServices
             StringBuilder sb = new StringBuilder();
 
             sb.AppendFormat("SELECT dealInbus_2021.id, Businesses_2021.bname, dealInbus_2021.business_id as business_id,dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount,  Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name " +
-                "FROM Businesses_2021 INNER JOIN" +
+                "round ((SELECT geography::Point(" + latitude + ", " + longitude + ", 4326).STDistance(geography::Point(Businesses_2021.latitude, Businesses_2021.longitude, 4326))),0) AS Distance "+
+                "FROM Businesses_2021 INNER JOIN " +
                 " dealInbus_2021 ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id  " +
                 "where dealInbus_2021.date=CONVERT(date, GETDATE()) and CONVERT(time, GETDATE()) BETWEEN dealInbus_2021.startime and dealInbus_2021.endtime AND dealInbus_2021.business_id=" + rest_id);
             selectSTR = sb.ToString();
