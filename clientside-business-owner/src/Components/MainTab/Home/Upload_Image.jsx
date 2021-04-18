@@ -17,6 +17,8 @@ class DisplayImage extends Component {
         image: URL.createObjectURL(img)
       });
     }
+    console.log(this.state.image)
+
   };
 
   render() {
@@ -26,7 +28,8 @@ class DisplayImage extends Component {
           <div>
             <img src={this.state.image} />
             <h1>העלאת תמונה</h1>
-            <input type="file" name="myImage" onChange={this.onImageChange} />
+            {/* <input type="file" name="myImage" onChange={this.onImageChange} /> */}
+            <input type="file" accept="image/*" id="icon-button-file" capture="environment" onChange={this.onImageChange} ref={fileInput => this.fileInput = fileInput} />
           </div>
         </div>
       </div>

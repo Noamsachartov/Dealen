@@ -78,14 +78,81 @@ class SignUp extends React.Component {
     this.onImageChange = this.onImageChange.bind(this);
   }
 
-  onImageChange = event => {
-    if (event.target.files && event.target.files[0]) {
-      let img = event.target.files[0];
-      this.setState({
-        image: URL.createObjectURL(img)
-      });
+  // onImageChange = event => {
+  //   if (event.target.files && event.target.files[0]) {
+  //     let img = event.target.files[0];
+  //     console.log(img)
+  //     this.setState({
+  //       image: URL.createObjectURL(img)
+  //     });
+  //   }
+  // };
+  onImageChange = (event) => {
+       
+
+    console.log(event.target.files[0]);
+    var data = new FormData();
+    if (event.target.value.length > 0) {
+
+      var is_logged = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
+      is_logged = JSON.parse(is_logged);
+
+        //this.setState({ selectedFile: event.target.files[0].name });
+        const file = event.target.files[0];
+        console.log(file);
+        const newUrl = URL.createObjectURL(file);
+        console.log(newUrl);
+        this.setState({ imgURL: newUrl })
+
+        data.append("UploadedImage", file);
+        data.append("name", is_logged);
+
+        console.log("in post img function");
+
+        //this.apiUrl = `http://localhost:54976/api/User/uploadedFiles`;
+
+        this.apiUrl = `http://proj.ruppin.ac.il/igroup49//test2/tar1/api/UploadedFiles/uploadedFiles`;
+
+        fetch(this.apiUrl,
+            {
+                method: 'POST',
+                body: data,
+                // headers: new Headers({
+                //   // 'Content-Type': 'application/json; charset=UTF-8',
+                //   // 'Accept': 'application/json; charset=UTF-8'
+                // })
+            })
+            .then(res => {
+                console.log('res=', res);
+
+                if (res.status === 201) {
+                    console.log('uploadedFile created:)');
+                }
+                console.log('res.ok', res.ok);
+
+                if (res.ok) {
+                    console.log('post succeeded');
+                }
+
+                return res.json()
+            })
+            .then(
+                (result) => {
+                    console.log("fetch btnFetchuploadedFile= ", result);
+                    let imgNameInServer = result.split('\\').pop();
+                    console.log(imgNameInServer);
+                    this.setState({ urlimg: result, selectedFile: imgNameInServer })
+
+                },
+                (error) => {
+                    console.log("err post=", error);
+                });
+        console.log('end');
     }
-  };
+    else {
+        this.setState({ selectedFile: null })
+    }
+}
 
   convertaddress = async () => {
     Geocode.fromAddress(this.state.address).then(
@@ -302,7 +369,7 @@ class SignUp extends React.Component {
             <Grid>
               <div>
                   <img src={this.state.image} />
-                  <input type="file" name="myImage" onChange={this.onImageChange} />
+                  <input type="file" accept="image/*" id="icon-button-file" capture="environment" onChange={this.onImageChange} ref={fileInput => this.fileInput = fileInput} />
                   <label className="col-sm-0 control-label"> :  העלאת תמונה <br></br><br></br> </label>
               </div>
             </Grid>

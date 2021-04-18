@@ -40,6 +40,7 @@ class Coupon extends React.Component {
         alert(JSON.stringify(error));
         console.error(error);
       });
+      window.location = "/";
 
     alert("You are submitting " + this.state.coupon);
   }
