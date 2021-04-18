@@ -5,11 +5,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+//import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import Checkbox from './CheckInput';
+import Selectoptions from './Selectoptions';
 import CheckInput from './CheckInput';
 import TimePicker from 'react-time-picker';
+import Select from 'react-select';
+
+
 
 
 
@@ -27,11 +31,13 @@ export default class MyForm extends React.Component {
         discount: '',
         description: '',
         image: null,
-        Categories: [],
-        Tags: [],
+        Categories: null,
+        Tags: null,
         select_cats: [],
         select_tags: [],
-        today: new Date()
+        today: new Date(),
+        selectedcats: [],
+        selcectedtags: []
      };
      this.onImageChange = this.onImageChange.bind(this);
      this.apiUrl = 'http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal';
@@ -57,8 +63,10 @@ getCategory=()=>{
         this.setState({Categories:[...cats]});
     });
 
-    console.log(this.state.Categories)
+    console.log(this.state.Categories,1)
 }
+
+
 
 getTags=()=>{
   const tag = [];
@@ -91,6 +99,18 @@ getTags=()=>{
   };
     console.log(this.state.image)
   };
+
+  // onImageChange = (event) => {
+  //   if (event.target.files && event.target.files[0]) {
+  //     var data = new FormData();
+  //     let img = event.target.files[0];
+  //     console.log(img)
+  //     this.setState({
+  //       image: URL.createObjectURL(img)
+  //     });
+  //   }
+  //   console.log(this.state.image)
+  // };
 
 //   onImageChange = (event) => {
        
@@ -163,20 +183,34 @@ getTags=()=>{
 
   mySubmitHandler = (event) => {
     event.preventDefault(); //
-    const CatsToDB = this.state.Categories.filter(item=>item.checked).map((item)=>item.Id);
-    console.log(CatsToDB);
-    const TagsToDB = this.state.Tags.filter(item=>item.checked).map((item)=>item.Id);
-    console.log(TagsToDB);
+    // const CatsToDB = this.state.Categories.filter(item=>item.checked).map((item)=>item.Id);
+    console.log(this.state.selectedcats);
+    // const TagsToDB = this.state.Tags.filter(item=>item.checked).map((item)=>item.Id);
+    console.log(this.state.selectedtags);
 
     var is_logged = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
+    var b= new Date();
+   var jbody= JSON.stringify({
+      business_id: is_logged,
+      date: b, // Remember to change
+      cat_id: this.state.selectedcats, // Remember to change
+      tags: this.state.selectedtags, // Remember to change
+      name: this.state.deal_name,
+      startime: this.state.start_time,
+      endtime: this.state.end_time,
+      discount: this.state.discount,
+      description: this.state.description,
+      image: this.state.image,
+    })
+
     var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal"
     fetch(apiUrl, {
       method: 'POST',
       body: JSON.stringify({
         business_id: is_logged,
-        date: this.today, // Remember to change
-        cat_id: CatsToDB, // Remember to change
-        tags: TagsToDB, // Remember to change
+        date: b, // Remember to change
+        cat_id: this.state.selectedcats, // Remember to change
+        tags: this.state.selectedtags, // Remember to change
         name: this.state.deal_name,
         startime: this.state.start_time,
         endtime: this.state.end_time,
@@ -184,16 +218,17 @@ getTags=()=>{
         description: this.state.description,
         image: this.state.image,
       }),
+      
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
     })
       .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson);
-        window.location = "/";
 
+      .then((responseJson) => {
+
+        // window.location = "/";
       })
       .catch((error) => {
         alert(JSON.stringify(error));
@@ -206,6 +241,8 @@ getTags=()=>{
     
     console.log(jbody);
   }
+
+
   myChangeHandler = (event) => {
     this.setState({username: event.target.value});
   }
@@ -229,96 +266,117 @@ changedCheckedValuestag=(itemId,checked)=>{
 }
 
 
+handleChangecats =(selectedOptions) => {
+   let value = Array.from(selectedOptions, option => option.value);
+    this.setState({selectedcats: value});
+    console.log(this.state.selectedcats);
+  // alert(selectedOptions)
+  }
+
+  handleChangetags =(selectedOptions) => {
+    let value = Array.from(selectedOptions, option => option.value);
+     this.setState({selectedtags: value});
+     console.log(this.state.selectedtags);
+   // alert(selectedOptions)
+   }
+
+
+
+
   render() {
     if(this.state.Categories&&this.state.Tags)
     { 
-      console.log(this.state.Tags)
-    return (
-      <form onSubmit={this.mySubmitHandler}>
-      <h1>פרסום מבצע </h1>
-      <input
-        type='text'
-        onChange={text => this.setState({deal_name: text.target.value})}
-      />
-      <label className="col-sm-0 control-label"> : שם המבצע <br></br><br></br></label>
-      <label className="col-sm-0 control-label"> : בחר קטגוריות <br></br><br></br></label>
+    
+        return (
+          <form onSubmit={this.mySubmitHandler}>
+          <h1>פרסום מבצע </h1>
+          <input
+            type='text'
+            onChange={text => this.setState({deal_name: text.target.value})}
+          />
+          <label className="col-sm-0 control-label"> : שם המבצע <br></br><br></br></label>
+          <label className="col-sm-0 control-label"> : בחר קטגוריות <br></br><br></br></label>
+          <Selectoptions data={this.state.Categories} onChange= {this.handleChangecats} />
 
-      {
-                        this.state.Categories?.length>0&&
-                        this.state.Categories?.map((item,key)=><CheckInput checked={item.checked} changeChecked={this.changedCheckedValuescat} id={item.Id} key={key} label={item.Name}/>)
-                    }
-      <br></br>
-      <br></br>
+          {/* {
+                            this.state.Categories?.length>0&&
+                            this.state.Categories?.map((item,key)=><CheckInput checked={item.checked} changeChecked={this.changedCheckedValuescat} id={item.Id} key={key} label={item.Name}/>)
+                        } */}
+          <br></br>
+          <label className="col-sm-0 control-label"> : בחר תגיות לחיפוש מבצע <br></br><br></br></label>
+          {/* {
+                            this.state.Tags?.length>0&&
+                            this.state.Tags?.map((item,key)=><CheckInput checked={item.checked} changeChecked={this.changedCheckedValuestag} id={item.Id} key={key} label={item.Name}/>)
+                        } */}
 
-      <label className="col-sm-0 control-label"> : בחר תגיות לחיפוש מבצע <br></br><br></br></label>
+       
+          <br></br>
+          <Selectoptions data={this.state.Tags} onChange= {this.handleChangetags} />
 
-      {
-                        this.state.Tags?.length>0&&
-                        this.state.Tags?.map((item,key)=><CheckInput checked={item.checked} changeChecked={this.changedCheckedValuestag} id={item.Id} key={key} label={item.Name}/>)
-                    }
-      <br></br>
-   
-      {/* <input
-        type='text'
-        onChange={text => this.setState({start_time: text.target.value})}
-        placeholder="09:00 AM"
-        pattern="(0[1-9])|(1[0-2]):([0-5][0-9])\s((a|p|A|P)(m|M))"
-      /> */}
-         <TimePicker
-        onChange={time=>this.setState({start_time: time})}
-         value={ this.state.start_time}
-      />
-     
-      <label className="col-sm-0 control-label"> : שעת תחילת מבצע <br></br> <br></br></label>
+          {/* <input
+            type='text'
+            onChange={text => this.setState({start_time: text.target.value})}
+            placeholder="09:00 AM"
+            pattern="(0[1-9])|(1[0-2]):([0-5][0-9])\s((a|p|A|P)(m|M))"
+          /> */}
+          
+          <br></br>
+            <TimePicker
+            onChange={time=>this.setState({start_time: time})}
+            value={ this.state.start_time}
+          />
+        
+          <label className="col-sm-0 control-label"> : שעת תחילת מבצע <br></br> <br></br></label>
 
-      {/* <input
-        type='text'
-        onChange={text => this.setState({end_time: text.target.value})}
-        placeholder="09:00 AM"
-        pattern="(0[1-9])|(1[0-2]):([0-5][0-9])\s((a|p|A|P)(m|M))"
-      /> */}
-         <TimePicker
-        onChange={time1=>this.setState({end_time: time1})}
-         value={ this.state.end_time}
-      />
-      <label className="col-sm-0 control-label"> : שעת סיום מבצע <br></br><br></br> </label>
-      
-      <input
-        type='text'
-        onChange={text => this.setState({discount: text.target.value})}
-      />
-      <label className="col-sm-0 control-label"> : אחוז מבצע <br></br><br></br> </label>
-      
-      <input
-        type='textarea'
-        onChange={text => this.setState({description: text.target.value})}
-        cols="40" rows="20" placeholder="Message"
-        required minLength={5} maxLength={50}
-      />
-      
-      <label className="col-sm-0 control-label"> :  תיאור מבצע <br></br><br></br> </label>
-      <div>
-        <div>
+          {/* <input
+            type='text'
+            onChange={text => this.setState({end_time: text.target.value})}
+            placeholder="09:00 AM"
+            pattern="(0[1-9])|(1[0-2]):([0-5][0-9])\s((a|p|A|P)(m|M))"
+          /> */}
+            <TimePicker
+            onChange={time1=>this.setState({end_time: time1})}
+            value={ this.state.end_time}
+          />
+          <label className="col-sm-0 control-label"> : שעת סיום מבצע <br></br><br></br> </label>
+          
+          <input
+            type='text'
+            onChange={text => this.setState({discount: text.target.value})}
+          />
+          <label className="col-sm-0 control-label"> : אחוז מבצע <br></br><br></br> </label>
+          
+          <input
+            type='textarea'
+            onChange={text => this.setState({description: text.target.value})}
+            cols="40" rows="20" placeholder="Message"
+            required minLength={5} maxLength={50}
+          />
+          
+          <label className="col-sm-0 control-label"> :  תיאור מבצע <br></br><br></br> </label>
           <div>
+            <div>
+              <div>
 
-            <img src={this.state.image} />
-            <input type="file" name="myImage" onChange={this.onImageChange} />
-            <label className="col-sm-0 control-label"> :  העלאת תמונה <br></br><br></br> </label>
+                <img src={this.state.image} />
+                <input type="file" name="myImage" onChange={this.onImageChange} />
+                <label className="col-sm-0 control-label"> :  העלאת תמונה <br></br><br></br> </label>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      
-      <input
-        type='submit'
-      />
-      </form>
-    );
-  }
+          
+          <input
+            type='submit'
+          />
+          </form>
+        );
+      }
+
 
 else
 {
     return(
-    <h1>loading</h1>
+    <div><h1>loading</h1></div>
   );
   }
 }
@@ -341,3 +399,26 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 120,
   },
 }));
+const formatGroupLabel = data => (
+  <div style={groupStyles}>
+    <span>{data.label}</span>
+    <span style={groupBadgeStyles}>{data.options.length}</span>
+  </div>
+);
+const groupBadgeStyles = {
+  backgroundColor: '#EBECF0',
+  borderRadius: '2em',
+  color: '#172B4D',
+  display: 'inline-block',
+  fontSize: 12,
+  fontWeight: 'normal',
+  lineHeight: '1',
+  minWidth: 1,
+  padding: '0.16666666666667em 0.5em',
+  textAlign: 'center',
+};
+const groupStyles = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+};
