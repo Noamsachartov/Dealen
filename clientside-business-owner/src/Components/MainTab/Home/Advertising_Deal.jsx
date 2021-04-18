@@ -174,7 +174,19 @@ getTags=()=>{
 
     var is_logged = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
     var b= new Date();
-
+   var jbody= JSON.stringify({
+      business_id: is_logged,
+      date: b, // Remember to change
+      cat_id: this.state.selectedcats, // Remember to change
+      tags: this.state.selectedtags, // Remember to change
+      name: this.state.deal_name,
+      startime: this.state.start_time,
+      endtime: this.state.end_time,
+      discount: this.state.discount,
+      description: this.state.description,
+      image: this.state.image,
+    })
+    
     var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal"
     fetch(apiUrl, {
       method: 'POST',
@@ -190,6 +202,7 @@ getTags=()=>{
         description: this.state.description,
         image: this.state.image,
       }),
+      
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -199,7 +212,7 @@ getTags=()=>{
 
       .then((responseJson) => {
 
-        window.location = "/";
+        // window.location = "/";
       })
       .catch((error) => {
         alert(JSON.stringify(error));
@@ -208,7 +221,7 @@ getTags=()=>{
 
     alert("You are submitting " + is_logged);
     
-    console.log(this.state);
+    console.log(jbody);
   }
 
 
