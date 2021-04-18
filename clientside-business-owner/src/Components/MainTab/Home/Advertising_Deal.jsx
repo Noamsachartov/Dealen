@@ -36,10 +36,10 @@ export default class MyForm extends React.Component {
         select_cats: [],
         select_tags: [],
         today: new Date(),
-        selectedcats: [],
-        selcectedtags: []
+        selectedcats: null,
+        selcectedtags: null
      };
-     this.onImageChange = this.onImageChange.bind(this);
+     //this.onImageChange = this.onImageChange.bind(this);
      this.apiUrl = 'http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal';
 
 
@@ -212,14 +212,14 @@ getTags=()=>{
 
       .then((responseJson) => {
 
-        // window.location = "/";
+        window.location = "/";
       })
       .catch((error) => {
         alert(JSON.stringify(error));
         console.error(error);
       });
 
-    alert("You are submitting " + is_logged);
+    // alert("You are submitting " + is_logged);
     
     console.log(jbody);
   }
