@@ -21,7 +21,7 @@ export default class Category extends React.Component {
           });
         }, 1500);
         
-        var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Category";
+        var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Category/Active";
         return fetch(apiUrl)
         .then(response => response.json())
         .then(responseJson => {

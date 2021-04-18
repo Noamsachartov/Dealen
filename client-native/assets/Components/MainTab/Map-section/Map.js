@@ -5,7 +5,6 @@ import * as Location from 'expo-location';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 import Mapview from './Mapview';
-import FullDealViewMap from './FullDealViewMap';  
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DealOnMapItem from'./DealOnMapItem';
 import ActiveDealMarker from './ActiveDealMarker';
@@ -28,12 +27,10 @@ export default class Map extends React.Component {
 
     componentDidMount =() => {
       //Get User data From Async Storage
-      
       this.Location();
       this.LoadUserData();
       //  this.ShowDeal();
- 
-    }
+     }
 
     
     
