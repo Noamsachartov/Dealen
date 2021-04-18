@@ -167,9 +167,9 @@ getTags=()=>{
 
   mySubmitHandler = (event) => {
     event.preventDefault(); //
-    const CatsToDB = this.state.Categories.filter(item=>item.checked).map((item)=>item.Id);
+    // const CatsToDB = this.state.Categories.filter(item=>item.checked).map((item)=>item.Id);
     console.log(this.state.selectedcats);
-    const TagsToDB = this.state.Tags.filter(item=>item.checked).map((item)=>item.Id);
+    // const TagsToDB = this.state.Tags.filter(item=>item.checked).map((item)=>item.Id);
     console.log(this.state.selectedtags);
 
     var is_logged = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
@@ -186,7 +186,7 @@ getTags=()=>{
       description: this.state.description,
       image: this.state.image,
     })
-    
+
     var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal"
     fetch(apiUrl, {
       method: 'POST',
