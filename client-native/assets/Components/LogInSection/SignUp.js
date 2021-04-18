@@ -127,9 +127,9 @@ export default class SignUp extends React.Component {
                     <TouchableOpacity style={styles.loginBtn} onPress={this.handleSignUp}>
                       <Text style={styles.loginText} >Sign Up</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.FaceBook} onPress={() => navigation.navigate('FaceBookSignup')}>
+                    {/* <TouchableOpacity style={styles.FaceBook} onPress={() => navigation.navigate('FaceBookSignup')}>
                       <Text style={styles.loginText}>Signup with facebook</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
               </View>
         </View>
     );
