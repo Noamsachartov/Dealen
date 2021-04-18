@@ -84,22 +84,6 @@ getTags=()=>{
   console.log(this.state.Tags)
 }
 
-  onImageChange = event => {
-    if (event.target.files && event.target.files[0]) {
-      let img = event.target.files[0];
-  onImageChange = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      var data = new FormData();
-      let img = event.target.files[0];
-      console.log(img)
-      this.setState({
-        image: URL.createObjectURL(img)
-      });
-    }
-  };
-    console.log(this.state.image)
-  };
-
   // onImageChange = (event) => {
   //   if (event.target.files && event.target.files[0]) {
   //     var data = new FormData();
@@ -234,7 +218,6 @@ getTags=()=>{
         alert(JSON.stringify(error));
         console.error(error);
       });
-
 
     // alert("You are submitting " + is_logged);
     
