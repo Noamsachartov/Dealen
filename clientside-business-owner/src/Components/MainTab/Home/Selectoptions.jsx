@@ -35,10 +35,10 @@ export default class Selectoptions extends Component {
             console.log(this.state.selectOptions)
         return (
        
-       <div >
+       <div style={{ width: '20%', alignItems: "center",margin:"auto"}}>
        
               
-                   <Select style={{ width: '40%'}}
+                   <Select style={{ width: '40%', alignItems: "center"}}
 
                     name="selectOptions"
                     //defaultValue={this.state.selectOptions[1]}
