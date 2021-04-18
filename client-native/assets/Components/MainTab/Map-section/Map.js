@@ -27,12 +27,10 @@ export default class Map extends React.Component {
 
     componentDidMount =() => {
       //Get User data From Async Storage
-      
       this.Location();
       this.LoadUserData();
       //  this.ShowDeal();
- 
-    }
+     }
 
     
     

@@ -24,7 +24,6 @@ export default function App() {
 
   return (
     <DealContextProvider>
-      
         <HeaderForDeal />
         <NavigationContainer>
           <Stack.Navigator 
@@ -41,7 +40,6 @@ export default function App() {
           </Stack.Navigator>
         </NavigationContainer>
       </DealContextProvider>
-
   );
 }
 
