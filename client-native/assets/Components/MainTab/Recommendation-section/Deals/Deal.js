@@ -38,9 +38,6 @@ export default class Deal extends React.Component {
                 isLoading: false,
                 Data: responseJson,
               },
-              function() {
-                
-              }
             );
           }else {
             alert("Sorry We there have been an error")

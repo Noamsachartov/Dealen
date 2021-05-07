@@ -25,8 +25,7 @@ export default class App extends React.Component {
           textContent={this.props.title}
           textStyle={styles.spinnerTextStyle}
           color={'white'}
-          overlayColor={'#003f5c'}
-         
+          overlayColor={'#003f5c'}        
         />
       </View>
     );
