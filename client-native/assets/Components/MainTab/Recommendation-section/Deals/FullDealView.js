@@ -186,7 +186,7 @@ console.log(DealId)
                   <View style={styles.IconView}>
                         <View style={styles.TimerView}>
                             <TimerIcon style={styles.TimerIcon} name="timer-sand-empty" size={30} />
-                            <Text style={styles.timeText} >00 דק'</Text>
+                            <Text style={styles.timeText} >{this.state.Data[0].MinutesToend} דק'</Text>
                         </View>
                         <View>
                             <DiscountIcon style={styles.DiscountIcon} name="ticket-percent-outline" size={30} />

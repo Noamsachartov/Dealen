@@ -23,7 +23,7 @@ const DealOnMapItem = ({ UserData, item, navigation }) => {
                         <View style={styles.TimerView}>
                             <TimerIcon style={styles.TimerIcon} name="timer-sand-empty" size={20} />
                             {/* <Text >{item.TimeLeft}</Text> */}
-                            <Text >00</Text>
+                            <Text >{item.MinutesToend}</Text>
                         </View>
                         <View>
                             <DiscountIcon style={styles.DiscountIcon} name="ticket-percent-outline" size={20} />
