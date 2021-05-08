@@ -339,8 +339,8 @@ public class DBServices
         StringBuilder sb = new StringBuilder();
         var d = deal.Date.ToString("yyyy-MM-dd");
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values({0}, {1},{2},'True','{3}','{4}','{5}');", deal.Business_id, deal_id, deal.Discount, deal.Startime,deal.Endtime,d);
-        String prefixc = "INSERT INTO [dealInbus_2021] " + "([business_id],[deal_id],[discount],[active],[startime],[endtime],[date])";
+        sb.AppendFormat("Values({0}, {1},{2},'True','{3}','{4}','{5}',{6});", deal.Business_id, deal_id, deal.Discount, deal.Startime,deal.Endtime,d, deal.Pcost);
+        String prefixc = "INSERT INTO [dealInbus_2021] " + "([business_id],[deal_id],[discount],[active],[startime],[endtime],[date], Pcost)";
         String get_id = "SELECT SCOPE_IDENTITY();";
         command = prefixc + sb.ToString() + get_id;
 
@@ -368,8 +368,6 @@ public class DBServices
         command = prefixc + sb.ToString();
 
         return command;
-
-
 
     }
 
@@ -648,6 +646,7 @@ public class DBServices
         string selectSTR = null;
         try
         {
+            
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
             StringBuilder sb = new StringBuilder();
 
@@ -676,6 +675,13 @@ public class DBServices
                 b.Latitude = Convert.ToDouble(dr["latitude"]);
                 b.Longitude = Convert.ToDouble(dr["longitude"]);
                 d.Bus_rest = b;
+
+                DateTime now = DateTime.Now;
+
+                DateTime end =DateTime.Today+ d.Endtime;
+
+                TimeSpan TimeToEndDeal = end - now;
+                d.MinutesToend = Convert.ToInt32(TimeToEndDeal.TotalMinutes);
 
 
                 dlist.Add(d);
@@ -737,6 +743,13 @@ public class DBServices
                 d.Image = (string)dr["image"];
                 d.Description = (string)dr["description"];
                 d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
+
+                DateTime now = DateTime.Now;
+
+                DateTime end = DateTime.Today + d.Endtime;
+
+                TimeSpan TimeToEndDeal = end - now;
+                d.MinutesToend = Convert.ToInt32(TimeToEndDeal.TotalMinutes);
 
                 dlist.Add(d);
             }
@@ -802,6 +815,15 @@ public class DBServices
                 b.Latitude = Convert.ToDouble(dr["latitude"]);
                 b.Longitude = Convert.ToDouble(dr["longitude"]);
                 d.Bus_rest = b;
+
+
+                DateTime now = DateTime.Now;
+
+                DateTime end = DateTime.Today + d.Endtime;
+
+                TimeSpan TimeToEndDeal = end - now;
+                d.MinutesToend = Convert.ToInt32(TimeToEndDeal.TotalMinutes);
+
                 dlist.Add(d);
                 //string starttimeString24Hour = Convert.ToDateTime(context.Request.QueryString["starttime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
                 //string endtimeString24Hour = Convert.ToDateTime(context.Request.QueryString["endtime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
@@ -862,6 +884,13 @@ public class DBServices
                 d.Image = (string)dr["image"];
                 d.Description = (string)dr["description"];
                 d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
+
+                DateTime now = DateTime.Now;
+
+                DateTime end = DateTime.Today + d.Endtime;
+
+                TimeSpan TimeToEndDeal = end - now;
+                d.MinutesToend = Convert.ToInt32(TimeToEndDeal.TotalMinutes);
                 dlist.Add(d);
 
             }
@@ -927,6 +956,13 @@ public class DBServices
                 //string starttimeString24Hour = Convert.ToDateTime(context.Request.QueryString["starttime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
                 //string endtimeString24Hour = Convert.ToDateTime(context.Request.QueryString["endtime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
                 //edit.endtime = endtimeString24Hour;
+
+                DateTime now = DateTime.Now;
+
+                DateTime end = DateTime.Today + d.Endtime;
+
+                TimeSpan TimeToEndDeal = end - now;
+                d.MinutesToend = Convert.ToInt32(TimeToEndDeal.TotalMinutes);
                 dlist.Add(d);
 
             }
@@ -1001,6 +1037,13 @@ public class DBServices
                 d.Image = (string)dr["image"];
                 d.Description = (string)dr["description"];
                 d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
+
+                DateTime now = DateTime.Now;
+
+                DateTime end = DateTime.Today + d.Endtime;
+
+                TimeSpan TimeToEndDeal = end - now;
+                d.MinutesToend = Convert.ToInt32(TimeToEndDeal.TotalMinutes);
                 dlist.Add(d);
 
             }
@@ -1110,6 +1153,13 @@ public class DBServices
                 d.Image = (string)dr["image"];
                 d.Description = (string)dr["description"];
                 d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
+
+                DateTime now = DateTime.Now;
+
+                DateTime end = DateTime.Today + d.Endtime;
+
+                TimeSpan TimeToEndDeal = end - now;
+                d.MinutesToend = Convert.ToInt32(TimeToEndDeal.TotalMinutes);
                 dlist.Add(d);
                 //string starttimeString24Hour = Convert.ToDateTime(context.Request.QueryString["starttime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
                 //string endtimeString24Hour = Convert.ToDateTime(context.Request.QueryString["endtime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
@@ -1317,6 +1367,14 @@ public class DBServices
                 d.Image = (string)dr["image"];
                 d.Description = (string)dr["description"];
                 d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
+
+                DateTime now = DateTime.Now;
+
+                DateTime end = DateTime.Today + d.Endtime;
+
+                TimeSpan TimeToEndDeal = end - now;
+                d.MinutesToend = Convert.ToInt32(TimeToEndDeal.TotalMinutes);
+                d.MinutesToend = Convert.ToInt32(TimeToEndDeal.TotalMinutes);
                 dlist.Add(d);
 
             }
@@ -1777,6 +1835,10 @@ public class DBServices
                     d.Description = (string)dr2["description"];
                     d.Discount = Convert.ToInt32(Convert.ToDouble(dr2["discount"]) * 100);
                     d.Name = (string)dr2["deal_name"];
+                    DateTime now = DateTime.Now;
+                    DateTime end = DateTime.Now + d.Endtime;
+                    TimeSpan TimeToEndDeal = end - now;
+                    d.MinutesToend = Convert.ToInt32(TimeToEndDeal.TotalMinutes);
                     if (!dlist.Where(p => p.Id == d.Id).Any())
                         dlist.Add(d);
                 }

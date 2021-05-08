@@ -37,7 +37,9 @@ export default class MyForm extends React.Component {
         select_tags: [],
         today: new Date(),
         selectedcats: null,
-        selcectedtags: null
+        selcectedtags: null,
+        pcost: null,
+        onplusone: null
      };
      //this.onImageChange = this.onImageChange.bind(this);
      this.apiUrl = 'http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal';
@@ -185,6 +187,8 @@ getTags=()=>{
       discount: this.state.discount,
       description: this.state.description,
       image: this.state.image,
+      pcost: this.state.pcost
+
     })
 
     var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal"
@@ -201,6 +205,8 @@ getTags=()=>{
         discount: this.state.discount,
         description: this.state.description,
         image: this.state.image,
+        pcost: this.state.pcost
+        
       }),
       
       headers: {
@@ -261,6 +267,16 @@ handleChangecats =(selectedOptions) => {
      console.log(this.state.selectedtags);
    // alert(selectedOptions)
    }
+
+   handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+     onplusone: value
+    });
+  }
 
 
 
@@ -323,18 +339,40 @@ handleChangecats =(selectedOptions) => {
           <label className="col-sm-0 control-label"> : שעת סיום מבצע <br></br><br></br> </label>
           
           <input
-            type='text'
+            type='number'
             onChange={text => this.setState({discount: text.target.value})}
           />
-          <label className="col-sm-0 control-label"> : אחוז מבצע <br></br><br></br> </label>
+          <label className="col-sm-0 control-label"> : אחוז מבצע  <br></br><br></br></label>
+          
+           
+{/*     
+          <label>
+       
+          <input
+            name="True"
+            type="checkbox"
+            checked={this.state.isGoing}
+            onChange={this.handleInputChange} />
+            <tab></tab> :אחד פלוס אחד <br></br><br></br> 
+
+        </label> */}
+
+          <input
+            type='number'
+            onChange={text => this.setState({pcost: text.target.value})}
+            cols="40" rows="20"             
+
+            required minLength={5} maxLength={50}
+          />
+          
+          <label className="col-sm-0 control-label"> : עלות ממוצעת למוצר <br></br><br></br> </label>
           
           <input
             type='textarea'
             onChange={text => this.setState({description: text.target.value})}
-            cols="40" rows="20" placeholder="Message"
+            cols="40" rows="20" placeholder="Desctiption"
             required minLength={5} maxLength={50}
           />
-          
           <label className="col-sm-0 control-label"> :  תיאור מבצע <br></br><br></br> </label>
           <div>
             <div>

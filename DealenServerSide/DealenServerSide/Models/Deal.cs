@@ -24,6 +24,8 @@ namespace DealenServerSide.Models
         int coupon;
         int[] tags;
         bool isLike;
+        int minutesToend;
+        int pcost;
        
 
 
@@ -44,10 +46,12 @@ namespace DealenServerSide.Models
         public int Coupon { get => coupon; set => coupon = value; }
         public int[] Tags { get => tags; set => tags = value; }
         public bool IsLike { get => isLike; set => isLike = value; }
+        public int MinutesToend { get => minutesToend; set => minutesToend = value; }
+        public int Pcost { get => pcost; set => pcost = value; }
 
         public Deal() { }
 
-        public Deal(int id, string name, string description, string business_Name, string category, TimeSpan startime, TimeSpan endtime, string image, int[] cat_id, int business_id, int discount, DateTime date, int coupon, int[] tags, bool isLike)
+        public Deal(int id, string name, string description, string business_Name, string category, TimeSpan startime, TimeSpan endtime, string image, int[] cat_id, int business_id, int discount, DateTime date, int coupon, int[] tags, bool isLike, int minutesToEnd, int pcost)
         {
             Id = id;
             Name = name;
@@ -63,6 +67,8 @@ namespace DealenServerSide.Models
             Coupon = coupon;
             Tags = tags;
             IsLike = isLike;
+            MinutesToend = minutesToEnd;
+            Pcost = pcost;
 
         }
 
