@@ -29,6 +29,24 @@ namespace DealenServerSide.Controllers
 
             }
         }
+        [HttpGet]
+        [Route("api/Customer/GetCustomer/{id}")]
+        public IHttpActionResult GetCustomer(int id)
+        {
+            try
+            {
+                Customer Customer = new Customer();
+                List<Customer> Customers = Customer.Read(id);
+                return Ok(Customers);
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e);
+
+
+            }
+        }
+
 
         // POST api/<controller>
         public IHttpActionResult Post([FromBody]Customer customer)

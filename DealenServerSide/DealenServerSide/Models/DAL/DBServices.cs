@@ -523,6 +523,72 @@ public class DBServices
         }
     }
 
+    public List<Customer> GetCustomer(int id)
+    {
+        SqlConnection con = null;
+        List<Customer> customers = new List<Customer>();
+
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+            String selectSTR = "SELECT Customer_2021.cust_id,Customer_2021.cust_fname, Customer_2021.cust_lname,Customer_2021.cust_address, Customer_2021.cust_mail, Customer_2021.cust_phone, " +
+                " CONVERT(int, SUM(dealInbus_2021.discount * dealInbus_2021.Pcost))  AS Totalsave,    Customer_2021.birthdate, " + 
+                         " Customer_2021.image "+
+                         "FROM Customer_2021 INNER JOIN "+
+                         "dealIncust_2021 ON Customer_2021.cust_id = dealIncust_2021.dealincust_id INNER JOIN "+
+                         "dealInbus_2021 ON dealIncust_2021.dealinbus_id = dealInbus_2021.id "+
+                         "WHERE(Customer_2021.cust_id = "+id+") "+
+                         "GROUP BY Customer_2021.cust_id, Customer_2021.cust_fname, Customer_2021.cust_address, Customer_2021.cust_phone, Customer_2021.birthdate, Customer_2021.cust_mail, Customer_2021.image, "+
+                         "Customer_2021.cust_lname";
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                Customer c = new Customer();
+
+                c.Cust_id = Convert.ToInt32(dr["cust_id"]);
+                c.Cust_fname = (string)dr["cust_fname"];
+                c.Cust_lname = (string)dr["cust_lname"];
+                c.Cust_address = (string)dr["cust_address"];
+                c.Cust_mail = (string)dr["cust_mail"];
+                c.Cust_phone = (string)dr["cust_phone"];
+                c.Totalsave= Convert.ToInt32(dr["Totalsave"]);
+
+                if (!dr.IsDBNull(6))
+                {
+                    c.Image = (string)dr["image"];
+                }
+                else
+                {
+                    c.Image = string.Empty;
+                }
+
+                customers.Add(c);
+            }
+
+            return customers;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
+
+    
+
+
     //Dealen-בדיקה האם בעל עסק קיים במערכת
     public List<Businesses> CheckIfbExits(string bmail, string password)
     {
