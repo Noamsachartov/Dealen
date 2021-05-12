@@ -18,7 +18,8 @@ export default class Deal extends React.Component {
         toggleCheckBox_Resturant: false,
         toggleCheckBox_Bar: false,
         toggleCheckBox_Caffe: false,
-        titleupdate: 'עדכון העדפות'
+        titleupdate: 'עדכון העדפות',
+        typearr: "",
       }
 
       componentDidMount =() => {
@@ -83,6 +84,59 @@ export default class Deal extends React.Component {
       saveclose = () => {
         this.setState({showedit: false})
       }
+
+      // handlePostPreferences = ()=>{
+      //   console.log("post")
+        
+      //   if(this.state.toggleCheckBox_Resturant){
+      //     var resturant = "מסעדה";
+      //   }else{
+      //     var resturant = "";
+      //   }
+
+      //   if(this.state.toggleCheckBox_Bar){
+      //     var bar = "בר";
+      //   }else{
+      //     var bar = "";
+      //   }
+
+      //   if(this.state.toggleCheckBox_Caffe){
+      //     var caffe = "בית קפה";
+      //   }else{
+      //     var caffe = "";
+      //   }
+      //   var join = `${resturant},${bar},${caffe}`;
+      //   this.setState({typearr: join })
+
+
+      
+      //   var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Customer/Updateinitial/" +this.props.UserId + "";
+      //   console.log("this api initial: " + apiUrl);
+      //   fetch(apiUrl, {
+      //     method: 'PUT',
+      //     body: JSON.stringify({
+      //       P_type: join,
+      //       P_distance: this.state.radios.toString(),
+      //     }),
+      //     headers: {
+      //       Accept: 'application/json',
+      //       'Content-Type': 'application/json',
+      //     },
+      //   })
+      //     .then((response) => response.json())
+      //     .then((responseJson) => {
+      //       console.log(responseJson)
+      //     })
+      //     .catch((error) => {
+      //       alert(JSON.stringify(error));
+      //       console.error(error);
+      //     });
+
+      //   // navigation.navigate('Login')
+      // }
+
+
+
   render(props){
 console.log("Deal Component")
     if(!this.state.isLoading){
