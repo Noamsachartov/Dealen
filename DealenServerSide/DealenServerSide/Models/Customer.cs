@@ -20,6 +20,7 @@ namespace DealenServerSide.Models
         int[] p_category;
         string p_type;
         string p_distance;
+        int totalsave;
 
 
         public int Cust_id { get => cust_id; set => cust_id = value; }
@@ -34,10 +35,11 @@ namespace DealenServerSide.Models
         public string P_type { get => p_type; set => p_type = value; }
         public string P_distance { get => p_distance; set => p_distance = value; }
         public int[] P_category { get => p_category; set => p_category = value; }
+        public int Totalsave { get => totalsave; set => totalsave = value; }
 
         public Customer() { }
 
-        public Customer(int cust_id, string cust_fname, string cust_address, string cust_phone, DateTime birthdate, string cust_mail, string password, string image, string cust_lname, string p_type, string p_distance, int[] p_category)
+        public Customer(int cust_id, string cust_fname, string cust_address, string cust_phone, DateTime birthdate, string cust_mail, string password, string image, string cust_lname, string p_type, string p_distance, int[] p_category, int totalsave)
         {
             Cust_id = cust_id;
             Cust_fname = cust_fname;
@@ -51,8 +53,14 @@ namespace DealenServerSide.Models
             P_type = p_type;
             P_distance = p_distance;
             P_category = p_category;
+            Totalsave = totalsave;
         }
-
+        public List<Customer> Read(int id)
+        {
+            DBServices dbs = new DBServices();
+            List<Customer> l = dbs.GetCustomer(id);
+            return l;
+        }
         public List<Customer> CheckIfLog(string mail, string password)
         {
             DBServices dbs = new DBServices();
