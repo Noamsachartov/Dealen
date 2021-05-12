@@ -242,8 +242,6 @@ public class DBServices
 
         return command;
 
-
-
     }
     //--------------------------------------------------------------------
     //private String BuildUpdateCommand(int id, Customer customer)
@@ -252,6 +250,56 @@ public class DBServices
     //    command = "UPDATE Customer_2021 set P_Category = '"+ customer.P_category +"', P_TypeBus='"+ customer.P_type +"', P_Distance='" + customer.P_distance + "' where cust_id = " + id.ToString();
     //    return command;
     //}
+
+    public int UpdateIntialPreferencesfromPrivate(int id, Customer customer)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String cStr = BuildUpdateCommandInitialPref(id, customer);      // helper method to build the insert string
+
+        cmd = CreateCommand(cStr, con);             // create the command
+
+        try
+        {
+            int numEffected = cmd.ExecuteNonQuery();
+            return numEffected;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+    private String BuildUpdateCommandInitialPref(int id, Customer customer)
+    {
+        String command;
+        command = "UPDATE Customer_2021 set P_TypeBus='" + customer.P_type + "', P_Distance='" + customer.P_distance + "' where cust_id = " + id.ToString();
+        return command;
+    }
+   
+
 
     //הכנסה מבצע חדש
     public int Insert(Deal deal)

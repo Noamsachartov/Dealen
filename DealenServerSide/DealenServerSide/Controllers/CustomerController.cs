@@ -62,6 +62,22 @@ namespace DealenServerSide.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("api/Customer/Updateinitial/{id}")]
+        public IHttpActionResult Updateinitial(int id, Customer customer)
+        {
+            try
+            {
+                int count = customer.UpdateIntialPreferencesfromPrivate(id, customer);
+                return Created(new Uri(Request.RequestUri.AbsoluteUri + id), count);
+
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
         // DELETE api/<controller>/5
         public void Delete(int id)
         {

@@ -70,5 +70,13 @@ namespace DealenServerSide.Models
             DBServices dbs = new DBServices();
             return dbs.UpdateIntialPreferences(id, customer);
         }
+
+        //UpdateIntialPreferencesfromPrivate
+
+        public int UpdateIntialPreferencesfromPrivate(int id, Customer customer)
+        {
+            DBServices dbs = new DBServices();
+            return dbs.UpdateIntialPreferencesfromPrivate(id, customer);
+        }
     }
 }
