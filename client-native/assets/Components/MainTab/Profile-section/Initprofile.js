@@ -20,6 +20,7 @@ export default class Deal extends React.Component {
         toggleCheckBox_Caffe: false,
         titleupdate: 'עדכון העדפות',
         typearr: "",
+        radios: 50
       }
 
       componentDidMount =() => {
@@ -74,7 +75,8 @@ export default class Deal extends React.Component {
         if(!this.state.showedit){
           this.setState({showedit: true, titleupdate: 'בטל עדכון'})
         }else{
-          this.setState({showedit: false, titleupdate: 'עדכון העדפות'})
+          // this.setState({showedit: false, titleupdate: 'עדכון העדפות'})
+          this.saveclose()
         }
       }
 
@@ -82,58 +84,78 @@ export default class Deal extends React.Component {
         this.setState({ radios: value });
       }
       saveclose = () => {
-        this.setState({showedit: false})
+        this.setState({showedit: false,  titleupdate: 'עדכון העדפות'})
       }
 
-      // handlePostPreferences = ()=>{
-      //   console.log("post")
+      handlePostPreferences = ()=>{
+        console.log("post")
         
-      //   if(this.state.toggleCheckBox_Resturant){
-      //     var resturant = "מסעדה";
-      //   }else{
-      //     var resturant = "";
-      //   }
+        if(this.state.toggleCheckBox_Resturant){
+          var resturant = "מסעדה";
+        }else{
+          var resturant = "";
+        }
 
-      //   if(this.state.toggleCheckBox_Bar){
-      //     var bar = "בר";
-      //   }else{
-      //     var bar = "";
-      //   }
+        if(this.state.toggleCheckBox_Bar){
+          var bar = "בר";
+        }else{
+          var bar = "";
+        }
 
-      //   if(this.state.toggleCheckBox_Caffe){
-      //     var caffe = "בית קפה";
-      //   }else{
-      //     var caffe = "";
-      //   }
-      //   var join = `${resturant},${bar},${caffe}`;
-      //   this.setState({typearr: join })
+        if(this.state.toggleCheckBox_Caffe){
+          var caffe = "בית קפה";
+        }else{
+          var caffe = "";
+        }
+        
+        if (resturant.length > 1 && bar.length>1 && caffe.length > 1){
+          var join = `${resturant},${bar},${caffe}`;
+        }else if(resturant.length > 1 && bar.length>1 && caffe.length < 2){
+          var join = `${resturant},${bar}`;
+        }else if(resturant.length > 1 && bar.length<2 && caffe.length > 1){
+          var join = `${resturant},${caffe}`;
+        }else if(resturant.length < 2 && bar.length>1 && caffe.length > 1){
+          var join = `${bar},${caffe}`;
+        }else if(resturant.length < 2 && bar.length<2 && caffe.length > 1){
+          var join = `${caffe}`;
+        }else if(resturant.length < 2 && bar.length>1 && caffe.length <2){
+          var join = `${bar}`;
+        }else if(resturant.length > 1 && bar.length<2 && caffe.length <2){
+          var join = `${resturant}`;
+        }else{
+          var join = ``;
+        }
+        
+        console.log("Joined types: "+ join, "resturant: " +resturant + " bar: " + bar +" caffe: " +caffe)
+        this.setState({typearr: join })
 
 
       
-      //   var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Customer/Updateinitial/" +this.props.UserId + "";
-      //   console.log("this api initial: " + apiUrl);
-      //   fetch(apiUrl, {
-      //     method: 'PUT',
-      //     body: JSON.stringify({
-      //       P_type: join,
-      //       P_distance: this.state.radios.toString(),
-      //     }),
-      //     headers: {
-      //       Accept: 'application/json',
-      //       'Content-Type': 'application/json',
-      //     },
-      //   })
-      //     .then((response) => response.json())
-      //     .then((responseJson) => {
-      //       console.log(responseJson)
-      //     })
-      //     .catch((error) => {
-      //       alert(JSON.stringify(error));
-      //       console.error(error);
-      //     });
+        var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Customer/Updateinitial/" +this.props.UserId + "";
+        console.log("this api initial: " + apiUrl);
+        fetch(apiUrl, {
+          method: 'PUT',
+          body: JSON.stringify({
+            P_type: join,
+            P_distance: this.state.radios.toString(),
+          }),
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        })
+          .then((response) => response.json())
+          .then((responseJson) => {
+            console.log(responseJson)
+            this.saveclose()
+          })
+          .catch((error) => {
+            alert(JSON.stringify(error));
+            console.error(error);
+          });
 
-      //   // navigation.navigate('Login')
-      // }
+        // navigation.navigate('Login')
+      }
 
 
 
@@ -210,7 +232,7 @@ console.log("Deal Component")
                     </View>
                </View>
             </View>
-            <TouchableOpacity style={{flex:0.4, flexDirection:'column', alignItems:'center', justifyContent:'center'}} onPress={this.saveclose} >
+            <TouchableOpacity style={{flex:0.4, flexDirection:'column', alignItems:'center', justifyContent:'center'}} onPress={this.handlePostPreferences} >
                  <Text style={styles.Header} >שמור</Text>
             </TouchableOpacity>
           </View>
