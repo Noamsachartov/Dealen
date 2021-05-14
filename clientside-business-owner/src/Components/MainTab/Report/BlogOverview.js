@@ -71,10 +71,23 @@ BlogOverview.propTypes = {
   smallStats: PropTypes.array
 };
 
+var Bus_Id = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
+var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/RedeemCard/DataCard/" + Bus_Id;
+fetch(apiUrl)
+  .then((response) => response.json())
+
+  .then((responseJson) => {
+    console.log(BlogOverview.defaultProps.smallStats[0].value);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+
+
 BlogOverview.defaultProps = {
   smallStats: [
     {
-      label: "כמות מבצעים",
+      label: "מבצע אחרון ללא מימוש",
       value: "2,390",
       percentage: "4.7%",
       increase: true,
@@ -92,7 +105,7 @@ BlogOverview.defaultProps = {
       ]
     },
     {
-      label: "ממוצע מימושים למבצע",
+      label: "לקוחות חדשים ",
       value: "182",
       percentage: "12.4",
       increase: true,
@@ -129,7 +142,7 @@ BlogOverview.defaultProps = {
       ]
     },
     {
-      label: "לקוחות חדשים",
+      label: "ממוצע מימושים למבצע",
       value: "29",
       percentage: "2.71%",
       increase: false,
@@ -148,7 +161,7 @@ BlogOverview.defaultProps = {
       ]
     },
     {
-      label: "מבצע אחרון ללא מימוש",
+      label: "כמות מבצעים",
       value: "17,281",
       percentage: "2.4%",
       increase: false,

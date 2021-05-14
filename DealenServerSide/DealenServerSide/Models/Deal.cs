@@ -168,5 +168,34 @@ namespace DealenServerSide.Models
         }
 
 
+
+
+    }
+
+    public class RedeemCard
+    {
+        int count_deal;
+        int avg_redeem_deal;
+        float avg_rate;
+        int new_customers;
+        string non_redemmed_deal;
+
+        public RedeemCard()
+        {
+
+        }
+
+        public int Count_deal { get => count_deal; set => count_deal = value; }
+        public int Avg_redeem_deal { get => avg_redeem_deal; set => avg_redeem_deal = value; }
+        public float Avg_rate { get => avg_rate; set => avg_rate = value; }
+        public int New_customers { get => new_customers; set => new_customers = value; }
+        public string Non_redemmed_deal { get => non_redemmed_deal; set => non_redemmed_deal = value; }
+
+        public List<RedeemCard> ReadDataCard(int Bus_Id)
+        {
+            DBServices dbs = new DBServices();
+            List<RedeemCard> dcard = dbs.GetDataCard(Bus_Id);
+            return dcard;
+        }
     }
 }
