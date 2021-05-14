@@ -50,6 +50,15 @@ namespace DealenServerSide.Models
             return dbs.UseCoupon(coupon);
         }
 
+
+        //business owner check the coupon
+        public int UpdateRateDeal(int coupon, int rate)
+        {
+            DBServices dbs = new DBServices();
+            return dbs.UpdateRateDeal(coupon, rate);
+        }
+
+
         //User want to cancal approval
         public int CancelDeal(int coupon)
         {

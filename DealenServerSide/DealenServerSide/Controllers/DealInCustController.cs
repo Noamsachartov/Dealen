@@ -77,6 +77,31 @@ namespace DealenServerSide.Controllers
             }
         }
 
+
+        [HttpPut]
+        [Route("api/DealInCust/RateDeal/{coupon}/{rate}")]
+        public IHttpActionResult PutRateDeal(int coupon, int rate)
+        {
+            DealInCust dealInCust = new DealInCust();
+
+            try
+            {
+                int count = dealInCust.UpdateRateDeal(coupon, rate);
+                return Created(new Uri(Request.RequestUri.AbsoluteUri + dealInCust.Coupon), count);
+
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
+
+
+
+
+
+
         // PUT api/<controller>/5
         [HttpPut]
         [Route("api/DealInCust/like/{coupon}/{isbefore}/{cust_id}/{deal_id}")]

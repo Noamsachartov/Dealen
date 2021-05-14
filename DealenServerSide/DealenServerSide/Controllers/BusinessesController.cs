@@ -69,7 +69,7 @@ namespace DealenServerSide.Controllers
             try
             {
                 int count = businesses.Insert();
-                return Created(new Uri(Request.RequestUri.AbsoluteUri + businesses.Bid), count);
+                return Created(new Uri(Request.RequestUri.AbsoluteUri + businesses.Bid), businesses.Bid);
 
             }
             catch (Exception e)

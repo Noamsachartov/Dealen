@@ -1680,6 +1680,88 @@ public class DBServices
         return command;
     }
 
+
+
+
+    public int UpdateRateDeal(int coupon, int rate)
+    {
+
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        String cStr = BuildRatecoupon(coupon, rate);      // helper method to build the insert string
+
+        cmd = CreateCommand(cStr, con);             // create the command
+
+        try
+        {
+            int numEffected = Convert.ToInt32(cmd.ExecuteScalar());// execute the command
+            try
+            {
+
+                String cStr1 = BuildUpdateRateCommandData(coupon, rate);      // helper method to build the insert string
+                cmd = CreateCommand(cStr1, con);
+                int numEffected2 = Convert.ToInt32(cmd.ExecuteScalar());
+                return numEffected;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+    private String BuildRatecoupon(int coupon, int rate)
+    {
+        String command;
+        command = "UPDATE dealIncust_2021 SET rate= "+rate+" WHERE coupon = " + coupon;
+        String get_id = "SELECT " + coupon + ";";
+        command += get_id;
+
+        return command;
+    }
+
+    private String BuildUpdateRateCommandData(int coupon, int rate)
+    {
+        String command;
+        command = "UPDATE DataOfCust_2021 SET Rate= " + rate + " WHERE coupon = " + coupon;
+        String get_id = "SELECT " + coupon + ";";
+        command += get_id;
+
+        return command;
+    }
+
+
+
+
+
+
     //Insert data after user coupon
     private String BuildInsertCommandData(int coupon)
     {
