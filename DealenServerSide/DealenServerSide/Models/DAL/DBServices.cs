@@ -2059,5 +2059,68 @@ public class DBServices
         }
 
     }
+    //Rrport
+    //get all DataCard
+    public List<RedeemCard> GetDataCard(int Bus_Id)
+    {
+        List<RedeemCard> dcard = new List<RedeemCard>();
+        SqlConnection con = null;
+            
+        string selectSTR = null;
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat(" select  count(distinct dealInbus_id) AS 'Count deal', count(distinct coupon) / count(distinct dealInbus_id) AS  'Avg Redeem deal', "+
+                           " round(SUM(Rate) * 1.0 / COUNT(dealInbus_id), 1) AS 'Avg Rate', "+
+                           " (Select COUNT(Id_Dealincust)  from(Select count(Id_Dealincust) as c, Id_Dealincust "+
+                           " from DataOfCust_2021 "+
+                           " group by Id_Dealincust) AS D "+
+                           " where c = '1' ) AS 'New Customers', "+
+                           " ( select top 1 Deal.name from dealInbus_2021 AS B LEFT JOIN DataOfCust_2021 as D ON B.id = D.dealInbus_id "+
+                           " join Deal_2021 AS Deal ON deal.Id = b.deal_id where d.dealInbus_id is NULL AND B.business_id ="+ Bus_Id +
+                           " order by b.deal_id DESC ) AS 'Non Redeemed Deal' " +
+                           " from DataOfCust_2021 "+
+                           "  where Id_Business = "+ Bus_Id);
+
+            selectSTR = sb.ToString();
+
+
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                RedeemCard d = new RedeemCard();
+                d.Count_deal = Convert.ToInt32(dr["Count deal"]);
+                d.Avg_redeem_deal = Convert.ToInt32(Convert.ToDouble(dr["dAvg Redeem deal"]));
+                d.Avg_rate = Convert.ToInt32(Convert.ToDouble(dr["Avg Rate"]));
+                d.New_customers = Convert.ToInt32(dr["New Customers"]);
+                d.Non_redemmed_deal = (string)dr["Non Redeemed Deal"];
+
+                dcard.Add(d);
+            }
+
+
+            return dcard;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
 
     }
+
+}
