@@ -6,10 +6,77 @@ import RangeDatePicker from "../common/RangeDatePicker";
 import Chart from "../../../../utils/chart";
 
 class UsersOverview extends React.Component {
+
+  state = {chartData: {
+    labels: Array.from(new Array(30), (_, i) => (i === 0 ? 1 : i)),
+    datasets: [
+      {
+        label: "חודש נוכחי",
+        fill: "start",
+        data: [1,2,3
+        ],
+        backgroundColor: "rgba(0,123,255,0.1)",
+        borderColor: "rgba(0,123,255,1)",
+        pointBackgroundColor: "#ffffff",
+        pointHoverBackgroundColor: "rgb(0,123,255)",
+        borderWidth: 1.5,
+        pointRadius: 0,
+        pointHoverRadius: 3
+      },
+      {
+        label: "חודש קודם",
+        fill: "start",
+        data: [
+          380, 
+          430, 
+          120,
+          230,
+          410,
+          740,
+          472,
+          219,
+          391,
+          229,
+          400,
+          203,
+          301,
+          380,
+          291,
+          620,
+          700,
+          300,
+          630,
+          402,
+          320,
+          380,
+          289,
+          410,
+          300,
+          530,
+          630,
+          720,
+          780,
+          1200
+        ],
+        backgroundColor: "rgba(255,65,105,0.1)",
+        borderColor: "rgba(255,65,105,1)",
+        pointBackgroundColor: "#ffffff",
+        pointHoverBackgroundColor: "rgba(255,65,105,1)",
+        borderDash: [3, 3],
+        borderWidth: 1,
+        pointRadius: 0,
+        pointHoverRadius: 2,
+        pointBorderColor: "rgba(255,65,105,1)"
+      }
+    ]
+  }
+}
+
   constructor(props) {
     super(props);
 
     this.canvasRef = React.createRef();
+    this.state = state;
   }
 
   componentDidMount() {
@@ -68,9 +135,12 @@ class UsersOverview extends React.Component {
       ...this.props.chartOptions
     };
 
+    this.get_result();
+    this.state.chartData.datasets[0].data
+
     const BlogUsersOverview = new Chart(this.canvasRef.current, {
       type: "LineWithLine",
-      data: this.props.chartData,
+      data: this.state.chartData,
       options: chartOptions
     });
 
@@ -78,11 +148,36 @@ class UsersOverview extends React.Component {
     const buoMeta = BlogUsersOverview.getDatasetMeta(0);
     buoMeta.data[0]._model.radius = 0;
     buoMeta.data[
-      this.props.chartData.datasets[0].data.length - 1
+      this.state.chartData.datasets[0].data.length - 1
     ]._model.radius = 0;
 
     // Render the chart.
     BlogUsersOverview.render();
+  }
+
+
+  get_results(){
+    var Bus_Id = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
+    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/DataCard/" + Bus_Id;
+    var new_stats = null;
+  
+    fetch(apiUrl)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
+        new_stats = this.state.chartData;
+        new_stats.datasets[0].data.Add(responseJson);
+
+        this.setState({chartData: new_stats});
+  
+        console.log(new_stats);
+  
+        // this.smallStats[0].value = responseJson[0].Non_redemmed_deal;
+        // this.smallStats[1].value = responseJson[0].New_customers;
+      })
+      .catch((error) => {
+        console.error(error); 
+      });
   }
 
   render() {
@@ -134,98 +229,6 @@ UsersOverview.propTypes = {
 
 UsersOverview.defaultProps = {
   title: "ניתוח מבצע",
-  chartData: {
-    labels: Array.from(new Array(30), (_, i) => (i === 0 ? 1 : i)),
-    datasets: [
-      {
-        label: "חודש נוכחי",
-        fill: "start",
-        data: [
-          500,
-          800,
-          320,
-          180,
-          240,
-          320,
-          230,
-          650,
-          590,
-          1200,
-          750,
-          940,
-          1420,
-          1200,
-          960,
-          1450,
-          1820,
-          2800,
-          2102,
-          1920,
-          3920,
-          3202,
-          3140,
-          2800,
-          3200,
-          3200,
-          3400,
-          2910,
-          3100,
-          4250
-        ],
-        backgroundColor: "rgba(0,123,255,0.1)",
-        borderColor: "rgba(0,123,255,1)",
-        pointBackgroundColor: "#ffffff",
-        pointHoverBackgroundColor: "rgb(0,123,255)",
-        borderWidth: 1.5,
-        pointRadius: 0,
-        pointHoverRadius: 3
-      },
-      {
-        label: "חודש קודם",
-        fill: "start",
-        data: [
-          380, 
-          430, 
-          120,
-          230,
-          410,
-          740,
-          472,
-          219,
-          391,
-          229,
-          400,
-          203,
-          301,
-          380,
-          291,
-          620,
-          700,
-          300,
-          630,
-          402,
-          320,
-          380,
-          289,
-          410,
-          300,
-          530,
-          630,
-          720,
-          780,
-          1200
-        ],
-        backgroundColor: "rgba(255,65,105,0.1)",
-        borderColor: "rgba(255,65,105,1)",
-        pointBackgroundColor: "#ffffff",
-        pointHoverBackgroundColor: "rgba(255,65,105,1)",
-        borderDash: [3, 3],
-        borderWidth: 1,
-        pointRadius: 0,
-        pointHoverRadius: 2,
-        pointBorderColor: "rgba(255,65,105,1)"
-      }
-    ]
   }
 };
 
