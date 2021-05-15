@@ -2141,7 +2141,7 @@ public class DBServices
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat(" select Dib.date AS Date, coupon AS Coupon, DealN.deal_id AS Deal_id from dealInbus_2021 AS Dib RIGHT JOIN " +
+            sb.AppendFormat(" select Dib.date AS Date, day(dib.date) AS Day, coupon AS Coupon, DealN.deal_id AS Deal_id from dealInbus_2021 AS Dib RIGHT JOIN " +
                             " (select dib.deal_id, count(coupon) AS coupon  from DataOfCust_2021 AS DCUST INNER JOIN dealInbus_2021 AS Dib ON DCUST.dealInbus_id = Dib.id "+
                             " where business_id = "+ Bus_Id +
                             " group by dib.deal_id "+
@@ -2169,7 +2169,7 @@ public class DBServices
 
 
             sb = new StringBuilder();
-            sb.AppendFormat(" select Dib.date AS Date, coupon AS Coupon, DealN.deal_id AS Deal_id from dealInbus_2021 AS Dib RIGHT JOIN " +
+            sb.AppendFormat(" select Dib.date AS Date, day(dib.date) AS Day, coupon AS Coupon, DealN.deal_id AS Deal_id from dealInbus_2021 AS Dib RIGHT JOIN " +
                             " (select dib.deal_id, count(coupon) AS coupon  from DataOfCust_2021 AS DCUST INNER JOIN dealInbus_2021 AS Dib ON DCUST.dealInbus_id = Dib.id " +
                             " where business_id = " + Bus_Id +
                             " group by dib.deal_id " +

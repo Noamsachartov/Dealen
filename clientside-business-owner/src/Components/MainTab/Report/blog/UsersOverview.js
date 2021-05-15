@@ -13,7 +13,7 @@ class UsersOverview extends React.Component {
       {
         label: "חודש נוכחי",
         fill: "start",
-        data: [1,2,3],
+        data: [0],
         backgroundColor: "rgba(0,123,255,0.1)",
         borderColor: "rgba(0,123,255,1)",
         pointBackgroundColor: "#ffffff",
@@ -26,7 +26,7 @@ class UsersOverview extends React.Component {
         label: "חודש קודם",
         fill: "start",
         data: [
-          380, 
+         {/* 380, 
           430, 
           120,
           230,
@@ -55,7 +55,7 @@ class UsersOverview extends React.Component {
           630,
           720,
           780,
-          1200
+         1200 */}
         ],
         backgroundColor: "rgba(255,65,105,0.1)",
         borderColor: "rgba(255,65,105,1)",
@@ -75,6 +75,7 @@ class UsersOverview extends React.Component {
     super(props);
 
     this.canvasRef = React.createRef();
+    this.BlogUsersOverview = null;
   }
 
   componentDidMount() {
@@ -135,21 +136,21 @@ class UsersOverview extends React.Component {
 
     this.get_results();
 
-    const BlogUsersOverview = new Chart(this.canvasRef.current, {
+    this.BlogUsersOverview = new Chart(this.canvasRef.current, {
       type: "LineWithLine",
       data: this.state.chartData,
       options: chartOptions
     });
 
+    this.BlogUsersOverview.render();
     // They can still be triggered on hover.
-    const buoMeta = BlogUsersOverview.getDatasetMeta(0);
+    const buoMeta = this.BlogUsersOverview.getDatasetMeta(0);
     buoMeta.data[0]._model.radius = 0;
     buoMeta.data[
       this.state.chartData.datasets[0].data.length - 1
     ]._model.radius = 0;
 
     // Render the chart.
-    BlogUsersOverview.render();
   }
 
   
@@ -161,16 +162,18 @@ class UsersOverview extends React.Component {
     fetch(apiUrl)
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson[0]);
+        //console.log(responseJson[0]);
         new_stats = this.state.chartData;
-        var getMethods = (obj) => Object.getOwnPropertyNames(obj).filter(item => typeof obj[item] === 'function')
+        
         console.log(new_stats.datasets[0].data);
-        responseJson[0].map((item) => new_stats.datasets[0].data.push(item.coupon));
-        responseJson[1].map((item) => new_stats.datasets[1].data.push(item.coupon));
+        responseJson[0].map((item) => new_stats.datasets[0].data[13] = item.Coupon);
+        responseJson[1].map((item) => new_stats.datasets[1].data.push(item.Coupon));
 
         this.setState({chartData: new_stats});
-  
-        console.log(new_stats);
+        console.log(new_stats.datasets[0].data);
+        
+        this.BlogUsersOverview.update()
+        //console.log(new_stats);
   
         // this.smallStats[0].value = responseJson[0].Non_redemmed_deal;
         // this.smallStats[1].value = responseJson[0].New_customers;

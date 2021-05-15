@@ -139,7 +139,7 @@ get_results(){
       new_stats[4].value = responseJson[0].Count_deal;
       this.setState({stats: new_stats});
 
-      console.log(new_stats);
+      //console.log(new_stats);
 
       // this.smallStats[0].value = responseJson[0].Non_redemmed_deal;
       // this.smallStats[1].value = responseJson[0].New_customers;
