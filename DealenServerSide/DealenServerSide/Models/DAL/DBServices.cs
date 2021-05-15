@@ -1768,16 +1768,20 @@ public class DBServices
         String command;
 
         command = "INSERT INTO DataOfCust_2021 " +
-            "SELECT dic.coupon, d.id, dic.dealincust_id, dib.business_id, b.btype, cd.Cat_id, dib.discount, CONVERT (TIME, GETDATE()) AS Time ,DATEPART(dw,GETDATE()) AS Date, " +
-             "CASE WHEN dic.distance BETWEEN 0 AND 500 THEN 1 WHEN dic.distance BETWEEN 0 AND 500 THEN 1 WHEN dic.distance BETWEEN 500 AND " +
-                   "1000 THEN 2 WHEN dic.distance BETWEEN 1000 AND 1500 THEN 3 WHEN dic.distance BETWEEN 1500 AND 2000 THEN 4 WHEN dic.distance BETWEEN 2000 AND " +
-                   "2500 THEN 5 WHEN dic.distance BETWEEN 2500 AND 3500 THEN 6 WHEN dic.distance BETWEEN 3500 AND 4500 THEN 7 WHEN dic.distance BETWEEN 4500 AND " +
-                   "10000 THEN 8 WHEN dic.distance > 10000 THEN 9 ELSE 0 END AS dist_id " +
-            "FROM dealIncust_2021 AS dic INNER JOIN dealinbus_2021 AS dib ON dic.dealinbus_id=dib.id " +
-            "INNER JOIN Businesses_2021 AS b ON b.bid=dib.business_id " +
-            "INNER JOIN Deal_2021 AS d ON dib.deal_id=d.id " +
-            "INNER JOIN CatInDeal_2021 AS cd ON cd.Deal_id=d.id " +
-            "WHERE dic.coupon=" + coupon + " AND dic.Used='True'";
+        "SELECT dic.coupon, d.id, dic.dealincust_id, dib.business_id, b.btype, dib.discount, cd.Cat_id, DATEPART(dw, GETDATE()) AS Date, CONVERT (TIME, GETDATE()) AS Time, " +
+        "CASE WHEN dic.distance BETWEEN 0 AND 500 THEN 1 " +
+        "WHEN dic.distance BETWEEN 0 AND 500 THEN 1 " +
+        "WHEN dic.distance BETWEEN 500 AND 1000 THEN 2 " +
+        "WHEN dic.distance BETWEEN 1000 AND 1500 THEN 3 " +
+        "WHEN dic.distance BETWEEN 1500 AND 2000 THEN 4 " +
+        "WHEN dic.distance BETWEEN 2000 AND 2500 THEN 5 " +
+        "WHEN dic.distance BETWEEN 2500 AND 3500 THEN 6 " +
+        "WHEN dic.distance BETWEEN 3500 AND 4500 THEN 7 " +
+        "WHEN dic.distance BETWEEN 4500 AND 10000 THEN 8 " +
+        "WHEN dic.distance > 10000 THEN 9 ELSE 0 END AS dist_id , NULL " +
+        "FROM dealIncust_2021 AS dic INNER JOIN dealinbus_2021 AS dib ON dic.dealinbus_id = dib.id " +
+        "INNER JOIN Businesses_2021 AS b ON b.bid = dib.business_id INNER JOIN Deal_2021 AS d ON dib.deal_id = d.id " +
+        "INNER JOIN CatInDeal_2021 AS cd ON cd.Deal_id = d.id WHERE dic.coupon = 720281 AND dic.Used = 'True'SELECT SCOPE_IDENTITY();";
         String get_id = "SELECT SCOPE_IDENTITY();";
         command += get_id;
 

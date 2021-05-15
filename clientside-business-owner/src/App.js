@@ -8,10 +8,10 @@ import Report from "./Components/MainTab/Report/Report"
 import Settings from "./Components/MainTab/Settings/Settings"
 import Coupon from "./Components/MainTab/Home/Coupon";
 
+import "bootstrap/dist/css/bootstrap.min.css";
 
 
 import {Switch, Route, withRouter} from 'react-router-dom';
-import "bootstrap/dist/css/bootstrap.min.css";
 import "./shards-dashboard/styles/shards-dashboards.1.1.0.min.css";
 import './App.css';
 import FCHeader from './Components/MainTab/FCHeader';

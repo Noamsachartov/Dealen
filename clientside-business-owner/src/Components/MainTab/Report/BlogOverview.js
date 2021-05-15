@@ -9,6 +9,7 @@ import UsersByDevice from "./blog/UsersByDevice";
 import NewDraft from "./blog/NewDraft";
 import Tables from "./blog/Tables";
 import RedeemByHour from "./blog/RedeemByHour";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 class BlogOverview extends React.Component {
