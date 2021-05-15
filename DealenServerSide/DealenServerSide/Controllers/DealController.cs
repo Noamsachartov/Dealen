@@ -226,5 +226,22 @@ namespace DealenServerSide.Controllers
         public void Delete(int id)
         {
         }
+
+        [HttpGet]
+        [Route("api/RedeemCard/DataCard/{Bus_Is}")]
+        public IHttpActionResult GetDataCard(int Bus_Id)
+        {
+            try
+            {
+                RedeemCard dcard = new RedeemCard();
+                List<RedeemCard> dcards = dcard.ReadDataCard(Bus_Id);
+                return Ok(dcards);
+
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
     }
 }

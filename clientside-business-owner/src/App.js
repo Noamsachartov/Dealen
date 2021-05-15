@@ -11,8 +11,11 @@ import Coupon from "./Components/MainTab/Home/Coupon";
 
 
 import {Switch, Route, withRouter} from 'react-router-dom';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./shards-dashboard/styles/shards-dashboards.1.1.0.min.css";
 import './App.css';
 import FCHeader from './Components/MainTab/FCHeader';
+
 
 function App(){
     return(
