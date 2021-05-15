@@ -75,7 +75,6 @@ class SmallStats extends React.Component {
       },
       ...this.props.chartConfig
     };
-
     new Chart(this.canvasRef.current, chartConfig);
   }
 

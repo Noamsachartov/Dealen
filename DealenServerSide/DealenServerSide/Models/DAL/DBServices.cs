@@ -2096,7 +2096,7 @@ public class DBServices
             {   // Read till the end of the data into a row
                 RedeemCard d = new RedeemCard();
                 d.Count_deal = Convert.ToInt32(dr["Count deal"]);
-                d.Avg_redeem_deal = Convert.ToInt32(Convert.ToDouble(dr["dAvg Redeem deal"]));
+                d.Avg_redeem_deal = Convert.ToInt32(Convert.ToDouble(dr["Avg Redeem deal"]));
                 d.Avg_rate = Convert.ToInt32(Convert.ToDouble(dr["Avg Rate"]));
                 d.New_customers = Convert.ToInt32(dr["New Customers"]);
                 d.Non_redemmed_deal = (string)dr["Non Redeemed Deal"];

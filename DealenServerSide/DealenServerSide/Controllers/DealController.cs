@@ -228,7 +228,7 @@ namespace DealenServerSide.Controllers
         }
 
         [HttpGet]
-        [Route("api/RedeemCard/DataCard/{Bus_Is}")]
+        [Route("api/Deal/DataCard/{Bus_Id}")]
         public IHttpActionResult GetDataCard(int Bus_Id)
         {
             try
