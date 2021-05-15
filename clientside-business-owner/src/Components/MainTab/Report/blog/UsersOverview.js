@@ -13,8 +13,7 @@ class UsersOverview extends React.Component {
       {
         label: "חודש נוכחי",
         fill: "start",
-        data: [1,2,3
-        ],
+        data: [1,2,3],
         backgroundColor: "rgba(0,123,255,0.1)",
         borderColor: "rgba(0,123,255,1)",
         pointBackgroundColor: "#ffffff",
@@ -76,7 +75,6 @@ class UsersOverview extends React.Component {
     super(props);
 
     this.canvasRef = React.createRef();
-    this.state = state;
   }
 
   componentDidMount() {
@@ -135,8 +133,7 @@ class UsersOverview extends React.Component {
       ...this.props.chartOptions
     };
 
-    this.get_result();
-    this.state.chartData.datasets[0].data
+    this.get_results();
 
     const BlogUsersOverview = new Chart(this.canvasRef.current, {
       type: "LineWithLine",
@@ -155,18 +152,21 @@ class UsersOverview extends React.Component {
     BlogUsersOverview.render();
   }
 
-
+  
   get_results(){
     var Bus_Id = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
-    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/DataCard/" + Bus_Id;
+    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/DealByDate/" + Bus_Id;
     var new_stats = null;
   
     fetch(apiUrl)
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(responseJson);
+        console.log(responseJson[0]);
         new_stats = this.state.chartData;
-        new_stats.datasets[0].data.Add(responseJson);
+        var getMethods = (obj) => Object.getOwnPropertyNames(obj).filter(item => typeof obj[item] === 'function')
+        console.log(new_stats.datasets[0].data);
+        responseJson[0].map((item) => new_stats.datasets[0].data.push(item.coupon));
+        responseJson[1].map((item) => new_stats.datasets[1].data.push(item.coupon));
 
         this.setState({chartData: new_stats});
   
@@ -228,8 +228,8 @@ UsersOverview.propTypes = {
 };
 
 UsersOverview.defaultProps = {
-  title: "ניתוח מבצע",
-  }
+  title: "ניתוח מבצע"
+  
 };
 
 export default UsersOverview;
