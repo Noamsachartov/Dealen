@@ -243,5 +243,22 @@ namespace DealenServerSide.Controllers
                 return Content(HttpStatusCode.BadRequest, e);
             }
         }
+
+        [HttpGet]
+        [Route("api/Deal/DealByDate/{Bus_Id}")]
+        public IHttpActionResult GetDealByDate(int Bus_Id)
+        {
+            try
+            {
+                RedeemCard dcard = new RedeemCard();
+                List<List<RedeemCard>> dcards = dcard.ReadDealByDate(Bus_Id);
+                return Ok(dcards);
+
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
     }
 }

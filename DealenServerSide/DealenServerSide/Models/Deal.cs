@@ -179,6 +179,9 @@ namespace DealenServerSide.Models
         float avg_rate;
         int new_customers;
         string non_redemmed_deal;
+        DateTime date;
+        int coupon;
+        int deal_id;
 
         public RedeemCard()
         {
@@ -190,11 +193,21 @@ namespace DealenServerSide.Models
         public float Avg_rate { get => avg_rate; set => avg_rate = value; }
         public int New_customers { get => new_customers; set => new_customers = value; }
         public string Non_redemmed_deal { get => non_redemmed_deal; set => non_redemmed_deal = value; }
+        public DateTime Date { get => date; set => date = value; }
+        public int Coupon { get => coupon; set => coupon = value; }
+        public int Deal_id { get => deal_id; set => deal_id = value; }
 
         public List<RedeemCard> ReadDataCard(int Bus_Id)
         {
             DBServices dbs = new DBServices();
             List<RedeemCard> dcard = dbs.GetDataCard(Bus_Id);
+            return dcard;
+        }
+
+        public List<List<RedeemCard>> ReadDealByDate(int Bus_Id)
+        {
+            DBServices dbs = new DBServices();
+            List<List<RedeemCard>> dcard = dbs.GetDealByDate(Bus_Id);
             return dcard;
         }
     }

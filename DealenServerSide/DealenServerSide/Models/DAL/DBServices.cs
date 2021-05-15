@@ -1865,4 +1865,92 @@ public class DBServices
 
     }
 
-}
+    public List<List<RedeemCard>> GetDealByDate(int Bus_Id)
+    {
+        List<RedeemCard> current_month = new List<RedeemCard>();
+        List<RedeemCard> last_month = new List<RedeemCard>();
+        List<List<RedeemCard>> results = new List<List<RedeemCard>>();
+        SqlConnection con = null;
+
+        string selectSTR = null;
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat(" select Dib.date AS Date, coupon AS Coupon, DealN.deal_id AS Deal_id from dealInbus_2021 AS Dib RIGHT JOIN " +
+                            " (select dib.deal_id, count(coupon) AS coupon  from DataOfCust_2021 AS DCUST INNER JOIN dealInbus_2021 AS Dib ON DCUST.dealInbus_id = Dib.id "+
+                            " where business_id = "+ Bus_Id +
+                            " group by dib.deal_id "+
+                            " ) AS DealN ON DealN.deal_id = Dib.deal_id "+
+                            " where dib.business_id ="+ Bus_Id+" AND MONTH(Dib.date) = MONTH(GETDATE()) "+
+                            " order by Dib.date");
+
+            selectSTR = sb.ToString();
+
+
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                RedeemCard d = new RedeemCard();
+                d.Deal_id = Convert.ToInt32(dr["Deal_id"]);
+                d.Coupon = Convert.ToInt32(dr["Coupon"]);
+                d.Date = (DateTime)dr["Date"];
+
+                current_month.Add(d);
+            }
+            results.Add(current_month);
+
+
+            sb = new StringBuilder();
+            sb.AppendFormat(" select Dib.date AS Date, coupon AS Coupon, DealN.deal_id AS Deal_id from dealInbus_2021 AS Dib RIGHT JOIN " +
+                            " (select dib.deal_id, count(coupon) AS coupon  from DataOfCust_2021 AS DCUST INNER JOIN dealInbus_2021 AS Dib ON DCUST.dealInbus_id = Dib.id " +
+                            " where business_id = " + Bus_Id +
+                            " group by dib.deal_id " +
+                            " ) AS DealN ON DealN.deal_id = Dib.deal_id " +
+                            " where dib.business_id =" + Bus_Id + " AND MONTH(Dib.date) = MONTH(GETDATE())-1 " +
+                            " order by Dib.date");
+
+            selectSTR = sb.ToString();
+
+
+            
+            dr.Close();
+            con.Close();
+            con = connect("DBConnectionString");
+            cmd = new SqlCommand(selectSTR, con);
+            // get a reader
+            dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                RedeemCard d = new RedeemCard();
+                d.Deal_id = Convert.ToInt32(dr["Deal_id"]);
+                d.Coupon = Convert.ToInt32(dr["Coupon"]);
+                d.Date = (DateTime)dr["Date"];
+
+                last_month.Add(d);
+            }
+            results.Add(last_month);
+
+            return results;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+    }
+
+ }
