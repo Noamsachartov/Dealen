@@ -1576,7 +1576,7 @@ public class DBServices
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat("SELECT Category_2021.id, Category_2021.name, Category_2021.image " +
+            sb.AppendFormat("SELECT distinct Category_2021.id, Category_2021.name, Category_2021.image " +
                 "FROM  Category_2021 INNER JOIN CatInDeal_2021 ON Category_2021.id = CatInDeal_2021.Cat_id INNER JOIN Deal_2021 as D ON CatInDeal_2021.Deal_id = D.Id " +
                 "INNER JOIN dealInbus_2021 as db on db.deal_id=D.id " +
                 " WHERE db.date=CONVERT(date, GETDATE()) and CONVERT(time, GETDATE()) BETWEEN db.startime and db.endtime");
