@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Row, Col, Card, CardHeader, CardBody } from "shards-react";
 
 const Tables = () => (
-  <Container fluid className="main-content-container px-4">
+  <Container fluid className="main-content-container px-0">
     {/* Page Header */}
 
 

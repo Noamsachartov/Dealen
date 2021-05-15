@@ -188,18 +188,18 @@ get_results(){
 
       {/* New Draft */}
       <Col lg="8" md="12" sm="12" className="mb-4">
-        <NewDraft />
+        <Tables />
       </Col>
       <Col lg="4" md="6" sm="12" className="mb-4">
         <RedeemByHour />
       </Col>
       </Row>
-      <Row>
-      {/* Table */}
+   {/*   <Row>
+      Table 
       <Col lg="8" md="12" sm="12" className="mb-4">
         <Tables />
       </Col>
-    </Row>
+    </Row>*/}
   </Container>);
   }
 
