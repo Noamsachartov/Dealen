@@ -14,6 +14,7 @@ import { NavigationContainer, ThemeProvider } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ThemeConsumer } from 'react-native-elements';
 import {DealContextProvider} from './assets/Context/DealContext';
+import PushNoti from './assets/Components/PushNoti'
 const { width, height } = Dimensions.get('window');
 
 const Stack = createStackNavigator();
@@ -25,6 +26,7 @@ export default function App() {
   return (
     <DealContextProvider>
         <HeaderForDeal />
+        {/* <PushNoti/> */}
         <NavigationContainer>
           <Stack.Navigator 
         >
