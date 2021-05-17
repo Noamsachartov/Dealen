@@ -1,7 +1,48 @@
 import React from "react";
 import { Container, Row, Col, Card, CardHeader, CardBody } from "shards-react";
 
-const Tables = () => (
+class Tables extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {results: []}
+  }
+
+  componentDidMount(){
+    this.get_results()
+  }
+  
+
+get_results(){
+  var Bus_Id = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
+  var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/Alldeal/" + Bus_Id;
+  var new_results = null;
+
+  fetch(apiUrl)
+    .then((response) => response.json())
+    .then((responseJson) => {
+      //console.log(responseJson[0]);
+      new_results = this.state.results;
+      
+      console.log(new_results.datasets[0].data);
+      // responseJson[0].map((item) => new_stats.datasets[0].data[item.Day] = item.Coupon);
+      // responseJson[1].map((item) => new_stats.datasets[1].data.push(item.Coupon));
+
+      this.setState({results: new_results});
+      console.log(new_results.datasets[0].data);
+      
+      // this.Tables.update()
+      //console.log(new_stats);
+
+      // this.smallStats[0].value = responseJson[0].Non_redemmed_deal;
+      // this.smallStats[1].value = responseJson[0].New_customers;
+    })
+    .catch((error) => {
+      console.error(error); 
+    });
+}
+
+render() {
+  return (
   <Container fluid className="main-content-container px-0">
     {/* Page Header */}
 
@@ -33,11 +74,18 @@ const Tables = () => (
                     תאריך 
                   </th>
                   <th scope="col" className="border-0">
-                    שעה
+                    שעת התחלה
+                  </th>
+                  <th scope="col" className="border-0">
+                    שעת סיום
+                  </th>
+                  <th scope="col" className="border-0">
+                    כמות מימושים
                   </th>
                 </tr>
               </thead>
               <tbody>
+                
                 <tr>
                   <td>1</td>
                   <td>Ali</td>
@@ -46,30 +94,6 @@ const Tables = () => (
                   <td>Gdańsk</td>
                   <td>107-0339</td>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Clark</td>
-                  <td>Angela</td>
-                  <td>Estonia</td>
-                  <td>Borghetto di Vara</td>
-                  <td>1-660-850-1647</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Jerry</td>
-                  <td>Nathan</td>
-                  <td>Cyprus</td>
-                  <td>Braunau am Inn</td>
-                  <td>214-4225</td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Colt</td>
-                  <td>Angela</td>
-                  <td>Liberia</td>
-                  <td>Bad Hersfeld</td>
-                  <td>1-848-473-7416</td>
-                </tr>
               </tbody>
             </table>
           </CardBody>
@@ -77,9 +101,13 @@ const Tables = () => (
       </Col>
     </Row>
 
-    {/* Default Dark Table */}
+
+
   
   </Container>
 );
+  
+}
+}
 
 export default Tables;
