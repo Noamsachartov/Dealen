@@ -2266,4 +2266,73 @@ public class DBServices
         }
     }
 
- }
+    public List<Deal> GetAllDeals(int Bus_Id)
+    {
+        List<Deal> dlist = new List<Deal>();
+        SqlConnection con = null;
+
+        string selectSTR = null;
+        try
+        {
+
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("select Distinct(D.Id) AS 'Deal Id', D.name As 'Name Deal',D.Product As 'Prodact', "+
+                            "D.description As 'Description Deal', Dib.date As 'Date', Dib.startime As 'Startime', Dib.endtime As 'Endtime', DCUST.coupon "+
+                            "from(select dealInbus_Id, count(coupon) AS 'coupon' from DataOfCust_2021 where Id_Business ="+ Bus_Id + "group by dealInbus_id) AS DCUST RIGHT JOIN dealInbus_2021 AS Dib "+
+                            "ON DCUST.dealInbus_Id = Dib.id INNER JOIN Deal_2021 AS D ON D.Id = Dib.deal_id "+
+                            "where business_id = "+ Bus_Id);
+            selectSTR = sb.ToString();
+
+
+
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                Businesses b = new Businesses();
+                Deal d = new Deal();
+                d.Id = Convert.ToInt32(dr["id"]);
+                d.Name = (string)dr["deal_name"];
+                d.Description = (string)dr["description"];
+                d.Prodact = (string)dr["Prodact"];
+                d.Date = (DateTime)dr["date"];
+                d.Startime = (TimeSpan)dr["startime"];
+                d.Endtime = (TimeSpan)dr["endtime"];
+                d.Coupon = Convert.ToInt32(dr["coupon"]);
+                d.Bus_rest = b;
+
+                DateTime now = DateTime.Now;
+
+                DateTime end = DateTime.Today + d.Endtime;
+
+                TimeSpan TimeToEndDeal = end - now;
+                d.MinutesToend = Convert.ToInt32(TimeToEndDeal.TotalMinutes);
+
+
+                dlist.Add(d);
+            }
+
+            return dlist;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+
+    }
+
+
+}
