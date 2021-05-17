@@ -260,5 +260,22 @@ namespace DealenServerSide.Controllers
                 return Content(HttpStatusCode.BadRequest, e);
             }
         }
+
+        [HttpGet]
+        [Route("api/Deal/Alldeal/{Bus_Id}")]
+        public IHttpActionResult GetAllDeal(int Bus_Id)
+        {
+            try
+            {
+                Deal deal = new Deal();
+                List<Deal> deals = deal.ReadAlldeal(Bus_Id);
+                return Ok(deals);
+
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
     }
 }

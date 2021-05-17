@@ -1815,7 +1815,7 @@ public class DBServices
         String command;
 
         command = "INSERT INTO DataOfCust_2021 " +
-        "SELECT dic.coupon, d.id, dic.dealincust_id, dib.business_id, b.btype, cd.Cat_id, dib.discount, CONVERT (TIME, GETDATE()) AS Time ,DATEPART(dw,GETDATE()) AS Date, " +
+        "SELECT dic.coupon, d.id, dic.dealincust_id, dib.business_id, b.btype, dib.discount, cd.Cat_id,DATEPART(dw,GETDATE()) AS Date,  CONVERT (TIME, GETDATE()) AS Time ,  " +
              "CASE WHEN dic.distance BETWEEN 0 AND 500 THEN 1 " +
              "WHEN dic.distance BETWEEN 0 AND 500 THEN 1 " +
              "WHEN dic.distance BETWEEN 500 AND 1000 THEN 2 " +
@@ -1825,7 +1825,7 @@ public class DBServices
              "WHEN dic.distance BETWEEN 2500 AND 3500 THEN 6 " +
              "WHEN dic.distance BETWEEN 3500 AND 4500 THEN 7 " +
              "WHEN dic.distance BETWEEN 4500 AND 10000 THEN 8 " +
-             "WHEN dic.distance > 10000 THEN 9 ELSE 0 END AS dist_id " +
+             "WHEN dic.distance > 10000 THEN 9 ELSE 0 END AS dist_id , NULL " +
             "FROM dealIncust_2021 AS dic INNER JOIN dealinbus_2021 AS dib ON dic.dealinbus_id=dib.id " +
             "INNER JOIN Businesses_2021 AS b ON b.bid=dib.business_id " +
             "INNER JOIN Deal_2021 AS d ON dib.deal_id=d.id " +
@@ -2266,4 +2266,73 @@ public class DBServices
         }
     }
 
- }
+    public List<Deal> GetAllDeals(int Bus_Id)
+    {
+        List<Deal> dlist = new List<Deal>();
+        SqlConnection con = null;
+
+        string selectSTR = null;
+        try
+        {
+
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("select Distinct(D.Id) AS 'Deal Id', D.name As 'Name Deal',D.Product As 'Prodact', "+
+                            "D.description As 'Description Deal', Dib.date As 'Date', Dib.startime As 'Startime', Dib.endtime As 'Endtime', DCUST.coupon "+
+                            "from(select dealInbus_Id, count(coupon) AS 'coupon' from DataOfCust_2021 where Id_Business ="+ Bus_Id + "group by dealInbus_id) AS DCUST RIGHT JOIN dealInbus_2021 AS Dib "+
+                            "ON DCUST.dealInbus_Id = Dib.id INNER JOIN Deal_2021 AS D ON D.Id = Dib.deal_id "+
+                            "where business_id = "+ Bus_Id);
+            selectSTR = sb.ToString();
+
+
+
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                Businesses b = new Businesses();
+                Deal d = new Deal();
+                d.Id = Convert.ToInt32(dr["id"]);
+                d.Name = (string)dr["deal_name"];
+                d.Description = (string)dr["description"];
+                d.Prodact = (string)dr["Prodact"];
+                d.Date = (DateTime)dr["date"];
+                d.Startime = (TimeSpan)dr["startime"];
+                d.Endtime = (TimeSpan)dr["endtime"];
+                d.Coupon = Convert.ToInt32(dr["coupon"]);
+                d.Bus_rest = b;
+
+                DateTime now = DateTime.Now;
+
+                DateTime end = DateTime.Today + d.Endtime;
+
+                TimeSpan TimeToEndDeal = end - now;
+                d.MinutesToend = Convert.ToInt32(TimeToEndDeal.TotalMinutes);
+
+
+                dlist.Add(d);
+            }
+
+            return dlist;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+
+    }
+
+
+}
