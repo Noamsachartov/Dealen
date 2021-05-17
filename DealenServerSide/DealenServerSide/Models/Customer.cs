@@ -18,8 +18,8 @@ namespace DealenServerSide.Models
         string password;
         string image;
         int[] p_category;
-        string p_type;
-        string p_distance;
+        int[] p_type;
+        int p_distance;
         int totalsave;
 
 
@@ -32,14 +32,14 @@ namespace DealenServerSide.Models
         public string Password { get => password; set => password = value; }
         public string Image { get => image; set => image = value; }
         public string Cust_lname { get => cust_lname; set => cust_lname = value; }
-        public string P_type { get => p_type; set => p_type = value; }
-        public string P_distance { get => p_distance; set => p_distance = value; }
+        public int P_distance { get => p_distance; set => p_distance = value; }
         public int[] P_category { get => p_category; set => p_category = value; }
         public int Totalsave { get => totalsave; set => totalsave = value; }
+        public int[] P_type { get => p_type; set => p_type = value; }
 
         public Customer() { }
 
-        public Customer(int cust_id, string cust_fname, string cust_address, string cust_phone, DateTime birthdate, string cust_mail, string password, string image, string cust_lname, string p_type, string p_distance, int[] p_category, int totalsave)
+        public Customer(int cust_id, string cust_fname, string cust_address, string cust_phone, DateTime birthdate, string cust_mail, string password, string image, string cust_lname, int[] p_type, int p_distance, int[] p_category, int totalsave)
         {
             Cust_id = cust_id;
             Cust_fname = cust_fname;

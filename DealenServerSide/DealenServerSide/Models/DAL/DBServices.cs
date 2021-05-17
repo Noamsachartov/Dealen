@@ -183,10 +183,16 @@ public class DBServices
 
         SqlConnection con;
         SqlCommand cmd;
+        SqlCommand cmd1;
+        SqlCommand cmd2;
+
 
         try
         {
             con = connect("DBConnectionString"); // create the connection
+           
+
+
         }
         catch (Exception ex)
         {
@@ -194,13 +200,20 @@ public class DBServices
             throw (ex);
         }
 
-        String cStr = BuildUpdateCommand(id, customer);      // helper method to build the insert string
+        String cStr = BuildUpdateCatCommand(id, customer);      // helper method to build the insert string
+        String cStr1 = BuildUpdateBTypeCommand(id, customer);
+        String cStr2 = BuildUpdateDistanceCommand(id, customer);
 
         cmd = CreateCommand(cStr, con);             // create the command
+        cmd1 = CreateCommand(cStr1, con);
+        cmd2 = CreateCommand(cStr2, con);
 
         try
         {
             int numEffected = cmd.ExecuteNonQuery();
+            int numEffected1 = cmd1.ExecuteNonQuery();
+            int numEffected2 = cmd2.ExecuteNonQuery();
+
             return numEffected;
         }
         catch (Exception ex)
@@ -220,7 +233,7 @@ public class DBServices
 
     }
 
-    private String BuildUpdateCommand(int id, Customer customer)
+    private String BuildUpdateCatCommand(int id, Customer customer)
     {
         String command;
         command = "";
@@ -243,23 +256,58 @@ public class DBServices
         return command;
 
     }
+
+
+    private String BuildUpdateBTypeCommand(int id, Customer customer)
+    {
+        String command;
+        command = "";
+
+
+        string BTypesInsert = "";
+        foreach (var item in customer.P_type)
+        {
+            BTypesInsert += " (" + id.ToString() + "," + item.ToString() + ") ,";
+        }
+        BTypesInsert = BTypesInsert.Remove(BTypesInsert.Length - 1);
+
+        StringBuilder sb = new StringBuilder();
+        sb.AppendFormat(" Values " + BTypesInsert);
+        String prefixc = "Insert into BTypeInCust_2021 (Cust_id,BType_Id)";
+        //String get_id = "SELECT SCOPE_IDENTITY();";
+        //command = prefixc + sb.ToString() + get_id;
+        command = prefixc + sb.ToString();
+
+
+        return command;
+
+    }
+
     //--------------------------------------------------------------------
-    //private String BuildUpdateCommand(int id, Customer customer)
-    //{
-    //    String command;
-    //    command = "UPDATE Customer_2021 set P_Category = '"+ customer.P_category +"', P_TypeBus='"+ customer.P_type +"', P_Distance='" + customer.P_distance + "' where cust_id = " + id.ToString();
-    //    return command;
-    //}
+    private String BuildUpdateDistanceCommand(int id, Customer customer)
+    {
+        String command;
+        command = "UPDATE Customer_2021 set  P_Distance='" + customer.P_distance + "' where cust_id = " + id.ToString();
+        return command;
+    }
 
     public int UpdateIntialPreferencesfromPrivate(int id, Customer customer)
     {
 
         SqlConnection con;
         SqlCommand cmd;
+        SqlCommand cmd1;
+
 
         try
         {
             con = connect("DBConnectionString"); // create the connection
+            if (customer.P_type.Length > 0)
+            {
+                cmd = CreateCommand("DELETE FROM BTypeInCust_2021 WHERE cust_id=" + id + ";", con);
+                int numEffected = cmd.ExecuteNonQuery();
+
+            }
         }
         catch (Exception ex)
         {
@@ -267,13 +315,16 @@ public class DBServices
             throw (ex);
         }
 
-        String cStr = BuildUpdateCommandInitialPref(id, customer);      // helper method to build the insert string
+        String cStr = BuildUpdateBTypeCommand(id, customer);
+        String cStr1 = BuildUpdateDistanceCommand(id, customer);
 
-        cmd = CreateCommand(cStr, con);             // create the command
+        cmd = CreateCommand(cStr, con);
+        cmd1 = CreateCommand(cStr1, con);
 
         try
         {
             int numEffected = cmd.ExecuteNonQuery();
+            int numEffected2 = cmd1.ExecuteNonQuery();
             return numEffected;
         }
         catch (Exception ex)
@@ -579,17 +630,13 @@ public class DBServices
         try
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
-            String selectSTR = "SELECT Customer_2021.cust_id,Customer_2021.cust_fname, Customer_2021.cust_lname,Customer_2021.cust_address, Customer_2021.cust_mail, Customer_2021.cust_phone, " +
-                " CONVERT(int, SUM(dealInbus_2021.discount * dealInbus_2021.Pcost))  AS Totalsave,    Customer_2021.birthdate, " + 
-                         " Customer_2021.image "+
-                         "FROM Customer_2021 INNER JOIN "+
-                         "dealIncust_2021 ON Customer_2021.cust_id = dealIncust_2021.dealincust_id INNER JOIN "+
-                         "dealInbus_2021 ON dealIncust_2021.dealinbus_id = dealInbus_2021.id "+
-                         "WHERE(Customer_2021.cust_id = "+id+") "+
-                         "GROUP BY Customer_2021.cust_id, Customer_2021.cust_fname, Customer_2021.cust_address, Customer_2021.cust_phone, Customer_2021.birthdate, Customer_2021.cust_mail, Customer_2021.image, "+
-                         "Customer_2021.cust_lname";
+            String selectSTR = "SELECT Customer_2021.cust_id,Customer_2021.cust_fname, Customer_2021.cust_lname,Customer_2021.cust_address, Customer_2021.cust_mail, Customer_2021.cust_phone,  " +
+                "case when CONVERT(int, SUM(dealInbus_2021.discount * dealInbus_2021.Pcost))<>NULL then CONVERT(int, SUM(dealInbus_2021.discount * dealInbus_2021.Pcost)) else 0 end  AS Totalsave, " +
+                "Customer_2021.birthdate,  Customer_2021.image " +
+                "FROM Customer_2021 left JOIN dealIncust_2021 ON Customer_2021.cust_id = dealIncust_2021.dealincust_id left JOIN dealInbus_2021 ON dealIncust_2021.dealinbus_id = dealInbus_2021.id WHERE (Customer_2021.cust_id = "+id+")  " +
+                "GROUP BY Customer_2021.cust_id, Customer_2021.cust_fname, Customer_2021.cust_address, Customer_2021.cust_phone, Customer_2021.birthdate, Customer_2021.cust_mail, Customer_2021.image, Customer_2021.cust_lname; ";
             SqlCommand cmd = new SqlCommand(selectSTR, con);
-
+                
             // get a reader
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
 
@@ -1768,20 +1815,22 @@ public class DBServices
         String command;
 
         command = "INSERT INTO DataOfCust_2021 " +
-        "SELECT dic.coupon, d.id, dic.dealincust_id, dib.business_id, b.btype, dib.discount, cd.Cat_id, DATEPART(dw, GETDATE()) AS Date, CONVERT (TIME, GETDATE()) AS Time, " +
-        "CASE WHEN dic.distance BETWEEN 0 AND 500 THEN 1 " +
-        "WHEN dic.distance BETWEEN 0 AND 500 THEN 1 " +
-        "WHEN dic.distance BETWEEN 500 AND 1000 THEN 2 " +
-        "WHEN dic.distance BETWEEN 1000 AND 1500 THEN 3 " +
-        "WHEN dic.distance BETWEEN 1500 AND 2000 THEN 4 " +
-        "WHEN dic.distance BETWEEN 2000 AND 2500 THEN 5 " +
-        "WHEN dic.distance BETWEEN 2500 AND 3500 THEN 6 " +
-        "WHEN dic.distance BETWEEN 3500 AND 4500 THEN 7 " +
-        "WHEN dic.distance BETWEEN 4500 AND 10000 THEN 8 " +
-        "WHEN dic.distance > 10000 THEN 9 ELSE 0 END AS dist_id , NULL " +
-        "FROM dealIncust_2021 AS dic INNER JOIN dealinbus_2021 AS dib ON dic.dealinbus_id = dib.id " +
-        "INNER JOIN Businesses_2021 AS b ON b.bid = dib.business_id INNER JOIN Deal_2021 AS d ON dib.deal_id = d.id " +
-        "INNER JOIN CatInDeal_2021 AS cd ON cd.Deal_id = d.id WHERE dic.coupon = 720281 AND dic.Used = 'True'SELECT SCOPE_IDENTITY();";
+        "SELECT dic.coupon, d.id, dic.dealincust_id, dib.business_id, b.btype, cd.Cat_id, dib.discount, CONVERT (TIME, GETDATE()) AS Time ,DATEPART(dw,GETDATE()) AS Date, " +
+             "CASE WHEN dic.distance BETWEEN 0 AND 500 THEN 1 " +
+             "WHEN dic.distance BETWEEN 0 AND 500 THEN 1 " +
+             "WHEN dic.distance BETWEEN 500 AND 1000 THEN 2 " +
+             "WHEN dic.distance BETWEEN 1000 AND 1500 THEN 3 " +
+             "WHEN dic.distance BETWEEN 1500 AND 2000 THEN 4 " +
+             "WHEN dic.distance BETWEEN 2000 AND 2500 THEN 5 " +
+             "WHEN dic.distance BETWEEN 2500 AND 3500 THEN 6 " +
+             "WHEN dic.distance BETWEEN 3500 AND 4500 THEN 7 " +
+             "WHEN dic.distance BETWEEN 4500 AND 10000 THEN 8 " +
+             "WHEN dic.distance > 10000 THEN 9 ELSE 0 END AS dist_id " +
+            "FROM dealIncust_2021 AS dic INNER JOIN dealinbus_2021 AS dib ON dic.dealinbus_id=dib.id " +
+            "INNER JOIN Businesses_2021 AS b ON b.bid=dib.business_id " +
+            "INNER JOIN Deal_2021 AS d ON dib.deal_id=d.id " +
+            "INNER JOIN CatInDeal_2021 AS cd ON cd.Deal_id=d.id " +
+            "WHERE dic.coupon=" + coupon + " AND dic.Used='True'";
         String get_id = "SELECT SCOPE_IDENTITY();";
         command += get_id;
 
