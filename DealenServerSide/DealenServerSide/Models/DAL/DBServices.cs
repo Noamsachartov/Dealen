@@ -630,17 +630,13 @@ public class DBServices
         try
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
-            String selectSTR = "SELECT Customer_2021.cust_id,Customer_2021.cust_fname, Customer_2021.cust_lname,Customer_2021.cust_address, Customer_2021.cust_mail, Customer_2021.cust_phone, " +
-                " CONVERT(int, SUM(dealInbus_2021.discount * dealInbus_2021.Pcost))  AS Totalsave,    Customer_2021.birthdate, " + 
-                         " Customer_2021.image "+
-                         "FROM Customer_2021 INNER JOIN "+
-                         "dealIncust_2021 ON Customer_2021.cust_id = dealIncust_2021.dealincust_id INNER JOIN "+
-                         "dealInbus_2021 ON dealIncust_2021.dealinbus_id = dealInbus_2021.id "+
-                         "WHERE(Customer_2021.cust_id = "+id+") "+
-                         "GROUP BY Customer_2021.cust_id, Customer_2021.cust_fname, Customer_2021.cust_address, Customer_2021.cust_phone, Customer_2021.birthdate, Customer_2021.cust_mail, Customer_2021.image, "+
-                         "Customer_2021.cust_lname";
+            String selectSTR = "SELECT Customer_2021.cust_id,Customer_2021.cust_fname, Customer_2021.cust_lname,Customer_2021.cust_address, Customer_2021.cust_mail, Customer_2021.cust_phone,  " +
+                "case when CONVERT(int, SUM(dealInbus_2021.discount * dealInbus_2021.Pcost))<>NULL then CONVERT(int, SUM(dealInbus_2021.discount * dealInbus_2021.Pcost)) else 0 end  AS Totalsave, " +
+                "Customer_2021.birthdate,  Customer_2021.image " +
+                "FROM Customer_2021 left JOIN dealIncust_2021 ON Customer_2021.cust_id = dealIncust_2021.dealincust_id left JOIN dealInbus_2021 ON dealIncust_2021.dealinbus_id = dealInbus_2021.id WHERE (Customer_2021.cust_id = "+id+")  " +
+                "GROUP BY Customer_2021.cust_id, Customer_2021.cust_fname, Customer_2021.cust_address, Customer_2021.cust_phone, Customer_2021.birthdate, Customer_2021.cust_mail, Customer_2021.image, Customer_2021.cust_lname; ";
             SqlCommand cmd = new SqlCommand(selectSTR, con);
-
+                
             // get a reader
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
 
