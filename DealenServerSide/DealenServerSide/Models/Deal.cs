@@ -176,6 +176,12 @@ namespace DealenServerSide.Models
             return Tags;
 
         }
+        public List<Deal> ReadAlldeal(int Bus_Id)
+        {
+            DBServices dbs = new DBServices();
+            List<Deal> dlist = dbs.GetAllDeals(Bus_Id);
+            return dlist;
+        }
 
 
 
