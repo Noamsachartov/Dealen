@@ -6,6 +6,7 @@ import ImagesPicker from './ImagePicker';
 import { CheckBox } from 'react-native-elements'
 import { useIsFocused } from '@react-navigation/native'
 import { LogBox } from 'react-native';
+import * as Location from 'expo-location';
 
 const { width, height } = Dimensions.get('window');
 LogBox.ignoreLogs([
@@ -18,6 +19,7 @@ export default class SignUp extends React.Component {
         password:"",
         Fname: "",
         Lname: "",
+        Age: "",
         CurrentUser: "",
         Img: '',
         userId: 1,
@@ -28,7 +30,7 @@ export default class SignUp extends React.Component {
       handleSignUp = () =>{    
         const { navigation } = this.props;
         if (this.state.email.length > 1 && this.state.toggleCheckBox_Resturant == true){
-
+          console.log("Location: " +this.state.location.latitude,this.state.location.longitude)
           var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Customer"
           fetch(apiUrl, {
             method: 'POST',
@@ -38,6 +40,9 @@ export default class SignUp extends React.Component {
               Cust_mail: this.state.email,
               Password: this.state.password,
               Image: this.state.Img[0],
+              Age: this.state.Age,
+              latitude: this.state.location.latitude,
+              longitude: this.state.location.longitude
             }),
             headers: {
               Accept: 'application/json',
@@ -60,6 +65,22 @@ export default class SignUp extends React.Component {
         }
       }
     
+
+      Location = async () =>{
+        let { status } = await Location.requestPermissionsAsync();
+        if (status !== 'granted') {
+          this.setState ({errorMessage : 'Permission to access location was denied', });
+        }
+          let locationfunc = await Location.getCurrentPositionAsync({});
+          let location={
+              latitude: locationfunc.coords.latitude,
+              longitude:locationfunc.coords.longitude,  
+          }
+          console.log(location,'object')
+          this.setState({ location });
+      }
+
+
         getImgUrl = (url) => {
             this.setState({ Img: [url] })
         }
@@ -69,6 +90,9 @@ export default class SignUp extends React.Component {
         }
 
 
+        componentDidMount=() =>{
+          this.Location();
+        }
   render(){
     const { navigation, route } = this.props;
 
@@ -105,6 +129,14 @@ export default class SignUp extends React.Component {
                         placeholder="Last Name" 
                         placeholderTextColor="#003f5c"
                         onChangeText={text => this.setState({Lname:text})}
+                        />
+                    </View>
+                    <View style={styles.inputView}>
+                    <TextInput  
+                        style={styles.inputText}
+                        placeholder="Age" 
+                        placeholderTextColor="#003f5c"
+                        onChangeText={text => this.setState({Age:text})}
                         />
                     </View>
                     <View style={styles.ImagesPickerView}>
