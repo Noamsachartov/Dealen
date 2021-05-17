@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 //import all the components we are going to use.
 
-export default class Myapp extends Component<{}> {
+export default class Myapp extends React.Component {
   constructor() {
     super();
     this.state = {

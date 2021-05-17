@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View,TextInput,TouchableOpacity, Button, FlatList, Dimensions, TouchableWithoutFeedback, Switch } from 'react-native';
+import { StyleSheet, Text, View,TextInput,TouchableOpacity, Button, FlatList, Dimensions, TouchableHighlight , Switch } from 'react-native';
 import Slider from '@react-native-community/slider'
 import SkipIcon from 'react-native-vector-icons/AntDesign';
 import TabControler from '../MainTab/TabControler';
@@ -17,7 +17,7 @@ export default class ChoosePreferences extends React.Component {
         Fname: "",
         Lname: "",
         Img: '',
-        Data: null,
+        dataSource: null,
         toggleCheckBox_Resturant: false,
         toggleCheckBox_Bar: false,
         toggleCheckBox_Caffe: false,
@@ -25,6 +25,7 @@ export default class ChoosePreferences extends React.Component {
         categoryAdd: [],
         BTypeAdd: [],
         typearr: "",
+        colorbutton: 'blue'
       }
 
 
@@ -33,14 +34,28 @@ export default class ChoosePreferences extends React.Component {
         navigation.navigate('Login')
       }
 
-      newCategoryPreferences = (item) => {
-        console.log(item.Id,"added")
+      newCategoryPreferences = data => {
+        console.log(data,"added")
         let connected;
-        if(!this.state.categoryAdd.includes(item.Id)){
-          let connected = this.state.categoryAdd.concat(item.Id);
+        if(!this.state.categoryAdd.includes(data.Id)){
+          let connected = this.state.categoryAdd.concat(data.Id);
           this.setState({categoryAdd: connected});
         }
         console.log(this.state.categoryAdd)
+
+        data.isSelect = !data.isSelect;
+        data.selectedClass = data.isSelect
+         ? styles.selected: styles.list;
+       
+      // const index = this.state.dataSource.findIndex(
+      //    item => data.id === id
+      // );
+
+      // this.state.dataSource[index] = data.item;
+      this.setState({
+        dataSource: this.state.dataSource
+      });
+
 
 
       }
@@ -103,6 +118,7 @@ export default class ChoosePreferences extends React.Component {
             console.error(error);
           });
 
+
         // navigation.navigate('Login')
       }
 
@@ -114,10 +130,16 @@ export default class ChoosePreferences extends React.Component {
       .then(responseJson => {
         if(responseJson.length > 0){
           console.log(responseJson)
+          responseJson = responseJson.map(item => {
+            item.isSelect = false;
+            console.log("item state: " + item.isSelect)
+            item.selectedClass = styles.list;
+            return item;
+          });
           this.setState(
             {
               isLoading: false,
-              Data: responseJson,
+              dataSource: responseJson,
             },
             function() {
               
@@ -138,6 +160,7 @@ export default class ChoosePreferences extends React.Component {
   render(){
     const { navigation } = this.props;
     if(!this.state.isLoading){
+      // const itemNumber = this.state.dataSource.filter(item => item.isSelect).length;
       return(
         <View style={styles.container}>
              <View style={styles.headerView}>
@@ -148,10 +171,11 @@ export default class ChoosePreferences extends React.Component {
             <View style={{flex:2}}>
               <FlatList
                 style={styles.categoryList}
-                data={this.state.Data}
+                data={this.state.dataSource}
+                extraData={this.state}
                 renderItem={({ item }) => {
                     return (<View style={styles.inputView} >
-                                <TouchableOpacity onPress={() => this.newCategoryPreferences(item)}>
+                                <TouchableOpacity style={[styles.list, item.selectedClass]}  onPress={() => this.newCategoryPreferences(item)}>
                                     <Text style={styles.inputText}>{item.Name}</Text>
                                 </TouchableOpacity>
                             </View>)
@@ -237,7 +261,7 @@ const styles = StyleSheet.create({
         width: width
       },
       inputView:{
-        backgroundColor:"#465881",
+        backgroundColor: "#465881",
         borderRadius:25,
         height:60,
         marginBottom:20,
@@ -261,7 +285,9 @@ const styles = StyleSheet.create({
       sliderView: {flex: 0.7},
       radiosText: {flex:1, alignSelf: 'center', fontSize: 20, fontWeight: 'bold', color: 'whitesmoke' },
       postButton: {flex: 0.3, backgroundColor: "#465881", borderRadius: 10, width: width/2, justifyContent: 'center', alignItems: 'center', marginTop: 30},
-      signText: {color: 'white', fontWeight: 'bold', fontSize: 20}
+      signText: {color: 'white', fontWeight: 'bold', fontSize: 20},
+      list: {backgroundColor: "#465881"},
+      selected: {backgroundColor: "#FA7B5F", color: "#FA7B5F"},
 });
 
 
