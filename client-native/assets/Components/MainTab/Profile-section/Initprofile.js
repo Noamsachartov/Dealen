@@ -19,6 +19,7 @@ export default class Deal extends React.Component {
         toggleCheckBox_Bar: false,
         toggleCheckBox_Caffe: false,
         titleupdate: 'עדכון העדפות',
+        BTypeAdd: {},
         typearr: "",
         radios: 50
       }
@@ -91,12 +92,16 @@ export default class Deal extends React.Component {
         console.log("post")
         
         if(this.state.toggleCheckBox_Resturant){
+          this.state.BTypeAdd.push(1)
           var resturant = "מסעדה";
+
         }else{
           var resturant = "";
         }
 
         if(this.state.toggleCheckBox_Bar){
+          this.state.BTypeAdd.push(2)
+
           var bar = "בר";
         }else{
           var bar = "";
@@ -104,30 +109,12 @@ export default class Deal extends React.Component {
 
         if(this.state.toggleCheckBox_Caffe){
           var caffe = "בית קפה";
+          this.state.BTypeAdd.push(3)
         }else{
           var caffe = "";
         }
-        
-        if (resturant.length > 1 && bar.length>1 && caffe.length > 1){
-          var join = `${resturant},${bar},${caffe}`;
-        }else if(resturant.length > 1 && bar.length>1 && caffe.length < 2){
-          var join = `${resturant},${bar}`;
-        }else if(resturant.length > 1 && bar.length<2 && caffe.length > 1){
-          var join = `${resturant},${caffe}`;
-        }else if(resturant.length < 2 && bar.length>1 && caffe.length > 1){
-          var join = `${bar},${caffe}`;
-        }else if(resturant.length < 2 && bar.length<2 && caffe.length > 1){
-          var join = `${caffe}`;
-        }else if(resturant.length < 2 && bar.length>1 && caffe.length <2){
-          var join = `${bar}`;
-        }else if(resturant.length > 1 && bar.length<2 && caffe.length <2){
-          var join = `${resturant}`;
-        }else{
-          var join = ``;
-        }
-        
-        console.log("Joined types: "+ join, "resturant: " +resturant + " bar: " + bar +" caffe: " +caffe)
-        this.setState({typearr: join })
+        var join = `${resturant},${bar},${caffe}`;
+        this.setState({typearr: this.state.BTypeAdd })
 
 
       
@@ -136,7 +123,7 @@ export default class Deal extends React.Component {
         fetch(apiUrl, {
           method: 'PUT',
           body: JSON.stringify({
-            P_type: join,
+            P_type: this.state.BTypeAdd,
             P_distance: this.state.radios.toString(),
           }),
           headers: {
@@ -184,7 +171,7 @@ console.log("Deal Component")
             <Text style={styles.radiosText}>{this.state.radios} רדיוס</Text>
                  <Slider 
                   minimumValue={1}
-                  maximumValue={100}
+                  maximumValue={15000}
                   width={width-20}
                   minimumTrackTintColor="#fb5b5a"
                   thumbTintColor="#003f5c"

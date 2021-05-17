@@ -183,10 +183,16 @@ public class DBServices
 
         SqlConnection con;
         SqlCommand cmd;
+        SqlCommand cmd1;
+        SqlCommand cmd2;
+
 
         try
         {
             con = connect("DBConnectionString"); // create the connection
+           
+
+
         }
         catch (Exception ex)
         {
@@ -194,13 +200,20 @@ public class DBServices
             throw (ex);
         }
 
-        String cStr = BuildUpdateCommand(id, customer);      // helper method to build the insert string
+        String cStr = BuildUpdateCatCommand(id, customer);      // helper method to build the insert string
+        String cStr1 = BuildUpdateBTypeCommand(id, customer);
+        String cStr2 = BuildUpdateDistanceCommand(id, customer);
 
         cmd = CreateCommand(cStr, con);             // create the command
+        cmd1 = CreateCommand(cStr1, con);
+        cmd2 = CreateCommand(cStr2, con);
 
         try
         {
             int numEffected = cmd.ExecuteNonQuery();
+            int numEffected1 = cmd1.ExecuteNonQuery();
+            int numEffected2 = cmd2.ExecuteNonQuery();
+
             return numEffected;
         }
         catch (Exception ex)
@@ -220,7 +233,7 @@ public class DBServices
 
     }
 
-    private String BuildUpdateCommand(int id, Customer customer)
+    private String BuildUpdateCatCommand(int id, Customer customer)
     {
         String command;
         command = "";
@@ -243,23 +256,58 @@ public class DBServices
         return command;
 
     }
+
+
+    private String BuildUpdateBTypeCommand(int id, Customer customer)
+    {
+        String command;
+        command = "";
+
+
+        string BTypesInsert = "";
+        foreach (var item in customer.P_type)
+        {
+            BTypesInsert += " (" + id.ToString() + "," + item.ToString() + ") ,";
+        }
+        BTypesInsert = BTypesInsert.Remove(BTypesInsert.Length - 1);
+
+        StringBuilder sb = new StringBuilder();
+        sb.AppendFormat(" Values " + BTypesInsert);
+        String prefixc = "Insert into BTypeInCust_2021 (Cust_id,BType_Id)";
+        //String get_id = "SELECT SCOPE_IDENTITY();";
+        //command = prefixc + sb.ToString() + get_id;
+        command = prefixc + sb.ToString();
+
+
+        return command;
+
+    }
+
     //--------------------------------------------------------------------
-    //private String BuildUpdateCommand(int id, Customer customer)
-    //{
-    //    String command;
-    //    command = "UPDATE Customer_2021 set P_Category = '"+ customer.P_category +"', P_TypeBus='"+ customer.P_type +"', P_Distance='" + customer.P_distance + "' where cust_id = " + id.ToString();
-    //    return command;
-    //}
+    private String BuildUpdateDistanceCommand(int id, Customer customer)
+    {
+        String command;
+        command = "UPDATE Customer_2021 set  P_Distance='" + customer.P_distance + "' where cust_id = " + id.ToString();
+        return command;
+    }
 
     public int UpdateIntialPreferencesfromPrivate(int id, Customer customer)
     {
 
         SqlConnection con;
         SqlCommand cmd;
+        SqlCommand cmd1;
+
 
         try
         {
             con = connect("DBConnectionString"); // create the connection
+            if (customer.P_type.Length > 0)
+            {
+                cmd = CreateCommand("DELETE FROM BTypeInCust_2021 WHERE cust_id=" + id + ";", con);
+                int numEffected = cmd.ExecuteNonQuery();
+
+            }
         }
         catch (Exception ex)
         {
@@ -267,13 +315,16 @@ public class DBServices
             throw (ex);
         }
 
-        String cStr = BuildUpdateCommandInitialPref(id, customer);      // helper method to build the insert string
+        String cStr = BuildUpdateBTypeCommand(id, customer);
+        String cStr1 = BuildUpdateDistanceCommand(id, customer);
 
-        cmd = CreateCommand(cStr, con);             // create the command
+        cmd = CreateCommand(cStr, con);
+        cmd1 = CreateCommand(cStr1, con);
 
         try
         {
             int numEffected = cmd.ExecuteNonQuery();
+            int numEffected2 = cmd1.ExecuteNonQuery();
             return numEffected;
         }
         catch (Exception ex)

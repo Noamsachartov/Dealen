@@ -23,6 +23,7 @@ export default class ChoosePreferences extends React.Component {
         toggleCheckBox_Caffe: false,
         isLoading: true,
         categoryAdd: [],
+        BTypeAdd: [],
         typearr: "",
       }
 
@@ -52,12 +53,16 @@ export default class ChoosePreferences extends React.Component {
         console.log("post")
         
         if(this.state.toggleCheckBox_Resturant){
+          this.state.BTypeAdd.push(1)
           var resturant = "מסעדה";
+
         }else{
           var resturant = "";
         }
 
         if(this.state.toggleCheckBox_Bar){
+          this.state.BTypeAdd.push(2)
+
           var bar = "בר";
         }else{
           var bar = "";
@@ -65,11 +70,12 @@ export default class ChoosePreferences extends React.Component {
 
         if(this.state.toggleCheckBox_Caffe){
           var caffe = "בית קפה";
+          this.state.BTypeAdd.push(3)
         }else{
           var caffe = "";
         }
         var join = `${resturant},${bar},${caffe}`;
-        this.setState({typearr: join })
+        this.setState({typearr: this.state.BTypeAdd })
 
 
        
@@ -196,10 +202,10 @@ export default class ChoosePreferences extends React.Component {
                </View>
             </View>
             <View style={styles.sliderView}>
-            <Text style={styles.radiosText}>{this.state.radios} רדיוס</Text>
+            <Text style={styles.radiosText}>{this.state.radios}  רדיוס מ' ממקומך</Text>
                  <Slider 
                   minimumValue={1}
-                  maximumValue={100}
+                  maximumValue={15000}
                   width={width-20}
                   minimumTrackTintColor="#fb5b5a"
                   thumbTintColor="whitesmoke"
