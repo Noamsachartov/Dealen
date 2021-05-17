@@ -188,6 +188,7 @@ namespace DealenServerSide.Models
         DateTime date;
         int coupon;
         int deal_id;
+        int day;
 
         public RedeemCard()
         {
@@ -202,6 +203,7 @@ namespace DealenServerSide.Models
         public DateTime Date { get => date; set => date = value; }
         public int Coupon { get => coupon; set => coupon = value; }
         public int Deal_id { get => deal_id; set => deal_id = value; }
+        public int Day { get => day; set => day = value; }
 
         public List<RedeemCard> ReadDataCard(int Bus_Id)
         {

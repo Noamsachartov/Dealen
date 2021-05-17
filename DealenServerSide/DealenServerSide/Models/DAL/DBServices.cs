@@ -2160,6 +2160,7 @@ public class DBServices
             {   // Read till the end of the data into a row
                 RedeemCard d = new RedeemCard();
                 d.Deal_id = Convert.ToInt32(dr["Deal_id"]);
+                d.Day = Convert.ToInt32(dr["Day"]);
                 d.Coupon = Convert.ToInt32(dr["Coupon"]);
                 d.Date = (DateTime)dr["Date"];
 
@@ -2191,6 +2192,7 @@ public class DBServices
             {   // Read till the end of the data into a row
                 RedeemCard d = new RedeemCard();
                 d.Deal_id = Convert.ToInt32(dr["Deal_id"]);
+                d.Day = Convert.ToInt32(dr["Day"]);
                 d.Coupon = Convert.ToInt32(dr["Coupon"]);
                 d.Date = (DateTime)dr["Date"];
 

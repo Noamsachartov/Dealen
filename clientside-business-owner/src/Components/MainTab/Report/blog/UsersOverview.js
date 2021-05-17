@@ -13,7 +13,7 @@ class UsersOverview extends React.Component {
       {
         label: "חודש נוכחי",
         fill: "start",
-        data: [0],
+        data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,,0,0,0,0],
         backgroundColor: "rgba(0,123,255,0.1)",
         borderColor: "rgba(0,123,255,1)",
         pointBackgroundColor: "#ffffff",
@@ -166,7 +166,7 @@ class UsersOverview extends React.Component {
         new_stats = this.state.chartData;
         
         console.log(new_stats.datasets[0].data);
-        responseJson[0].map((item) => new_stats.datasets[0].data[13] = item.Coupon);
+        responseJson[0].map((item) => new_stats.datasets[0].data[item.Day] = item.Coupon);
         responseJson[1].map((item) => new_stats.datasets[1].data.push(item.Coupon));
 
         this.setState({chartData: new_stats});
