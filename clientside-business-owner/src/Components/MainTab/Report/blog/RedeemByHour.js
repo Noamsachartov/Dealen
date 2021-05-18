@@ -100,7 +100,7 @@ const RedeemByHour = (props) => {
             Last 7 days
           </Button>
         )}
-        title="Latest Sales"
+        title="מימושי מתחרים"
       />
       <Divider />
       <CardBody className="pt-0" style={{ height: "360px" }}>

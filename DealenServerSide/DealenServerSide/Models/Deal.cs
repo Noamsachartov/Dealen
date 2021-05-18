@@ -26,7 +26,7 @@ namespace DealenServerSide.Models
         bool isLike;
         int minutesToend;
         int pcost;
-        string prodact;
+        string product;
         
        
 
@@ -50,11 +50,11 @@ namespace DealenServerSide.Models
         public bool IsLike { get => isLike; set => isLike = value; }
         public int MinutesToend { get => minutesToend; set => minutesToend = value; }
         public int Pcost { get => pcost; set => pcost = value; }
-        public string Prodact { get => prodact; set => prodact = value; }
+        public string Product { get => product; set => product = value; }
 
         public Deal() { }
 
-        public Deal(int id, string name, string description, string business_Name, string category, TimeSpan startime, TimeSpan endtime, string image, int[] cat_id, int business_id, int discount, DateTime date, int coupon, int[] tags, bool isLike, int minutesToEnd, int pcost, string prodact)
+        public Deal(int id, string name, string description, string business_Name, string category, TimeSpan startime, TimeSpan endtime, string image, int[] cat_id, int business_id, int discount, DateTime date, int coupon, int[] tags, bool isLike, int minutesToEnd, int pcost, string product)
         {
             Id = id;
             Name = name;
@@ -72,7 +72,7 @@ namespace DealenServerSide.Models
             IsLike = isLike;
             MinutesToend = minutesToEnd;
             Pcost = pcost;
-            Prodact = prodact;
+            Product = product;
 
         }
 

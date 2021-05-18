@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Row, Col, Card, CardHeader, CardBody } from "shards-react";
+import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 
 class Tables extends React.Component {
   constructor(props) {
@@ -8,7 +9,7 @@ class Tables extends React.Component {
   }
 
   componentDidMount(){
-    this.get_results()
+    this.get_results();
   }
   
 
@@ -20,15 +21,14 @@ get_results(){
   fetch(apiUrl)
     .then((response) => response.json())
     .then((responseJson) => {
-      //console.log(responseJson[0]);
+      console.log(responseJson);
       new_results = this.state.results;
       
-      console.log(new_results.datasets[0].data);
-      // responseJson[0].map((item) => new_stats.datasets[0].data[item.Day] = item.Coupon);
+      new_results.push()
+      responseJson.map((item) => new_results.push(item));
       // responseJson[1].map((item) => new_stats.datasets[1].data.push(item.Coupon));
 
       this.setState({results: new_results});
-      console.log(new_results.datasets[0].data);
       
       // this.Tables.update()
       //console.log(new_stats);
@@ -55,7 +55,7 @@ render() {
             <h6 className="m-0">פירוט מבצעים</h6>
           </CardHeader>
           <CardBody className="p-0 pb-3">
-            <table className="table mb-0">
+            <table className="table mb-0"  style={{'display' : 'block', 'overflowY':'scroll', 'height':'400PX'}}>
               <thead className="bg-light">
                 <tr>
                   <th scope="col" className="border-0">
@@ -85,15 +85,22 @@ render() {
                 </tr>
               </thead>
               <tbody>
-                
-                <tr>
-                  <td>1</td>
-                  <td>Ali</td>
-                  <td>Kerry</td>
-                  <td>Russian Federation</td>
-                  <td>Gdańsk</td>
-                  <td>107-0339</td>
-                </tr>
+              {this.state.results.map(function(item, i){
+                return (
+                  <React.Fragment key={i}>
+                  <tr>
+                    <td>{item.Id}</td>
+                    <td>{item.Name}</td>
+                    <td>{item.Product}</td>
+                    <td>{item.Description}</td>
+                    <td>{item.Date}</td>
+                    <td>{item.Startime}</td>
+                    <td>{item.Endtime}</td>
+                    <td>{item.Coupon}</td>
+                  </tr>
+                </React.Fragment>
+                );
+              })}
               </tbody>
             </table>
           </CardBody>
