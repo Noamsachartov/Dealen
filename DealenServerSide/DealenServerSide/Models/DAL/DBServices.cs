@@ -11,7 +11,7 @@ using System.Globalization;
 using System.Runtime.Remoting.Messaging;
 using System.Drawing;
 using System.Web.WebPages;
-
+using System.Web.UI.WebControls;
 
 public class DBServices
 {
@@ -2229,8 +2229,8 @@ public class DBServices
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat("select Distinct(D.Id) AS 'Deal Id', D.name As 'Name Deal',D.Product As 'Prodact', "+
-                            "D.description As 'Description Deal', Dib.date As 'Date', Dib.startime As 'Startime', Dib.endtime As 'Endtime', DCUST.coupon "+
+            sb.AppendFormat("select Distinct(D.Id) AS 'Deal_Id', D.name As 'Name_Deal',D.Product As 'product', " +
+                            "D.description As 'Description_Deal', Dib.date As 'Date', Dib.startime As 'Startime', Dib.endtime As 'Endtime', DCUST.coupon AS 'Count_Coupon' " +
                             "from(select dealInbus_Id, count(coupon) AS 'coupon' from DataOfCust_2021 where Id_Business ="+ Bus_Id + "group by dealInbus_id) AS DCUST RIGHT JOIN dealInbus_2021 AS Dib "+
                             "ON DCUST.dealInbus_Id = Dib.id INNER JOIN Deal_2021 AS D ON D.Id = Dib.deal_id "+
                             "where business_id = "+ Bus_Id);
@@ -2246,14 +2246,14 @@ public class DBServices
             {   // Read till the end of the data into a row
                 Businesses b = new Businesses();
                 Deal d = new Deal();
-                d.Id = Convert.ToInt32(dr["id"]);
-                d.Name = (string)dr["deal_name"];
-                d.Description = (string)dr["description"];
-                d.Prodact = (string)dr["Prodact"];
-                d.Date = (DateTime)dr["date"];
-                d.Startime = (TimeSpan)dr["startime"];
-                d.Endtime = (TimeSpan)dr["endtime"];
-                d.Coupon = Convert.ToInt32(dr["coupon"]);
+                d.Id = Convert.ToInt32(dr["Deal_Id"]);
+                d.Name = (string)dr["Name_Deal"];
+                d.Description = (string)dr["Description_Deal"];
+                d.Product = (dr["product"] is DBNull) ? "" : (string)dr["product"];
+                d.Date = (DateTime)dr["Date"];
+                d.Startime = (TimeSpan)dr["Startime"];
+                d.Endtime = (TimeSpan)dr["Endtime"];
+                d.Coupon = (dr["Count_Coupon"] == DBNull.Value) ? 0 : Convert.ToInt32(dr["Count_Coupon"]);
                 d.Bus_rest = b;
 
                 DateTime now = DateTime.Now;
