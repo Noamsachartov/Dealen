@@ -183,6 +183,19 @@ namespace DealenServerSide.Models
             return dlist;
         }
 
+        public List<Deal> ReadProduct(int Bus_Id)
+        {
+            DBServices dbs = new DBServices();
+            List<Deal> dlist = dbs.GetProduct(Bus_Id);
+            return dlist;
+        }
+
+        public List<List<Deal>> ReadDealCompeting(int Bus_Id)
+        {
+            DBServices dbs = new DBServices();
+            List<List<Deal>> dlist = dbs.GetDealCompeting(Bus_Id);
+            return dlist;
+        }
 
 
 
