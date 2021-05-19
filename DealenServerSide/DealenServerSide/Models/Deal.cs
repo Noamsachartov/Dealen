@@ -189,16 +189,6 @@ namespace DealenServerSide.Models
             List<Deal> dlist = dbs.GetProduct(Bus_Id);
             return dlist;
         }
-
-        public List<List<Deal>> ReadDealCompeting(int Bus_Id)
-        {
-            DBServices dbs = new DBServices();
-            List<List<Deal>> dlist = dbs.GetDealCompeting(Bus_Id);
-            return dlist;
-        }
-
-
-
     }
 
     public class RedeemCard
@@ -241,5 +231,27 @@ namespace DealenServerSide.Models
             List<List<RedeemCard>> dcard = dbs.GetDealByDate(Bus_Id);
             return dcard;
         }
+    }
+}
+
+public class RivalCoupon
+{
+    DateTime date;
+    int my_coupon;
+    int another_coupon;
+
+    public RivalCoupon()
+    {
+    }
+
+    public DateTime Date { get => date; set => date = value; }
+    public int My_coupon { get => my_coupon; set => my_coupon = value; }
+    public int Another_coupon { get => another_coupon; set => another_coupon = value; }
+
+    public List<RivalCoupon> ReadDealCompeting(int Bus_Id)
+    {
+        DBServices dbs = new DBServices();
+        List<RivalCoupon> dlist = dbs.GetDealCompeting(Bus_Id);
+        return dlist;
     }
 }

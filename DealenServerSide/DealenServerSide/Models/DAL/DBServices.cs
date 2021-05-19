@@ -2396,29 +2396,35 @@ public class DBServices
 
     }
 
-    public List<List<Deal>> GetDealCompeting(int Bus_Id)
+    public List<RivalCoupon> GetDealCompeting(int Bus_Id)
     {
-        List<Deal> current_month = new List<Deal>();
-        List<Deal> last_month = new List<Deal>();
-        List<List<Deal>> results = new List<List<Deal>>();
+        List<RivalCoupon> dlist = new List<RivalCoupon>();
         SqlConnection con = null;
 
         string selectSTR = null;
         try
         {
-            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat(" select Dib.date AS Date, coupon AS Coupon from dealInbus_2021 AS Dib RIGHT JOIN " +
-                            " (select dib.deal_id, count(coupon) AS coupon  from DataOfCust_2021 AS DCUST INNER JOIN dealInbus_2021 AS Dib ON DCUST.dealInbus_id = Dib.id " +
-                            " where business_id = " + Bus_Id +
-                            " group by dib.deal_id " +
-                            " ) AS DealN ON DealN.deal_id = Dib.deal_id " +
-                            " where dib.business_id =" + Bus_Id + " AND MONTH(Dib.date) = MONTH(GETDATE()) " +
-                            " order by Dib.date");
-
+            sb.AppendFormat($@"
+            select Dib.date AS Date, (DealElse.coupon/Bus) AS 'Another_coupon', DealN.coupon AS 'My_coupon'
+            from dealInbus_2021 AS Dib RIGHT JOIN  
+            (select dib.date,count(coupon) AS coupon
+	            from DataOfCust_2021 AS DCUST INNER JOIN dealInbus_2021 AS Dib ON DCUST.dealInbus_id=Dib.id
+	            where business_id = {Bus_Id}
+	            group by dib.date
+	            ) AS DealN ON DealN.date=Dib.date Left JOIN
+            (select dib.date,count(coupon) AS coupon, count(distinct(DCUST.Id_Business)) AS 'Bus'
+	            from DataOfCust_2021 AS DCUST INNER JOIN dealInbus_2021 AS Dib ON DCUST.dealInbus_id=Dib.id
+	            where business_id != {Bus_Id}
+	            group by dib.date
+	            ) AS DealElse on DealElse.date=DealN.date
+            where dib.business_id = {Bus_Id} AND MONTH(Dib.date) = MONTH(GETDATE())
+            order by Dib.date ");
             selectSTR = sb.ToString();
+
 
 
             SqlCommand cmd = new SqlCommand(selectSTR, con);
@@ -2427,45 +2433,26 @@ public class DBServices
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
             while (dr.Read())
             {   // Read till the end of the data into a row
-                Deal d = new Deal();
-                d.Coupon = Convert.ToInt32(dr["Coupon"]);
-                d.Date = (DateTime)dr["Date"];
+                RivalCoupon d = new RivalCoupon();
+                d.Date = (DateTime) dr["Date"];
+                d.My_coupon = (dr["My_coupon"] == DBNull.Value) ? 0 : Convert.ToInt32(dr["My_coupon"]);
+                d.Another_coupon = (dr["Another_coupon"] == DBNull.Value) ? 0 : Convert.ToInt32(dr["Another_coupon"]);
+                //d.Product = (dr[""] is DBNull) ? "" : (string)dr["product"];
+                //d.Coupon = (dr["Count_Coupon"] == DBNull.Value) ? 0 : Convert.ToInt32(dr["Count_Coupon"]);
+                //d.Bus_rest = b;
 
-                current_month.Add(d);
+                //DateTime now = DateTime.Now;
+
+                //DateTime end = DateTime.Today + d.Endtime;
+
+                //TimeSpan TimeToEndDeal = end - now;
+                //d.MinutesToend = Convert.ToInt32(TimeToEndDeal.TotalMinutes);
+
+
+                dlist.Add(d);
             }
-            results.Add(current_month);
 
-
-            sb = new StringBuilder();
-            sb.AppendFormat(" select Dib.date AS Date, coupon AS Coupon from dealInbus_2021 AS Dib RIGHT JOIN " +
-                            " (select dib.deal_id, count(coupon) AS coupon  from DataOfCust_2021 AS DCUST INNER JOIN dealInbus_2021 AS Dib ON DCUST.dealInbus_id = Dib.id " +
-                            " where business_id != " + Bus_Id +
-                            " group by dib.deal_id " +
-                            " ) AS DealN ON DealN.deal_id = Dib.deal_id " +
-                            " where dib.business_id !=" + Bus_Id + " AND MONTH(Dib.date) = MONTH(GETDATE()) " +
-                            " order by Dib.date");
-
-            selectSTR = sb.ToString();
-
-
-
-            dr.Close();
-            con.Close();
-            con = connect("DBConnectionString");
-            cmd = new SqlCommand(selectSTR, con);
-            // get a reader
-            dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
-            while (dr.Read())
-            {   // Read till the end of the data into a row
-                Deal d = new Deal();
-                d.Coupon = Convert.ToInt32(dr["Coupon"]);
-                d.Date = (DateTime)dr["Date"];
-
-                last_month.Add(d);
-            }
-            results.Add(last_month);
-
-            return results;
+            return dlist;
         }
         catch (Exception ex)
         {
@@ -2480,6 +2467,7 @@ public class DBServices
             }
 
         }
+
     }
 
 

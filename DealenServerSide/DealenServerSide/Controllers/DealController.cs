@@ -301,9 +301,9 @@ namespace DealenServerSide.Controllers
         {
             try
             {
-                Deal deal = new Deal();
-                List<List<Deal>> deals = deal.ReadDealCompeting(Bus_Id);
-                return Ok(deals);
+                RivalCoupon data = new RivalCoupon();
+                List<RivalCoupon> data_list = data.ReadDealCompeting(Bus_Id);
+                return Ok(data_list);
 
             }
             catch (Exception e)
