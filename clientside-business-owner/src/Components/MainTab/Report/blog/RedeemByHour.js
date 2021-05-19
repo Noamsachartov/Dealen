@@ -22,6 +22,9 @@ class RedeemByHour extends React.Component {
     constructor(props) {
       super(props);
       const {theme} = this.props;
+
+      this.barRef = React.createRef();
+      
       this.data = {
         datasets: [
           {
@@ -103,13 +106,18 @@ class RedeemByHour extends React.Component {
           .then((response) => response.json())
           .then((responseJson) => {
             console.log("ResponseJSON: ", responseJson);
-            // this.chart.data.datasets[0].data = [];
-            // this.chart.data.labels = [];
-            // responseJson.map((item) => {
-            //   this.chart.data.datasets[0].data.push(item.Coupon);
-            //   this.chart.data.labels.push(item.Product);
-            // });
+            this.data.labels = [];
+            this.data.datasets[0].data = [];
+            this.data.datasets[1].data = [];
+            responseJson.map((item) => {
+              this.data.labels.push(item.Date);
+              this.data.datasets[0].data.push(item.My_coupon);
+              this.data.datasets[1].data.push(item.Another_coupon);
+            });
             // this.chart.update();
+            console.log(this.data);
+            this.reference.chartInstance.update()
+            
           })
           .catch((error) => {
             console.error(error); 
@@ -118,7 +126,11 @@ class RedeemByHour extends React.Component {
 
       componentDidMount(){
         this.get_results();
+        this.interval = setInterval(() => this.get_results(), 5000);
+      }
 
+      componentWillUnmount(){
+          clearInterval(this.interval);
       }
 
     render(){
@@ -149,6 +161,7 @@ class RedeemByHour extends React.Component {
                     data={this.data}
                     options={this.options}
                     height={350}
+                    ref = {(reference) => this.reference = reference}
                 />
                 </Box>
             </CardBody>
