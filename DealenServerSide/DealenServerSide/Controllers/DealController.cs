@@ -277,5 +277,39 @@ namespace DealenServerSide.Controllers
                 return Content(HttpStatusCode.BadRequest, e);
             }
         }
+
+        [HttpGet]
+        [Route("api/Deal/Product/{Bus_Id}")]
+        public IHttpActionResult GetProduct(int Bus_Id)
+        {
+            try
+            {
+                Deal deal = new Deal();
+                List<Deal> deals = deal.ReadProduct(Bus_Id);
+                return Ok(deals);
+
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/Deal/DealCompeting/{Bus_Id}")]
+        public IHttpActionResult GetDealCompeting(int Bus_Id)
+        {
+            try
+            {
+                Deal deal = new Deal();
+                List<List<Deal>> deals = deal.ReadDealCompeting(Bus_Id);
+                return Ok(deals);
+
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
     }
 }
