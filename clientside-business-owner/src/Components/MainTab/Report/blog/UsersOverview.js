@@ -28,12 +28,12 @@ class UsersOverview extends React.Component {
           1200,
           750,
           940,
-          1420,
+          1120,
           300,
           115,
           90,
           1100,
-          1300,
+          1100,
           950,
           870,
           920,
@@ -206,10 +206,7 @@ class UsersOverview extends React.Component {
         console.log(new_stats.datasets[0].data);
         
         this.BlogUsersOverview.update()
-        //console.log(new_stats);
-  
-        // this.smallStats[0].value = responseJson[0].Non_redemmed_deal;
-        // this.smallStats[1].value = responseJson[0].New_customers;
+
       })
       .catch((error) => {
         console.error(error); 

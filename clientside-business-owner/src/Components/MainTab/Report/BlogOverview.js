@@ -15,7 +15,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 class BlogOverview extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {stats: [
+    this.state = {
+      stats: [
       {
         label: "מבצע אחרון ללא מימוש",
         value: "",
@@ -109,20 +110,16 @@ class BlogOverview extends React.Component {
           }
         ]
       }
-    ]}
+    ],
   }
+}
 
   componentDidMount() {
-    this.get_results();
-    this.interval = setInterval(() => this.get_results(), 10000);
+    this.get_datacard_results();
+    this.interval = setInterval(() => this.get_datacard_results(), 10000);
   }
-
-  componentWillUnmount(){
-    clearInterval(this.interval);
-  }
-
   
-get_results(){
+get_datacard_results(){
   var Bus_Id = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
   var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/DataCard/" + Bus_Id;
   var new_stats = null;
