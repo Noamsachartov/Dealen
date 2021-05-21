@@ -2132,7 +2132,7 @@ public class DBServices
                            " from DataOfCust_2021 "+
                            " group by Id_Dealincust) AS D "+
                            " where c = '1' ) AS 'New Customers', "+
-                           " ( select top 1 Deal.name from dealInbus_2021 AS B LEFT JOIN DataOfCust_2021 as D ON B.id = D.dealInbus_id "+
+                           " ( select top 1 Deal.name from dealInbus_2021 AS B LEFT JOIN DataOfCust_2021 as D ON B.deal_id = D.dealInbus_id " +
                            " join Deal_2021 AS Deal ON deal.Id = b.deal_id where d.dealInbus_id is NULL AND B.business_id ="+ Bus_Id +
                            " order by b.deal_id DESC ) AS 'Non Redeemed Deal' " +
                            " from DataOfCust_2021 "+
@@ -2282,7 +2282,7 @@ public class DBServices
                             "D.description As 'Description_Deal', Dib.date As 'Date', Dib.startime As 'Startime', Dib.endtime As 'Endtime', DCUST.coupon AS 'Count_Coupon' " +
                             "from(select dealInbus_Id, count(coupon) AS 'coupon' from DataOfCust_2021 where Id_Business ="+ Bus_Id + "group by dealInbus_id) AS DCUST RIGHT JOIN dealInbus_2021 AS Dib "+
                             "ON DCUST.dealInbus_Id = Dib.deal_id INNER JOIN Deal_2021 AS D ON D.Id = Dib.deal_id " +
-                            "where business_id = "+ Bus_Id);
+                            "where business_id = "+ Bus_Id +" order by date desc ");
             selectSTR = sb.ToString();
 
 
@@ -2412,12 +2412,12 @@ public class DBServices
             select Dib.date AS Date, (DealElse.coupon/Bus) AS 'Another_coupon', DealN.coupon AS 'My_coupon'
             from dealInbus_2021 AS Dib RIGHT JOIN  
             (select dib.date,count(coupon) AS coupon
-	            from DataOfCust_2021 AS DCUST INNER JOIN dealInbus_2021 AS Dib ON DCUST.dealInbus_id=Dib.id
+	            from DataOfCust_2021 AS DCUST INNER JOIN dealInbus_2021 AS Dib ON DCUST.dealInbus_id=Dib.deal_id
 	            where business_id = {Bus_Id}
 	            group by dib.date
 	            ) AS DealN ON DealN.date=Dib.date Left JOIN
             (select dib.date,count(coupon) AS coupon, count(distinct(DCUST.Id_Business)) AS 'Bus'
-	            from DataOfCust_2021 AS DCUST INNER JOIN dealInbus_2021 AS Dib ON DCUST.dealInbus_id=deal_id
+	            from DataOfCust_2021 AS DCUST INNER JOIN dealInbus_2021 AS Dib ON DCUST.dealInbus_id=Dib.deal_id
 	            where business_id != {Bus_Id}
 	            group by dib.date
 	            ) AS DealElse on DealElse.date=DealN.date
