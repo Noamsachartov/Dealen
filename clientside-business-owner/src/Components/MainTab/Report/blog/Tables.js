@@ -26,15 +26,9 @@ get_results(){
       
       new_results.push()
       responseJson.map((item) => new_results.push(item));
-      // responseJson[1].map((item) => new_stats.datasets[1].data.push(item.Coupon));
 
       this.setState({results: new_results});
       
-      // this.Tables.update()
-      //console.log(new_stats);
-
-      // this.smallStats[0].value = responseJson[0].Non_redemmed_deal;
-      // this.smallStats[1].value = responseJson[0].New_customers;
     })
     .catch((error) => {
       console.error(error); 
@@ -93,7 +87,7 @@ render() {
                     <td>{item.Name}</td>
                     <td>{item.Product}</td>
                     <td>{item.Description}</td>
-                    <td>{item.Date}</td>
+                    <td>{item.Format_date}</td>
                     <td>{item.Startime}</td>
                     <td>{item.Endtime}</td>
                     <td>{item.Coupon}</td>

@@ -92,10 +92,9 @@ class UsersByDevice extends React.Component {
                 style={{ maxWidth: "130px" }}
                 onChange={() => {}}
               >
-                <option value="last-week">Last Week</option>
-                <option value="today">Today</option>
-                <option value="last-month">Last Month</option>
-                <option value="last-year">Last Year</option>
+                <option value="last-week">שבוע אחרון</option>
+                <option value="last-month">חודש אחרון</option>
+                <option value="last-year">שנה אחרונה</option>
               </FormSelect>
             </Col>
             <Col className="text-right view-report">

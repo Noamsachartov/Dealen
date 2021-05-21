@@ -30,12 +30,12 @@ class RedeemByHour extends React.Component {
           {
             backgroundColor: colors.indigo[500],
             data: [18, 5, 19, 27, 29, 19, 20],
-            label: 'This year'
+            label: 'כמות מימושים שלי'
           },
           {
             backgroundColor: colors.grey[200],
             data: [11, 20, 12, 29, 30, 25, 13],
-            label: 'Last year'
+            label: 'כמות מימושי מתחרים'
           }
         ],
         labels: ['1 Aug', '2 Aug', '3 Aug', '4 Aug', '5 Aug', '6 Aug']
@@ -110,7 +110,7 @@ class RedeemByHour extends React.Component {
             this.data.datasets[0].data = [];
             this.data.datasets[1].data = [];
             responseJson.map((item) => {
-              this.data.labels.push(item.Date);
+              this.data.labels.push(item.My_date);
               this.data.datasets[0].data.push(item.My_coupon);
               this.data.datasets[1].data.push(item.Another_coupon);
             });
@@ -125,6 +125,7 @@ class RedeemByHour extends React.Component {
       }
 
       componentDidMount(){
+          console.log("Component mounted")
         this.get_results();
         this.interval = setInterval(() => this.get_results(), 5000);
       }
@@ -144,7 +145,7 @@ class RedeemByHour extends React.Component {
                     size="small"
                     variant="text"
                 >
-                    Last 7 days
+                   שבוע אחרון
                 </Button>
                 )}
                 title="מימושי מתחרים"

@@ -13,6 +13,7 @@ class UsersOverview extends React.Component {
       {
         label: "חודש נוכחי",
         fill: "start",
+        id_list: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         /*data: [70,30,24,15,20,60,65,15,10,0,35,20,55,40,0,0,0,0,0,0,0,0,0,,0,0,0,0],*/
         data:
         [
@@ -58,6 +59,7 @@ class UsersOverview extends React.Component {
       {
         label: "חודש קודם",
         fill: "start",
+        id_list:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         data: [
           380,
           430,
@@ -161,7 +163,16 @@ class UsersOverview extends React.Component {
         tooltips: {
           custom: false,
           mode: "nearest",
-          intersect: false
+          intersect: false,
+          callbacks: {
+            label: function (tooltipItems, data) {
+                var i = tooltipItems.index;
+                // console.info(data);
+                // console.info(tooltipItems);
+                // ToDo: add new line
+                return (data.datasets[tooltipItems.datasetIndex].label + ": " + tooltipItems.yLabel + " | מספר מבצע: " + data.datasets[tooltipItems.datasetIndex].id_list[i])
+            }
+        } 
         }
       },
       ...this.props.chartOptions
@@ -200,10 +211,15 @@ class UsersOverview extends React.Component {
         
         console.log(new_stats.datasets[0].data);
         responseJson[0].map((item) => new_stats.datasets[0].data[item.Day] = item.Coupon);
-        responseJson[1].map((item) => new_stats.datasets[1].data.push(item.Coupon));
+        responseJson[1].map((item) => new_stats.datasets[1].data[item.Day] = item.Coupon);
+        responseJson[0].map((item) => new_stats.datasets[0].id_list[item.Day] = item.Deal_id);
+        responseJson[1].map((item) => new_stats.datasets[1].id_list[item.Day] = item.Deal_id);
+        // responseJson[1].map((item) => new_stats.datasets[1].data.push(item.Coupon));
+        
+        
 
         this.setState({chartData: new_stats});
-        console.log(new_stats.datasets[0].data);
+        console.log(responseJson);
         
         this.BlogUsersOverview.update()
 
