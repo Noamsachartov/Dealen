@@ -2191,7 +2191,7 @@ public class DBServices
             StringBuilder sb = new StringBuilder();
 
             sb.AppendFormat(" select Dib.date AS Date, day(dib.date) AS Day, coupon AS Coupon, DealN.deal_id AS Deal_id from dealInbus_2021 AS Dib RIGHT JOIN " +
-                            " (select dib.deal_id, count(coupon) AS coupon  from DataOfCust_2021 AS DCUST INNER JOIN dealInbus_2021 AS Dib ON DCUST.dealInbus_id = Dib.id "+
+                            " (select dib.deal_id, count(coupon) AS coupon  from DataOfCust_2021 AS DCUST INNER JOIN dealInbus_2021 AS Dib ON DCUST.dealInbus_id = Dib.deal_id " +
                             " where business_id = "+ Bus_Id +
                             " group by dib.deal_id "+
                             " ) AS DealN ON DealN.deal_id = Dib.deal_id "+
@@ -2220,7 +2220,7 @@ public class DBServices
 
             sb = new StringBuilder();
             sb.AppendFormat(" select Dib.date AS Date, day(dib.date) AS Day, coupon AS Coupon, DealN.deal_id AS Deal_id from dealInbus_2021 AS Dib RIGHT JOIN " +
-                            " (select dib.deal_id, count(coupon) AS coupon  from DataOfCust_2021 AS DCUST INNER JOIN dealInbus_2021 AS Dib ON DCUST.dealInbus_id = Dib.id " +
+                            " (select dib.deal_id, count(coupon) AS coupon  from DataOfCust_2021 AS DCUST INNER JOIN dealInbus_2021 AS Dib ON DCUST.dealInbus_id = Dib.deal_id " +
                             " where business_id = " + Bus_Id +
                             " group by dib.deal_id " +
                             " ) AS DealN ON DealN.deal_id = Dib.deal_id " +
@@ -2281,7 +2281,7 @@ public class DBServices
             sb.AppendFormat("select Distinct(D.Id) AS 'Deal_Id', D.name As 'Name_Deal',D.Product As 'product', " +
                             "D.description As 'Description_Deal', Dib.date As 'Date', Dib.startime As 'Startime', Dib.endtime As 'Endtime', DCUST.coupon AS 'Count_Coupon' " +
                             "from(select dealInbus_Id, count(coupon) AS 'coupon' from DataOfCust_2021 where Id_Business ="+ Bus_Id + "group by dealInbus_id) AS DCUST RIGHT JOIN dealInbus_2021 AS Dib "+
-                            "ON DCUST.dealInbus_Id = Dib.id INNER JOIN Deal_2021 AS D ON D.Id = Dib.deal_id "+
+                            "ON DCUST.dealInbus_Id = Dib.deal_id INNER JOIN Deal_2021 AS D ON D.Id = Dib.deal_id " +
                             "where business_id = "+ Bus_Id);
             selectSTR = sb.ToString();
 
@@ -2347,7 +2347,7 @@ public class DBServices
             StringBuilder sb = new StringBuilder();
 
             sb.AppendFormat("select D.Product AS product, COUNT(distinct(DCUST.coupon)) AS 'Count_Coupon' " +
-                            "from DataOfCust_2021 AS DCUST RIGHT JOIN dealInbus_2021 AS Dib ON DCUST.dealInbus_Id = Dib.id "+
+                            "from DataOfCust_2021 AS DCUST RIGHT JOIN dealInbus_2021 AS Dib ON DCUST.dealInbus_Id = Dib.deal_id " +
                             "INNER JOIN Deal_2021 AS D ON D.Id = Dib.deal_id "+
                             "where Dib.business_id ="+ Bus_Id +
                             "group by D.Product ");
@@ -2417,7 +2417,7 @@ public class DBServices
 	            group by dib.date
 	            ) AS DealN ON DealN.date=Dib.date Left JOIN
             (select dib.date,count(coupon) AS coupon, count(distinct(DCUST.Id_Business)) AS 'Bus'
-	            from DataOfCust_2021 AS DCUST INNER JOIN dealInbus_2021 AS Dib ON DCUST.dealInbus_id=Dib.id
+	            from DataOfCust_2021 AS DCUST INNER JOIN dealInbus_2021 AS Dib ON DCUST.dealInbus_id=deal_id
 	            where business_id != {Bus_Id}
 	            group by dib.date
 	            ) AS DealElse on DealElse.date=DealN.date
