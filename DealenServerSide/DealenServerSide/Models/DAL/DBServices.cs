@@ -2299,7 +2299,7 @@ public class DBServices
                 d.Name = (string)dr["Name_Deal"];
                 d.Description = (string)dr["Description_Deal"];
                 d.Product = (dr["product"] is DBNull) ? "" : (string)dr["product"];
-                d.Date = (DateTime)dr["Date"];
+                d.Format_date = ((DateTime)dr["Date"]).ToString("dd/MM/yyyy");
                 d.Startime = (TimeSpan)dr["Startime"];
                 d.Endtime = (TimeSpan)dr["Endtime"];
                 d.Coupon = (dr["Count_Coupon"] == DBNull.Value) ? 0 : Convert.ToInt32(dr["Count_Coupon"]);
@@ -2434,12 +2434,9 @@ public class DBServices
             while (dr.Read())
             {   // Read till the end of the data into a row
                 RivalCoupon d = new RivalCoupon();
-                d.Date = (DateTime) dr["Date"];
+                d.My_date = ((DateTime)dr["Date"]).ToString("dd/MM");
                 d.My_coupon = (dr["My_coupon"] == DBNull.Value) ? 0 : Convert.ToInt32(dr["My_coupon"]);
                 d.Another_coupon = (dr["Another_coupon"] == DBNull.Value) ? 0 : Convert.ToInt32(dr["Another_coupon"]);
-                //d.Product = (dr[""] is DBNull) ? "" : (string)dr["product"];
-                //d.Coupon = (dr["Count_Coupon"] == DBNull.Value) ? 0 : Convert.ToInt32(dr["Count_Coupon"]);
-                //d.Bus_rest = b;
 
                 //DateTime now = DateTime.Now;
 

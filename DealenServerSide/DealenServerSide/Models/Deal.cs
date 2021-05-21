@@ -27,8 +27,10 @@ namespace DealenServerSide.Models
         int minutesToend;
         int pcost;
         string product;
-        
-       
+        string format_date;
+
+
+
 
 
         public int Id { get => id; set => id = value; }
@@ -51,10 +53,11 @@ namespace DealenServerSide.Models
         public int MinutesToend { get => minutesToend; set => minutesToend = value; }
         public int Pcost { get => pcost; set => pcost = value; }
         public string Product { get => product; set => product = value; }
+        public string Format_date { get => format_date; set => format_date = value; }
 
         public Deal() { }
 
-        public Deal(int id, string name, string description, string business_Name, string category, TimeSpan startime, TimeSpan endtime, string image, int[] cat_id, int business_id, int discount, DateTime date, int coupon, int[] tags, bool isLike, int minutesToEnd, int pcost, string product)
+        public Deal(int id, string name, string description, string business_Name, string category, TimeSpan startime, TimeSpan endtime, string image, int[] cat_id, int business_id, int discount, DateTime date, int coupon, int[] tags, bool isLike, int minutesToEnd, int pcost, string product, string format_date)
         {
             Id = id;
             Name = name;
@@ -73,6 +76,7 @@ namespace DealenServerSide.Models
             MinutesToend = minutesToEnd;
             Pcost = pcost;
             Product = product;
+            Format_date = format_date;
 
         }
 
@@ -239,6 +243,7 @@ public class RivalCoupon
     DateTime date;
     int my_coupon;
     int another_coupon;
+    string my_date;
 
     public RivalCoupon()
     {
@@ -247,6 +252,7 @@ public class RivalCoupon
     public DateTime Date { get => date; set => date = value; }
     public int My_coupon { get => my_coupon; set => my_coupon = value; }
     public int Another_coupon { get => another_coupon; set => another_coupon = value; }
+    public string My_date { get => my_date; set => my_date = value; }
 
     public List<RivalCoupon> ReadDealCompeting(int Bus_Id)
     {
