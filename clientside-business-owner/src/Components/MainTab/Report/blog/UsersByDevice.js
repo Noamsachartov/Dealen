@@ -151,7 +151,7 @@ UsersByDevice.defaultProps = {
         ]
       }
     ],
-    labels: ["Desktop", "Tablet", "Mobile"]
+    labels: ["פיצה", "בירה", "יין"]
   }
 };
 
