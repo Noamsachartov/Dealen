@@ -2334,12 +2334,32 @@ public class DBServices
 
     }
 
-    public List<Deal> GetProduct(int Bus_Id)
+    public List<Deal> GetProduct(int Bus_Id, string Period)
     {
         List<Deal> dlist = new List<Deal>();
         SqlConnection con = null;
 
         string selectSTR = null;
+        string where = null;
+        switch (Period)
+        {
+            case "w":
+                where = "(Dib.date BETWEEN DATEADD(day, -7, GETDATE()) AND GETDATE())";
+                break;
+            case "m":
+                where = "MONTH(Dib.date) = MONTH(GETDATE())";
+                break;
+            case "lm":
+                where = "MONTH(Dib.date) = MONTH(GETDATE())-1";
+                break;
+            case "y":
+                where = "YEAR(Dib.date) = YEAR(GETDATE())";
+                break;
+
+            default:
+                where = "(Dib.date BETWEEN DATEADD(day, -7, GETDATE()) AND GETDATE())";
+                break;
+        }
         try
         {
 
@@ -2349,7 +2369,7 @@ public class DBServices
             sb.AppendFormat("select D.Product AS product, COUNT(distinct(DCUST.coupon)) AS 'Count_Coupon' " +
                             "from DataOfCust_2021 AS DCUST RIGHT JOIN dealInbus_2021 AS Dib ON DCUST.dealInbus_Id = Dib.deal_id " +
                             "INNER JOIN Deal_2021 AS D ON D.Id = Dib.deal_id "+
-                            "where Dib.business_id ="+ Bus_Id +
+                            "where Dib.business_id ="+ Bus_Id + " AND " + where + " " +
                             "group by D.Product ");
             selectSTR = sb.ToString();
 
@@ -2396,12 +2416,32 @@ public class DBServices
 
     }
 
-    public List<RivalCoupon> GetDealCompeting(int Bus_Id)
+    public List<RivalCoupon> GetDealCompeting(int Bus_Id, string Period)
     {
         List<RivalCoupon> dlist = new List<RivalCoupon>();
         SqlConnection con = null;
 
         string selectSTR = null;
+        string where = null;
+        switch (Period)
+        {
+            case "w":
+                where = "(Dib.date BETWEEN DATEADD(day, -7, GETDATE()) AND GETDATE())";
+                break;
+            case "m":
+                where = "MONTH(Dib.date) = MONTH(GETDATE())";
+                break;
+            case "lm":
+                where = "MONTH(Dib.date) = MONTH(GETDATE())-1";
+                break;
+            case "y":
+                where = "YEAR(Dib.date) = YEAR(GETDATE())";
+                break;
+
+            default:
+                where = "(Dib.date BETWEEN DATEADD(day, -7, GETDATE()) AND GETDATE())";
+                break;
+        }
         try
         {
 
@@ -2421,7 +2461,7 @@ public class DBServices
 	            where business_id != {Bus_Id}
 	            group by dib.date
 	            ) AS DealElse on DealElse.date=DealN.date
-            where dib.business_id = {Bus_Id} AND MONTH(Dib.date) = MONTH(GETDATE())
+            where dib.business_id = {Bus_Id} AND {where}
             order by Dib.date ");
             selectSTR = sb.ToString();
 

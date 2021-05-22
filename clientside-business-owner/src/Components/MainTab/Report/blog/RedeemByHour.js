@@ -97,15 +97,14 @@ class RedeemByHour extends React.Component {
     }
     }
 
-    get_results(){
+    get_results(period="w"){
         var Bus_Id = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
-        var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/DealCompeting/" + Bus_Id;
-        var new_results = null;
+        var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/DealCompeting/" + Bus_Id + "/" + period;
       
         fetch(apiUrl)
           .then((response) => response.json())
           .then((responseJson) => {
-            console.log("ResponseJSON: ", responseJson);
+            // console.log("ResponseJSON: ", responseJson);
             this.data.labels = [];
             this.data.datasets[0].data = [];
             this.data.datasets[1].data = [];
@@ -114,10 +113,10 @@ class RedeemByHour extends React.Component {
               this.data.datasets[0].data.push(item.My_coupon);
               this.data.datasets[1].data.push(item.Another_coupon);
             });
-            // this.chart.update();
-            console.log(this.data);
-            this.reference.chartInstance.update()
             
+          })
+          .then(() => {
+            this.reference.chartInstance.update();
           })
           .catch((error) => {
             console.error(error); 
@@ -125,13 +124,8 @@ class RedeemByHour extends React.Component {
       }
 
       componentDidMount(){
-          console.log("Component mounted")
+        // console.log("Component mounted")
         this.get_results();
-        this.interval = setInterval(() => this.get_results(), 5000);
-      }
-
-      componentWillUnmount(){
-          clearInterval(this.interval);
       }
 
     render(){
@@ -142,9 +136,11 @@ class RedeemByHour extends React.Component {
                 action={(
                     <FormSelect
                     size="sm"
-                    value="last-week"
                     style={{ maxWidth: "130px" }}
-                    onChange={() => {}}
+                    onChange={(e) => {
+                        // console.log(e.target.value);
+                        this.get_results(e.target.value);
+                    }}
                   >
                     <option value="w">שבוע אחרון</option>
                     <option value="m">חודש נוכחי</option>
@@ -166,6 +162,7 @@ class RedeemByHour extends React.Component {
                     data={this.data}
                     options={this.options}
                     height={350}
+                    redraw={true}
                     ref = {(reference) => this.reference = reference}
                 />
                 </Box>

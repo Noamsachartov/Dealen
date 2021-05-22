@@ -187,10 +187,10 @@ namespace DealenServerSide.Models
             return dlist;
         }
 
-        public List<Deal> ReadProduct(int Bus_Id)
+        public List<Deal> ReadProduct(int Bus_Id, string Period)
         {
             DBServices dbs = new DBServices();
-            List<Deal> dlist = dbs.GetProduct(Bus_Id);
+            List<Deal> dlist = dbs.GetProduct(Bus_Id, Period);
             return dlist;
         }
     }
@@ -254,10 +254,10 @@ public class RivalCoupon
     public int Another_coupon { get => another_coupon; set => another_coupon = value; }
     public string My_date { get => my_date; set => my_date = value; }
 
-    public List<RivalCoupon> ReadDealCompeting(int Bus_Id)
+    public List<RivalCoupon> ReadDealCompeting(int Bus_Id, string Period)
     {
         DBServices dbs = new DBServices();
-        List<RivalCoupon> dlist = dbs.GetDealCompeting(Bus_Id);
+        List<RivalCoupon> dlist = dbs.GetDealCompeting(Bus_Id, Period);
         return dlist;
     }
 }

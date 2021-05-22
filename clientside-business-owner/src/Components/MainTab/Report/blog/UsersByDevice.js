@@ -47,10 +47,9 @@ class UsersByDevice extends React.Component {
     this.get_results();
   }
 
-  get_results(){
+  get_results(period="w"){
     var Bus_Id = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
-    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/Product/" + Bus_Id;
-    var new_results = null;
+    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/Product/" + Bus_Id + "/" + period;
   
     fetch(apiUrl)
       .then((response) => response.json())
@@ -81,9 +80,11 @@ class UsersByDevice extends React.Component {
             <Col>
               <FormSelect
                 size="sm"
-                value="last-week"
                 style={{ maxWidth: "130px" }}
-                onChange={() => {}}
+                onChange={(e) => {
+                  console.log(e.target.value);
+                  this.get_results(e.target.value);
+                }}
               >
                 <option value="w">שבוע אחרון</option>
                 <option value="m">חודש נוכחי</option>

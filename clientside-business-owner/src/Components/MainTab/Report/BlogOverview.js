@@ -116,7 +116,7 @@ class BlogOverview extends React.Component {
 
   componentDidMount() {
     this.get_datacard_results();
-    this.interval = setInterval(() => this.get_datacard_results(), 10000);
+    // this.interval = setInterval(() => this.get_datacard_results(), 10000);
   }
   
 get_datacard_results(){

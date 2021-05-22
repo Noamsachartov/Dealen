@@ -237,7 +237,7 @@ class UsersOverview extends React.Component {
           <h6 className="m-0">{title}</h6>
         </CardHeader>
         <CardBody className="pt-0">
-          <Row className="border-bottom py-2 bg-light">
+          {/*<Row className="border-bottom py-2 bg-light">
             <Col sm="6" className="d-flex mb-2 mb-sm-0">
               <RangeDatePicker />
             </Col>
@@ -248,8 +248,8 @@ class UsersOverview extends React.Component {
               >
                 View Full Report &rarr;
               </Button>
-            </Col>
-          </Row>
+          </Col> 
+          </Row>*/}
           <canvas
             height="120"
             ref={this.canvasRef}

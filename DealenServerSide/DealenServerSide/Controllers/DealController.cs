@@ -279,13 +279,13 @@ namespace DealenServerSide.Controllers
         }
 
         [HttpGet]
-        [Route("api/Deal/Product/{Bus_Id}")]
-        public IHttpActionResult GetProduct(int Bus_Id)
+        [Route("api/Deal/Product/{Bus_Id}/{Period}")]
+        public IHttpActionResult GetProduct(int Bus_Id, string Period)
         {
             try
             {
                 Deal deal = new Deal();
-                List<Deal> deals = deal.ReadProduct(Bus_Id);
+                List<Deal> deals = deal.ReadProduct(Bus_Id, Period);
                 return Ok(deals);
 
             }
@@ -296,13 +296,13 @@ namespace DealenServerSide.Controllers
         }
 
         [HttpGet]
-        [Route("api/Deal/DealCompeting/{Bus_Id}")]
-        public IHttpActionResult GetDealCompeting(int Bus_Id)
+        [Route("api/Deal/DealCompeting/{Bus_Id}/{Period}")]
+        public IHttpActionResult GetDealCompeting(int Bus_Id, string Period)
         {
             try
             {
                 RivalCoupon data = new RivalCoupon();
-                List<RivalCoupon> data_list = data.ReadDealCompeting(Bus_Id);
+                List<RivalCoupon> data_list = data.ReadDealCompeting(Bus_Id, Period);
                 return Ok(data_list);
 
             }
