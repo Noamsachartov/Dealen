@@ -9,6 +9,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import Checkbox from './CheckInput';
 import Selectoptions from './Selectoptions';
+import Selectoptioncreate from './Selectoptioncreate';
 import CheckInput from './CheckInput';
 import TimePicker from 'react-time-picker';
 import Select from 'react-select';
@@ -33,13 +34,16 @@ export default class MyForm extends React.Component {
         image: null,
         Categories: null,
         Tags: null,
+        Products: null,
         select_cats: [],
         select_tags: [],
         today: new Date(),
         selectedcats: null,
         selcectedtags: null,
+        selectedprods: null,
         pcost: null,
-        onplusone: null
+        onplusone: null,
+        iscreatedprod:0
      };
      //this.onImageChange = this.onImageChange.bind(this);
      this.apiUrl = 'http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal';
@@ -50,6 +54,7 @@ export default class MyForm extends React.Component {
   componentDidMount(){
     this.getCategory();
     this.getTags();
+    this.getProducts();
 }
 getCategory=()=>{
     const cats = [];
@@ -85,6 +90,28 @@ getTags=()=>{
   });
   console.log(this.state.Tags)
 }
+
+
+getProducts=()=>{
+  const tag = [];
+  var is_logged = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
+
+  const url ="http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/Productlist/"+is_logged
+
+  fetch(url)
+  .then(response => response.json())
+  .then(data => {
+      data.forEach((item) => {
+          item.checked=false;
+          tag.push(item);
+      });
+      this.setState({Products:[...tag]});
+  });
+  console.log(this.state.Products)
+}
+
+
+
 
   // onImageChange = (event) => {
   //   if (event.target.files && event.target.files[0]) {
@@ -171,13 +198,26 @@ getTags=()=>{
 
 
   mySubmitHandler = (event) => {
+
+
+
+
     event.preventDefault(); //
     // const CatsToDB = this.state.Categories.filter(item=>item.checked).map((item)=>item.Id);
     console.log(this.state.selectedcats);
     // const TagsToDB = this.state.Tags.filter(item=>item.checked).map((item)=>item.Id);
     console.log(this.state.selectedtags);
 
+
+
+
     var is_logged = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
+
+    if(this.state.iscreatedprod==1)
+    {
+      this.AddProduct();
+
+    }
     var b= new Date();
    var jbody= JSON.stringify({
       business_id: is_logged,
@@ -228,9 +268,45 @@ getTags=()=>{
         console.error(error);
       });
 
+
+  
+
     // alert("You are submitting " + is_logged);
     
     console.log(jbody);
+  }
+
+
+  AddProduct=()=>{
+
+    var is_logged = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
+
+    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/product"
+    fetch(apiUrl, {
+      method: 'POST',
+      body: JSON.stringify({
+        business_id: is_logged,
+        Product: this.state.selectedprods
+      
+        
+      }),
+      
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+
+      .then((responseJson) => {
+
+      })
+      .catch((error) => {
+        alert(JSON.stringify(error));
+        console.error(error);
+      });
+
+
   }
 
 
@@ -238,17 +314,13 @@ getTags=()=>{
     this.setState({username: event.target.value});
   }
 
-  changedCheckedValuescat=(itemId,checked)=>{
-    let cats = [...this.state.Categories];
 
-    console.log(itemId)
-    cats.find(item=>item.Id==itemId).checked = checked;
-    this.setState({Categories:[...cats]});
-    console.log(this.state.Categories);
-    var b= new Date();
-    console.log(b)
 
-}
+
+
+
+
+
 
 changedCheckedValuestag=(itemId,checked)=>{
   let tags = [...this.state.Tags];
@@ -271,6 +343,25 @@ handleChangecats =(selectedOptions) => {
    // alert(selectedOptions)
    }
 
+
+   handleChangetproducts =(selectedOptions) => {
+     if(selectedOptions){
+      this.setState({iscreatedprod: 0});
+     this.setState({selectedprods: selectedOptions.label});
+     console.log(this.state.selectedprods);
+     }
+   // alert(selectedOptions)
+   }
+
+   handleChangetinputproducts =(selectedOptions) => {
+    // let value = Array.from(selectedOptions, option => option.value);
+    this.setState({iscreatedprod: 1});
+    this.setState({selectedprods: selectedOptions.label});
+    console.log(this.state.selectedprods);
+   // alert(selectedOptions)
+   }
+
+
    handleInputChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -285,7 +376,7 @@ handleChangecats =(selectedOptions) => {
 
 
   render() {
-    if(this.state.Categories&&this.state.Tags)
+    if(this.state.Categories&&this.state.Tags&& this.state.Products)
     { 
     
         return (
@@ -314,6 +405,10 @@ handleChangecats =(selectedOptions) => {
           <br></br>
           <Selectoptions data={this.state.Tags} onChange= {this.handleChangetags} />
 
+          <br></br>
+          <label className="col-sm-0 control-label"> : בחר מוצר למבצע   <br></br><br></br></label>
+          <Selectoptioncreate data={this.state.Products} onChange= {this.handleChangetproducts} onInputChange={this.handleChangetinputproducts}/>
+
           {/* <input
             type='text'
             onChange={text => this.setState({start_time: text.target.value})}
@@ -339,12 +434,17 @@ handleChangecats =(selectedOptions) => {
             onChange={time1=>this.setState({end_time: time1})}
             value={ this.state.end_time}
           />
+          <br></br>
+
           <label className="col-sm-0 control-label"> : שעת סיום מבצע <br></br><br></br> </label>
-          
+          <br></br>
+
           <input
             type='number'
             onChange={text => this.setState({discount: text.target.value})}
           />
+          <br></br>
+
           <label className="col-sm-0 control-label"> : אחוז מבצע  <br></br><br></br></label>
           
            

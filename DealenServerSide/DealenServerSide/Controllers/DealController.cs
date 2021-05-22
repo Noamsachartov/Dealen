@@ -41,6 +41,24 @@ namespace DealenServerSide.Controllers
             }
         }
 
+        // GET api/<controller>
+        [HttpGet]
+        [Route("api/Deal/Productlist/{id}")]
+        public IHttpActionResult GetProductlist(int id)
+        {
+            try
+            {
+                Deal deal = new Deal();
+                List<Deal> deals = deal.ReadProductlist(id);
+                return Ok(deals);
+
+            }
+            catch (Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, e);
+            }
+        }
+
         // GET api/<controller>/5
 
         [HttpGet]
@@ -217,6 +235,24 @@ namespace DealenServerSide.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [HttpPost]
+        [Route("api/Deal/product")]
+        public IHttpActionResult PostProdect([FromBody] Deal deal)
+        {
+            try
+            {
+                int count = deal.InsertProduct();
+                return Created(new Uri(Request.RequestUri.AbsoluteUri + deal.Id), count);
+
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
+            }
+        }
+
         // PUT api/<controller>/5
         public void Put(int id, [FromBody]string value)
         {
