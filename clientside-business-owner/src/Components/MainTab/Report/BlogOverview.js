@@ -20,7 +20,7 @@ class BlogOverview extends React.Component {
       {
         label: "מבצע אחרון ללא מימוש",
         value: "",
-        percentage: "4.7%",
+        percentage: "",
         increase: true,
         chartLabels: [null, null, null, null, null, null, null],
         attrs: { md: "6", sm: "6" },
@@ -31,7 +31,7 @@ class BlogOverview extends React.Component {
             borderWidth: 1.5,
             backgroundColor: "rgba(0, 184, 216, 0.1)",
             borderColor: "rgb(0, 184, 216)",
-            data: [1, 2, 1, 3, 5, 4, 7]
+            data: [0,0,0,0,0]
           }
         ]
       },
