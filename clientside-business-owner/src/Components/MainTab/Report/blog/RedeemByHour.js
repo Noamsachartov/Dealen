@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import { CardBody } from 'shards-react';
+import { CardBody,FormSelect } from 'shards-react';
 
 
 class RedeemByHour extends React.Component {
@@ -140,13 +140,17 @@ class RedeemByHour extends React.Component {
             <CardHeader
             className="border-bottom"
                 action={(
-                <Button
-                    endIcon={<ArrowDropDownIcon />}
-                    size="small"
-                    variant="text"
-                >
-                   שבוע אחרון
-                </Button>
+                    <FormSelect
+                    size="sm"
+                    value="last-week"
+                    style={{ maxWidth: "130px" }}
+                    onChange={() => {}}
+                  >
+                    <option value="w">שבוע אחרון</option>
+                    <option value="m">חודש נוכחי</option>
+                    <option value="lm">חודש קודם</option>
+                    <option value="y">שנה נוכחית</option>
+                  </FormSelect>
                 )}
                 title="מימושי מתחרים"
             />

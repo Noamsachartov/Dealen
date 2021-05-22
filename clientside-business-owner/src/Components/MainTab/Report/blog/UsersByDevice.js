@@ -76,13 +76,6 @@ class UsersByDevice extends React.Component {
         <CardHeader className="border-bottom">
           <h6 className="m-0">{title}</h6>
         </CardHeader>
-        <CardBody className="d-flex py-0">
-          <canvas
-            height="220"
-            ref={this.canvasRef}
-            className="blog-users-by-device m-auto"
-          />
-        </CardBody>
         <CardFooter className="border-top">
           <Row>
             <Col>
@@ -92,9 +85,10 @@ class UsersByDevice extends React.Component {
                 style={{ maxWidth: "130px" }}
                 onChange={() => {}}
               >
-                <option value="last-week">שבוע אחרון</option>
-                <option value="last-month">חודש אחרון</option>
-                <option value="last-year">שנה אחרונה</option>
+                <option value="w">שבוע אחרון</option>
+                <option value="m">חודש נוכחי</option>
+                <option value="lm">חודש קודם</option>
+                <option value="y">שנה נוכחית</option>
               </FormSelect>
             </Col>
             <Col className="text-right view-report">
@@ -103,6 +97,14 @@ class UsersByDevice extends React.Component {
             </Col>
           </Row>
         </CardFooter>
+        <CardBody className="d-flex py-0">
+          <canvas
+            height="220"
+            ref={this.canvasRef}
+            className="blog-users-by-device m-auto"
+          />
+        </CardBody>
+
       </Card>
     );
   }
