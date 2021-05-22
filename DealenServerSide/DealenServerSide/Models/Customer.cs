@@ -21,6 +21,9 @@ namespace DealenServerSide.Models
         int[] p_type;
         int p_distance;
         int totalsave;
+        int age;
+        float latitude;
+        float longitude;
 
 
         public int Cust_id { get => cust_id; set => cust_id = value; }
@@ -36,10 +39,13 @@ namespace DealenServerSide.Models
         public int[] P_category { get => p_category; set => p_category = value; }
         public int Totalsave { get => totalsave; set => totalsave = value; }
         public int[] P_type { get => p_type; set => p_type = value; }
+        public int Age { get => age; set => age = value; }
+        public float Latitude { get => latitude; set => latitude = value; }
+        public float Longitude { get => longitude; set => longitude = value; }
 
         public Customer() { }
 
-        public Customer(int cust_id, string cust_fname, string cust_address, string cust_phone, DateTime birthdate, string cust_mail, string password, string image, string cust_lname, int[] p_type, int p_distance, int[] p_category, int totalsave)
+        public Customer(int cust_id, string cust_fname, string cust_address, string cust_phone, DateTime birthdate, string cust_mail, string password, string image, string cust_lname, int[] p_type, int p_distance, int[] p_category, int totalsave, int age, float latitude, float longitude)
         {
             Cust_id = cust_id;
             Cust_fname = cust_fname;
@@ -54,6 +60,10 @@ namespace DealenServerSide.Models
             P_distance = p_distance;
             P_category = p_category;
             Totalsave = totalsave;
+            Age = age;
+            Latitude = latitude;
+            Longitude = longitude;
+
         }
         public List<Customer> Read(int id)
         {

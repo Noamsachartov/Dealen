@@ -19,7 +19,7 @@ export default class Deal extends React.Component {
         toggleCheckBox_Bar: false,
         toggleCheckBox_Caffe: false,
         titleupdate: 'עדכון העדפות',
-        BTypeAdd: {},
+        BTypeAdd: [],
         typearr: "",
         radios: 50
       }

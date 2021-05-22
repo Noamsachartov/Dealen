@@ -77,6 +77,8 @@ namespace DealenServerSide.Models
             Pcost = pcost;
             Product = product;
             Format_date = format_date;
+            
+
 
         }
 
@@ -130,7 +132,14 @@ namespace DealenServerSide.Models
             List<Deal> dlist = dbs.CheckIsLike(deal_id,cust_id);
             return dlist;
         }
-        
+
+        public List<Deal> ReadProductlist(int id)
+        {
+            DBServices dbs = new DBServices();
+            List<Deal> dlist = dbs.getProductslist(id);
+            return dlist;
+        }
+
 
         public List<Deal> ReadSearch(string Letters)
         {
@@ -172,6 +181,15 @@ namespace DealenServerSide.Models
             return dbs.Insert(this);
 
         }
+
+        public int InsertProduct()
+        {
+            DBServices dbs = new DBServices();
+            return dbs.InsertProd(this);
+
+        }
+
+        
 
         public List<Deal> getTags()
         {

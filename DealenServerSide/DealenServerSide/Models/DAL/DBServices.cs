@@ -168,8 +168,8 @@ public class DBServices
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
         var f = customer.Birthdate.ToString("yyyy-MM-dd");
-        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', '{4}', '{5}','{6}','{7}');", customer.Cust_fname, customer.Cust_address, customer.Cust_phone, customer.Cust_mail, f, customer.Password, customer.Image, customer.Cust_lname);
-        String prefixc = "INSERT INTO [Customer_2021] " + "([cust_fname],[cust_address],[cust_phone],[cust_mail],[birthdate],[password],[image],[cust_lname])";
+        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', {4}, '{5}','{6}','{7}',{8},{9};", customer.Cust_fname, customer.Cust_address, customer.Cust_phone, customer.Cust_mail, customer.Age, customer.Password, customer.Image, customer.Cust_lname, customer.Latitude, customer.Longitude);
+        String prefixc = "INSERT INTO [Customer_2021] " + "([cust_fname],[cust_address],[cust_phone],[cust_mail],[age],[password],[image],[cust_lname], latitude, longitude)";
 
         String get_id = "SELECT SCOPE_IDENTITY();";
         command = prefixc + sb.ToString() + get_id;
@@ -349,7 +349,77 @@ public class DBServices
         command = "UPDATE Customer_2021 set P_TypeBus='" + customer.P_type + "', P_Distance='" + customer.P_distance + "' where cust_id = " + id.ToString();
         return command;
     }
-   
+
+
+
+
+
+
+    public int InsertProd(Deal deal)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("DBConnectionString"); // create the connection
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+    
+        
+
+        String cStr = BuildInsertProdCommand(deal);      // helper method to build the insert string
+
+        cmd = CreateCommand(cStr, con);             // create the command
+
+        try
+        {
+            int numEffected = Convert.ToInt32(cmd.ExecuteScalar()); // execute the command
+            return numEffected;
+
+
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+        }
+
+    }
+
+
+
+    private String BuildInsertProdCommand(Deal deal)
+    {
+        String command;
+        command = "";
+
+        StringBuilder sb = new StringBuilder();
+        // use a string builder to create the dynamic string
+        sb.AppendFormat("Values('{0}', {1});", deal.Product, deal.Business_id);
+        String prefixc = "INSERT INTO [Products_2021] " + "([Product_name],[Business_Id])";
+        String get_id = "SELECT SCOPE_IDENTITY();";
+        command = prefixc + sb.ToString() + get_id;
+
+        return command;
+
+    }
+
+
+
 
 
     //הכנסה מבצע חדש
@@ -420,14 +490,15 @@ public class DBServices
 
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}', '{1}','{2}');", deal.Name, deal.Description, deal.Image);
-        String prefixc = "INSERT INTO [Deal_2021] " + "([name],[description],[image])";
+        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}');", deal.Name, deal.Description, deal.Image, deal.Product);
+        String prefixc = "INSERT INTO [Deal_2021] " + "([name],[description],[image],Product)";
         String get_id = "SELECT SCOPE_IDENTITY();";
         command = prefixc + sb.ToString() + get_id;
 
         return command;
 
     }
+
 
     // לבניית קריאה לטבלה מקשרת של מבצעים ובעלי עסקים Dealen
     private String BuildInsertCommandlink(Deal deal, int deal_id)
@@ -1409,7 +1480,51 @@ public class DBServices
     //}
 
 
+    public List<Deal> getProductslist(int id)
+    {
+        List<Deal> dlist = new List<Deal>();
+        SqlConnection con = null;
 
+        string selectSTR = null;
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("select product_name from  Products_2021 where Business_Id=0 or Business_Id="+id);
+            selectSTR = sb.ToString();
+
+
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                Deal d = new Deal();
+                d.Product = (string)dr["Product_name"];
+
+                dlist.Add(d);
+            }
+
+            return dlist;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+
+    }
 
 
     public List<Deal> getTags()

@@ -89,18 +89,19 @@ export default class ChoosePreferences extends React.Component {
         }else{
           var caffe = "";
         }
-        var join = `${resturant},${bar},${caffe}`;
-        this.setState({typearr: this.state.BTypeAdd })
+        // var join = `${resturant},${bar},${caffe}`;
+        // this.setState({typearr: this.state.BTypeAdd })
 
 
        
         const { navigation, route } = this.props;
         var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Customer/" +route.params.userId;
+        console.log(apiUrl)
         fetch(apiUrl, {
           method: 'PUT',
           body: JSON.stringify({
             P_category: this.state.categoryAdd,
-            P_type: join,
+            P_type: this.state.BTypeAdd,
             P_distance: this.state.radios.toString(),
           }),
           headers: {
