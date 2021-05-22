@@ -3,9 +3,9 @@ import { Bar } from 'react-chartjs-2';
 import {
   Box,
   Button,
-  Card,
+  
   CardContent,
-  CardHeader,
+
   withTheme,
   Divider,
   useTheme,
@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import { CardBody,FormSelect } from 'shards-react';
+import { CardBody,FormSelect, Container, Row, Col, Card, CardHeader } from 'shards-react';
 
 
 class RedeemByHour extends React.Component {
@@ -33,7 +33,7 @@ class RedeemByHour extends React.Component {
             label: 'כמות מימושים שלי'
           },
           {
-            backgroundColor: colors.grey[300],
+            backgroundColor: colors.grey[200],
             data: [11, 20, 12, 29, 30, 25, 13],
             label: 'כמות מימושי מתחרים'
           }
@@ -130,43 +130,48 @@ class RedeemByHour extends React.Component {
 
     render(){
         return (
-            <Card className="h-100" {...this.props}>
-            <CardHeader
-            className="border-bottom"
-                action={(
+            <Container fluid className="main-content-container px-0">
+            <Card className="mb-4" {...this.props}>
+            <CardHeader className="border-bottom">
+            <Row>
+                <Col>
                     <FormSelect
-                    size="sm"
-                    style={{ maxWidth: "130px" }}
-                    onChange={(e) => {
-                        // console.log(e.target.value);
-                        this.get_results(e.target.value);
-                    }}
-                  >
+                        size="sm"
+                        style={{ maxWidth: "130px",  }}
+                        onChange={(e) => {
+                            // console.log(e.target.value)ף;
+                            this.get_results(e.target.value);
+                        }}
+                    >
                     <option value="w">שבוע אחרון</option>
                     <option value="m">חודש נוכחי</option>
                     <option value="lm">חודש קודם</option>
                     <option value="y">שנה נוכחית</option>
                   </FormSelect>
-                )}
-                title="מימושי מתחרים"
-            />
+                </Col>
+                <Col>
+                    <h6 className="m-0">מימושי מתחרים</h6>
+                </Col>
+            </Row>
+            </CardHeader>
             <Divider />
-            <CardBody className="pt-0" style={{ height: "360px" }}>
+            <CardBody small className="pt-0 ">
                 <Box
                 sx={{
-                    height: 360,
+                    height: 350,
                     position: 'relative'
                 }}
                 >
                 <Bar
                     data={this.data}
                     options={this.options}
-                    height={350}
+                    height={373}
                     redraw={true}
                     ref = {(reference) => this.reference = reference}
                 />
                 </Box>
             </CardBody>
+            {/*
             <Divider />
             <Box
                 sx={{
@@ -184,7 +189,9 @@ class RedeemByHour extends React.Component {
                 Overview
                 </Button>
             </Box>
+             */}
             </Card>
+            </Container>
         );
     }
 }
