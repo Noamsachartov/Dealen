@@ -94,7 +94,6 @@ class UsersByDevice extends React.Component {
             </Col>
             <Col className="text-right view-report">
               {/* eslint-disable-next-line */}
-              <a href="#">View full report &rarr;</a>
             </Col>
           </Row>
         </CardFooter>
