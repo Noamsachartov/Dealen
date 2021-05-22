@@ -28,12 +28,12 @@ class RedeemByHour extends React.Component {
       this.data = {
         datasets: [
           {
-            backgroundColor: colors.indigo[500],
+            backgroundColor: "rgba(0,123,255,0.7)",
             data: [18, 5, 19, 27, 29, 19, 20],
             label: 'כמות מימושים שלי'
           },
           {
-            backgroundColor: colors.grey[200],
+            backgroundColor: colors.grey[300],
             data: [11, 20, 12, 29, 30, 25, 13],
             label: 'כמות מימושי מתחרים'
           }
