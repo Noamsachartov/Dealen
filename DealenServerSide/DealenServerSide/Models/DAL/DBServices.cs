@@ -646,7 +646,7 @@ public class DBServices
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-            String selectSTR = "select cust_id,[cust_fname],[cust_lname],cust_address,cust_phone,birthdate,cust_mail, password,[image] from Customer_2021 where cust_mail = '" + mail.ToString() + "' and [password] = '" + password.ToString() + "'";
+            String selectSTR = "select cust_id,[cust_fname],[cust_lname],cust_address,cust_phone,age,cust_mail, password,[image] from Customer_2021 where cust_mail = '" + mail.ToString() + "' and [password] = '" + password.ToString() + "'";
             SqlCommand cmd = new SqlCommand(selectSTR, con);
 
             // get a reader
@@ -703,9 +703,9 @@ public class DBServices
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
             String selectSTR = "SELECT Customer_2021.cust_id,Customer_2021.cust_fname, Customer_2021.cust_lname,Customer_2021.cust_address, Customer_2021.cust_mail, Customer_2021.cust_phone,  " +
                 "case when CONVERT(int, SUM(dealInbus_2021.discount * dealInbus_2021.Pcost))<>NULL then CONVERT(int, SUM(dealInbus_2021.discount * dealInbus_2021.Pcost)) else 0 end  AS Totalsave, " +
-                "Customer_2021.birthdate,  Customer_2021.image " +
+                "Customer_2021.age,  Customer_2021.image " +
                 "FROM Customer_2021 left JOIN dealIncust_2021 ON Customer_2021.cust_id = dealIncust_2021.dealincust_id left JOIN dealInbus_2021 ON dealIncust_2021.dealinbus_id = dealInbus_2021.id WHERE (Customer_2021.cust_id = "+id+")  " +
-                "GROUP BY Customer_2021.cust_id, Customer_2021.cust_fname, Customer_2021.cust_address, Customer_2021.cust_phone, Customer_2021.birthdate, Customer_2021.cust_mail, Customer_2021.image, Customer_2021.cust_lname; ";
+                "GROUP BY Customer_2021.cust_id, Customer_2021.cust_fname, Customer_2021.cust_address, Customer_2021.cust_phone, Customer_2021.age, Customer_2021.cust_mail, Customer_2021.image, Customer_2021.cust_lname; ";
             SqlCommand cmd = new SqlCommand(selectSTR, con);
                 
             // get a reader

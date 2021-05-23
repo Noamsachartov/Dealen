@@ -99,8 +99,8 @@ export default function TabControler() {
 
     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
-      console.log("Tappppped")
+      console.log(response.notification);
+      console.log("Tappppped: " + JSON.stringify(response.notification.request.content.data.coupon))
       navigation.navigate('RatingStars',{notification: response})
 
     });

@@ -34,8 +34,10 @@ export default class RatingStars extends React.Component {
   
 componentDidMount = ()=>{
   const { navigation, route } = this.props;
-  this.setState({notidata: JSON.stringify(route.params.notification)})
-  console.log("From Rating stars: " + JSON.stringify(route.params.notification))
+  this.setState({title: JSON.stringify(route.params.notification)})
+  // JSON.stringify(response.notification.request.content.data.coupon)
+  console.log("From Rating stars: " + JSON.stringify(route.params.notification.notification.request.content.data.coupon))
+  // console.log("Coupon From Rating stars: " + route.params.notification.request.content.data.coupon)
 }
 
   render() {
@@ -58,11 +60,13 @@ componentDidMount = ()=>{
         </TouchableOpacity>
       );
     }
+    const { navigation, route } = this.props;
+
     return (
+    
       <View style={styles.MainContainer}>
-        <Text style={styles.textStyle}>איך היית החוויה שלך ב</Text>
-        {/* <Text style={styles.textStyle}>איך היית החוויה שלך ב{this.props.title}</Text> */}
-        <Text style={styles.textStyleSmall}>אנא דרג/י כדי שנלמד להכיר אותך </Text>
+        <Text style={styles.textStyle}>איך היית החוויה שלך ב{route.params.notification.notification.request.content.title}</Text>
+        {/* <Text style={styles.textStyleSmall}>אנא דרג/י כדי שנלמד להכיר אותך </Text> */}
         {/*View to hold our Stars*/}
         <View style={styles.childView}>{React_Native_Rating_Bar}</View>
         
@@ -74,13 +78,42 @@ componentDidMount = ()=>{
         <TouchableOpacity
           activeOpacity={0.7}
           style={styles.button}
-          onPress={() => alert(this.state.Default_Rating)}>
+          onPress={this.rateDeal}>
+          {/* onPress={() => alert(this.state.Default_Rating)}> */}
           {/*Clicking on button will show the rating as an alert*/}
           <Text style={{color:'whitesmoke'}}>דרג</Text>
         </TouchableOpacity>
       </View>
     );
   }
+
+rateDeal = () =>{
+  const { navigation, route } = this.props;
+
+
+  var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/DealInCust/RateDeal/"+ route.params.notification.notification.request.content.data.coupon +"/" + this.state.Default_Rating + "";
+  console.log(apiUrl)
+  fetch(apiUrl, {
+    method: 'PUT',
+    body: JSON.stringify({
+      coupon: route.params.notification.notification.request.content.data.coupon,
+      rate: this.state.Default_Rating,
+    }),
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      console.log(responseJson);    
+    })
+    .catch((error) => {
+      alert(JSON.stringify(error));
+      console.error(error);
+    });
+}
+  
 }
 
 const styles = StyleSheet.create({
