@@ -14,7 +14,8 @@ import { NavigationContainer, ThemeProvider } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ThemeConsumer } from 'react-native-elements';
 import {DealContextProvider} from './assets/Context/DealContext';
-import PushNoti from './assets/Components/PushNoti'
+import PushNoti from './assets/Components/PushNoti';
+import RatingStars from './assets/Components/RatingStars'
 const { width, height } = Dimensions.get('window');
 
 const Stack = createStackNavigator();
@@ -39,6 +40,7 @@ export default function App() {
             headerRight: () => (<Button title="דלג" color="#003f5c"  onPress={() => navigation.navigate('HomeR')} />)   })} />
             <Stack.Screen name="Bylaws" component={Bylaws}  initialParams={{ aprrove: false }}  options={{title: '',headerTintColor:'whitesmoke',headerStyle: {height: height/10.3, backgroundColor:'#003f5c'}}}/>
             <Stack.Screen name="HomeR" component={HomeR} options={{headerShown: false}} />
+            <Stack.Screen name="RatingStars" component={RatingStars} />
           </Stack.Navigator>
         </NavigationContainer>
       </DealContextProvider>

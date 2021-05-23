@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 //import all the components we are going to use.
 
-export default class Myapp extends React.Component {
+export default class RatingStars extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -30,6 +30,14 @@ export default class Myapp extends React.Component {
     this.setState({ Default_Rating: key });
     //Keeping the Rating Selected in state
   }
+
+  
+componentDidMount = ()=>{
+  const { navigation, route } = this.props;
+  this.setState({notidata: JSON.stringify(route.params.notification)})
+  console.log("From Rating stars: " + JSON.stringify(route.params.notification))
+}
+
   render() {
     let React_Native_Rating_Bar = [];
     //Array to hold the filled or empty Stars
@@ -52,7 +60,8 @@ export default class Myapp extends React.Component {
     }
     return (
       <View style={styles.MainContainer}>
-        <Text style={styles.textStyle}>איך היית החוויה שלך ב{this.props.title}</Text>
+        <Text style={styles.textStyle}>איך היית החוויה שלך ב</Text>
+        {/* <Text style={styles.textStyle}>איך היית החוויה שלך ב{this.props.title}</Text> */}
         <Text style={styles.textStyleSmall}>אנא דרג/י כדי שנלמד להכיר אותך </Text>
         {/*View to hold our Stars*/}
         <View style={styles.childView}>{React_Native_Rating_Bar}</View>
