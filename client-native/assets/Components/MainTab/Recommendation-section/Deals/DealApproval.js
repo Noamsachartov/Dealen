@@ -2,6 +2,8 @@ import * as React from 'react';
 import { StyleSheet, Text, View,TextInput,TouchableOpacity , Image,ImageBackground, Dimensions, TouchableWithoutFeedback} from 'react-native';
 import Loading from '../LoadingComp.js';
 import { DealContext } from '../../../../Context/DealContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const { width, height } = Dimensions.get('window')
 
 
@@ -22,6 +24,7 @@ export default class DealApproval extends React.Component {
 
     componentDidMount = () => {
     this._isMounted = true;
+    
     const { navigation, route } = this.props;
     this.setState({dealId: JSON.stringify(route.params.dealId),CustomerId: JSON.stringify(route.params.CustomerId), Data: route.params.Data})
     setInterval(() => {
@@ -30,32 +33,85 @@ export default class DealApproval extends React.Component {
       });
     }, 3000);
 
-    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/DealInCust"
-    fetch(apiUrl, {
-      method: 'POST',
-      body: JSON.stringify({
-        Dealinbus_id: JSON.stringify(route.params.dealId),
-        Dealincust_id: JSON.stringify(route.params.CustomerId),
-      }),
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson);
-        this.setState({coupon: JSON.stringify(responseJson)})
-        this.context.showDeal(true, this.state.Data,JSON.stringify(responseJson))
-      })
-      .catch((error) => {
-        alert(JSON.stringify(error));
-        console.error(error);
-      });
+    this.LoadToken();
+    // var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/DealInCust"
+    // console.log("The Token from the fetch: " + this.state.Token)
+    // fetch(apiUrl, {
+    //   method: 'POST',
+    //   body: JSON.stringify({
+    //     Dealinbus_id: JSON.stringify(route.params.dealId),
+    //     Dealincust_id: JSON.stringify(route.params.CustomerId),
+    //     Token: this.state.Token
+    //   }),
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+    //   .then((response) => response.json())
+    //   .then((responseJson) => {
+    //     console.log(responseJson);
+    //     this.setState({coupon: JSON.stringify(responseJson)})
+    //     this.context.showDeal(true, this.state.Data,JSON.stringify(responseJson))
+    //   })
+    //   .catch((error) => {
+    //     alert(JSON.stringify(error));
+    //     console.error(error);
+    //   });
 
 
 
     }
+
+
+    LoadToken = async () => {
+      const { navigation, route } = this.props;
+      console.log("try load")
+      try{
+          let Token = await AsyncStorage.getItem("Token");
+          if (Token !== null){
+              this.setState({Token: JSON.parse(Token)})
+
+
+
+              var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/DealInCust";
+              let tokenpar = JSON.parse(Token)
+              console.log("The Token from the fetch: " + JSON.stringify(tokenpar.Tokenum))
+              fetch(apiUrl, {
+                method: 'POST',
+                body: JSON.stringify({
+                  Dealinbus_id: JSON.stringify(route.params.dealId),
+                  Dealincust_id: JSON.stringify(route.params.CustomerId),
+                  Token: JSON.stringify(tokenpar.Tokenum)
+                }),
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                },
+              })
+                .then((response) => response.json())
+                .then((responseJson) => {
+                  console.log(responseJson);
+                  this.setState({coupon: JSON.stringify(responseJson)})
+                  this.context.showDeal(true, this.state.Data,JSON.stringify(responseJson))
+                })
+                .catch((error) => {
+                  alert(JSON.stringify(error));
+                  console.error(error);
+                });
+
+
+          }else{
+            this.setState({Token: []});
+          }
+        
+      } catch (error){
+          alert(error);
+      }
+    }
+
+
+
 
 
 

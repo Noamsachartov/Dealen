@@ -15,7 +15,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import FullDealView from './Recommendation-section/Deals/FullDealView';
 import CategoryFullView from './Recommendation-section/Category/CategoryFullView';
 import DealApproval from './Recommendation-section/Deals/DealApproval';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const { width, height } = Dimensions.get('window');
@@ -90,8 +90,9 @@ export default function TabControler() {
   const navigation = useNavigation(); 
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+    registerForPushNotificationsAsync().then(token => updatetoAct(token) );
     console.log("get Token: " + expoPushToken)
+    // saveTokenInAsyncStorage(expoPushToken)
     // This listener is fired whenever a notification is received while the app is foregrounded
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       setNotification(notification);
@@ -111,6 +112,23 @@ export default function TabControler() {
     };
   }, []);
 
+  updatetoAct = (token) =>{
+    setExpoPushToken(token)
+    saveTokenInAsyncStorage(token)
+  }
+
+  saveTokenInAsyncStorage =  async (token) => {
+    console.log("Try save the token: " + token)
+    var Token = {
+      "Tokenum":token,
+    }
+    try {
+      await AsyncStorage.setItem("Token",JSON.stringify(Token))
+      console.log("Token Saved")
+    }catch (error) {
+      alert(error)
+    }
+  }
 
   return (
       <Stack.Navigator initialRouteName="MyTabs"       
