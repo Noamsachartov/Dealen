@@ -47,7 +47,7 @@ export default function App() {
           }}>
           {/* <Text>Your expo push token: {expoPushToken}</Text> */}
           <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-            <RatingStars title={notification.request.content.title}/> 
+            {/* <RatingStars title={notification.request.content.title}/>  */}
              
             {/* <Text>Title: {notification && notification.request.content.title} </Text> */}
             {/* <Text>Body: {notification && notification.request.content.body}</Text> */}
