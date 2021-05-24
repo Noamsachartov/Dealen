@@ -33,12 +33,12 @@ class RedeemByHour extends React.Component {
             label: 'כמות מימושים שלי'
           },
           {
-            backgroundColor: colors.grey[200],
+            backgroundColor: colors.grey[300],
             data: [11, 20, 12, 29, 30, 25, 13],
             label: 'כמות מימושי מתחרים'
           }
         ],
-        labels: ['1 Aug', '2 Aug', '3 Aug', '4 Aug', '5 Aug', '6 Aug']
+        labels: [ '19 may', '20 may', '21 may', '23 may', '24 may']
       };
     
     this.options = {
@@ -97,7 +97,7 @@ class RedeemByHour extends React.Component {
     }
     }
 
-    get_results(period="w"){
+   /*  get_results(period="w"){
         var Bus_Id = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
         var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/DealCompeting/" + Bus_Id + "/" + period;
       
@@ -126,7 +126,7 @@ class RedeemByHour extends React.Component {
       componentDidMount(){
         // console.log("Component mounted")
         this.get_results();
-      }
+      }*/
 
     render(){
         return (
