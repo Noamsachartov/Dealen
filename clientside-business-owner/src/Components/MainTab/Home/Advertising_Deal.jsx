@@ -13,6 +13,7 @@ import Selectoptioncreate from './Selectoptioncreate';
 import CheckInput from './CheckInput';
 import TimePicker from 'react-time-picker';
 import Select from 'react-select';
+import { TransferWithinAStationRounded } from '@material-ui/icons';
 
 
 
@@ -248,7 +249,8 @@ getProducts=()=>{
         discount: this.state.discount,
         description: this.state.description,
         image: this.state.image,
-        pcost: this.state.pcost
+        pcost: this.state.pcost,
+        product:  this.state.selectedprods
         
       }),
       
@@ -278,6 +280,7 @@ getProducts=()=>{
 
 
   AddProduct=()=>{
+    alert( this.state.selectedprods)
 
     var is_logged = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
 
@@ -286,7 +289,7 @@ getProducts=()=>{
       method: 'POST',
       body: JSON.stringify({
         business_id: is_logged,
-        Product: this.state.selectedprods
+        product: this.state.selectedprods
       
         
       }),
