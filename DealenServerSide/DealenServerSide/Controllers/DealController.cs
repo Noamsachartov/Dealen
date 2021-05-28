@@ -243,6 +243,7 @@ namespace DealenServerSide.Controllers
             try
             {
                 int count = deal.InsertProduct();
+
                 return Created(new Uri(Request.RequestUri.AbsoluteUri + deal.Id), count);
 
             }

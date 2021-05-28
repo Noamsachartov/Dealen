@@ -168,7 +168,7 @@ public class DBServices
         StringBuilder sb = new StringBuilder();
         // use a string builder to create the dynamic string
         var f = customer.Birthdate.ToString("yyyy-MM-dd");
-        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', {4}, '{5}','{6}','{7}',{8},{9};", customer.Cust_fname, customer.Cust_address, customer.Cust_phone, customer.Cust_mail, customer.Age, customer.Password, customer.Image, customer.Cust_lname, customer.Latitude, customer.Longitude);
+        sb.AppendFormat("Values('{0}', '{1}','{2}','{3}', {4}, '{5}','{6}','{7}',{8},{9});", customer.Cust_fname, customer.Cust_address, customer.Cust_phone, customer.Cust_mail, customer.Age, customer.Password, customer.Image, customer.Cust_lname, customer.Latitude, customer.Longitude);
         String prefixc = "INSERT INTO [Customer_2021] " + "([cust_fname],[cust_address],[cust_phone],[cust_mail],[age],[password],[image],[cust_lname], latitude, longitude)";
 
         String get_id = "SELECT SCOPE_IDENTITY();";
