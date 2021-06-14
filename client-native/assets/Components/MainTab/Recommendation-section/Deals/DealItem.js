@@ -8,7 +8,7 @@ const { width, height } = Dimensions.get('window')
 
 
 const DealItem = ({ UserData, item,navigation }) => {
-    
+    console.log("asdasd")
 
     return (
         <TouchableWithoutFeedback  onPress={() => navigation.navigate('FullDealView',{categoryId: item.Cat_id, dealId: item.Id, CustomerId: UserData.Id})} >
