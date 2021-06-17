@@ -38,7 +38,7 @@ export default class Selectoptioncreate extends Component {
             console.log(this.state.selectOptions)
         return (
        
-       <div style={{ width: '20%', alignItems: "center",margin:"auto"}}>
+       <div style={{ width: '100%', alignItems: "center",margin:"auto"}}>
        
               
                    <CreatableSelect style={{ width: '40%', alignItems: "center"}}

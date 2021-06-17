@@ -1,4 +1,66 @@
-input, textarea {
+/* input, textarea {
     margin-bottom: 10px;
     size: 18px;
+  } */
+
+.former{
+  border-color: rgb(98, 100, 228);
+  border-width: 5px;
+  background-color: rgb(224, 238, 247);
+  padding-bottom: 200px;
+  
+}
+
+.titler{
+  background-color: #aec0f0;
+  padding: 15px;
+}
+
+.spacer{
+  margin: 8px;
+}
+  .background-name{
+    width: 180px;
+    margin-right: 110px; 
   }
+.background-red{
+  /* background-color: red; */
+  width: 200px;
+margin-right: 70px;  
+}
+
+.selectoption-tags{
+  width: 200px;
+}
+
+
+.selectoption-product{
+  width: 200px;
+  margin-right: 50px; 
+}
+
+
+.selectoption-Timer{
+  margin-right: 77px;
+}
+
+.selectoption-Timer2{
+  margin-right: 90px;
+}
+
+.selectoption-discount{
+  margin-right: 100px;
+}
+
+.selectoption-avg{
+  margin-right: 35px;
+}
+
+.selectoption-desc{
+  margin-right: 30px;
+  height: 100px;
+}
+
+.selectoption-img{
+  margin-right: -25px;
+}
