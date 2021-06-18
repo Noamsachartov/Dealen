@@ -4,16 +4,20 @@
   } */
 
 .former{
-  border-color: rgb(98, 100, 228);
-  border-width: 5px;
   background-color: rgb(224, 238, 247);
-  padding-bottom: 200px;
   
+}
+
+.all-div{
+  background-color:rgb(224, 238, 247);
 }
 
 .titler{
   background-color: #aec0f0;
-  padding: 15px;
+  padding-bottom: 20px;
+  margin-bottom: -32px;
+  font-family: Arial, Helvetica, sans-serif;
+  
 }
 
 .spacer{
@@ -64,3 +68,69 @@ margin-right: 70px;
 .selectoption-img{
   margin-right: -25px;
 }
+
+
+
+.preview-div{
+  display: flex;
+  width: 400px;
+  height: 150px;
+  background-color: rgb(238, 238, 238);
+  border-radius: 20px;
+  direction: rtl;
+  margin-top: 250px;
+  margin-left: 160px;
+}
+.pic-area{
+  display: flex;
+  width: 150px;
+  height: 150px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  background-color: rgb(109, 95, 95);
+  margin-right: -10px;
+  margin-top: -8px;
+}
+
+.missing-pic{
+  color: aliceblue;
+  margin: 35px;
+}
+
+.title-prev{
+  font-size: 20px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  
+  max-width: 250px;
+}
+.desc-prev{
+  font-family: Arial, Helvetica, sans-serif;
+  max-width: 250px;
+  direction: rtl;
+  font-size: 18px;
+  margin-top: -12px;
+}
+
+.percent-prev{
+  position:fixed;
+  left: 180px;
+  top: 428px;
+}
+
+.percent-font{
+  font-size: 19px;
+  font-weight: bold;
+  color: rgb(24, 179, 37);
+}
+
+.percent-icon{
+  color: rgb(24, 179, 37);
+}
+
+.time-font{
+  font-size: 19px;
+  font-weight: bold;
+  color: rgb(223, 134, 18);
+}
+

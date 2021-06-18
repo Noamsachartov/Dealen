@@ -15,10 +15,12 @@ import TimePicker from 'react-time-picker';
 import Select from 'react-select';
 import { TransferWithinAStationRounded } from '@material-ui/icons';
 
+// import { FaPercent } from "react-icons/Fa";
 
-
-
-
+// import { FaPercent } from 'react-icons/fa';
+import { FaPercent } from 'react-icons/fa';
+import {GiSandsOfTime} from 'react-icons/gi'
+import {AiFillPicture} from 'react-icons/ai'
 
 
 
@@ -497,141 +499,154 @@ handleChangecats =(selectedOptions) => {
 //           </form>
 
 
-
-
-
-// <div className="d-flex flex-row justify-content-around  ">
-// <div className="p-2 "><label className="">  </label></div>
-// <div className="p-2  w-800">
-  
-  <div>
-<form className="former" onSubmit={this.mySubmitHandler}>
+<div>
 
 <div className="titler">
-  <h1>פרסום מבצע </h1>
-</div>
-    <div className="d-flex flex-row justify-content-center spacer">
-      <div className="p-2 background-name"><input
-            type='text'
-            placeholder="שם מבצע"
-            onChange={text => this.setState({deal_name: text.target.value})}
-          />
+    <h1>פרסום מבצע </h1>
+  </div>
+<div className="d-flex flex-row justify-content-between  all-div  ">
+  <div className="p-2">
+    <div className="preview-div d-flex flex-column">
+      <div className="inside-row d-flex flex-row justify-content-start">
+        <div className="p-2 "><label className="pic-area"><AiFillPicture size={70} className="missing-pic"/> </label></div>
+
+        <div className=" d-flex flex-column">
+          <div className="title-prev d-flex flex-row justify-content-start">
+            <div className="p-2 "><label className="">{this.state.deal_name}</label></div>
+          </div>
+          <div className="desc-prev d-flex flex-row justify-content-start">
+            <div className="p-2 "><label className="">{this.state.description}</label></div>
+          </div>
+          <div className="percent-prev d-flex flex-row ">
+            <div className="p-2 "><label className="percent-font"><FaPercent className="percent-icon"/>{this.state.discount}</label></div>
+            <div className="p-2 "><label className="time-font"><GiSandsOfTime className=""/>30</label></div>
+          </div>
+        </div>
       </div>
-      <div className="p-2"><label className=""> : שם המבצע </label></div>
     </div>
+  </div>
 
+<div className="p-2 flex-fill ">
+  <div>
+      <form className="former" onSubmit={this.mySubmitHandler}>
 
-    <div className="d-flex flex-row justify-content-center spacer ">
-      <div className="p-1  background-red">
-        <Selectoptions className="selecionopt" data={this.state.Categories} onChange= {this.handleChangecats} />
+  {/* <div className="titler">
+    <h1>פרסום מבצע </h1>
+  </div> */}
+      <div className="d-flex flex-row justify-content-center spacer">
+        <div className="p-2 background-name"><input
+              type='text'
+              placeholder="שם מבצע"
+              onChange={text => this.setState({deal_name: text.target.value})}
+            />
+        </div>
+        <div className="p-2"><label className=""> : שם המבצע </label></div>
       </div>
-      <div className="p-2 "><label className=""> : בחר קטגוריות </label></div>
-    </div>
 
-
-    <div className="d-flex flex-row justify-content-center spacer ">
-      <div className="p-1  selectoption-tags">
-      <Selectoptions data={this.state.Tags} onChange= {this.handleChangetags} />
+      <div className="d-flex flex-row justify-content-center spacer">
+        <div className="p-1  selectoption-desc ">
+            <textarea
+              className="input-desc "
+              type='textarea'
+              onChange={text => this.setState({description: text.target.value})}
+              cols="30" rows={3} placeholder="תיאור מבצע"
+              required minLength={5} maxLength={50}
+            />
+        </div>
+          <div className="p-2 "><label className=""> : תיאור מבצע </label></div>
       </div>
-      <div className="p-2 "><label className=""> : בחר תגיות לחיפוש מבצע </label></div>
-    </div>
 
-
-    <div className="d-flex flex-row justify-content-center spacer">
-      <div className="p-1  selectoption-product ">
-        <Selectoptioncreate data={this.state.Products} onChange= {this.handleChangetproducts} onInputChange={this.handleChangetinputproducts}/>
+      <div className="d-flex flex-row justify-content-center spacer ">
+        <div className="p-1  background-red">
+          <Selectoptions className="selecionopt" data={this.state.Categories} onChange= {this.handleChangecats} />
+        </div>
+        <div className="p-2 "><label className=""> : בחר קטגוריות </label></div>
       </div>
-        <div className="p-2 "><label className=""> : בחר מוצר למבצע </label></div>
-    </div>
 
 
-    <div className="d-flex flex-row justify-content-center spacer">
-      <div className="p-1  selectoption-Timer ">
+      <div className="d-flex flex-row justify-content-center spacer ">
+        <div className="p-1  selectoption-tags">
+        <Selectoptions data={this.state.Tags} onChange= {this.handleChangetags} />
+        </div>
+        <div className="p-2 "><label className=""> : בחר תגיות לחיפוש מבצע </label></div>
+      </div>
+
+
+      <div className="d-flex flex-row justify-content-center spacer">
+        <div className="p-1  selectoption-product ">
+          <Selectoptioncreate data={this.state.Products} onChange= {this.handleChangetproducts} onInputChange={this.handleChangetinputproducts}/>
+        </div>
+          <div className="p-2 "><label className=""> : בחר מוצר למבצע </label></div>
+      </div>
+
+
+      <div className="d-flex flex-row justify-content-center spacer">
+        <div className="p-1  selectoption-Timer ">
+          <TimePicker
+              onChange={time=>this.setState({start_time: time})}
+              value={ this.state.start_time}
+            />
+        </div>
+          <div className="p-2 "><label className=""> : שעת תחילת מבצע </label></div>
+      </div>
+
+
+      <div className="d-flex flex-row justify-content-center spacer">
+        <div className="p-1  selectoption-Timer2 ">
         <TimePicker
-             onChange={time=>this.setState({start_time: time})}
-             value={ this.state.start_time}
-           />
+              onChange={time1=>this.setState({end_time: time1})}
+              value={ this.state.end_time}
+            />
+        </div>
+          <div className="p-2 "><label className=""> : שעת סיום מבצע </label></div>
       </div>
-        <div className="p-2 "><label className=""> : שעת תחילת מבצע </label></div>
-    </div>
 
-
-    <div className="d-flex flex-row justify-content-center spacer">
-      <div className="p-1  selectoption-Timer2 ">
-      <TimePicker
-             onChange={time1=>this.setState({end_time: time1})}
-             value={ this.state.end_time}
-           />
+      <div className="d-flex flex-row justify-content-center spacer">
+        <div className="p-1  selectoption-discount ">
+        <input
+              type='number'
+              placeholder="אחוז מבצע"
+              onChange={text => this.setState({discount: text.target.value})}
+            />
+        </div>
+          <div className="p-2 "><label className=""> : אחוז מבצע </label></div>
       </div>
-        <div className="p-2 "><label className=""> : שעת סיום מבצע </label></div>
-    </div>
 
-    <div className="d-flex flex-row justify-content-center spacer">
-      <div className="p-1  selectoption-discount ">
-      <input
-             type='number'
-             placeholder="אחוז מבצע"
-             onChange={text => this.setState({discount: text.target.value})}
-           />
+      <div className="d-flex flex-row justify-content-center spacer">
+        <div className="p-1  selectoption-avg ">
+        <input
+              type='number'
+              onChange={text => this.setState({pcost: text.target.value})}
+              cols="40" rows="20"           
+              placeholder="עלות ממוצאת"  
+              required minLength={5} maxLength={50}
+            />
+        </div>
+          <div className="p-2 "><label className=""> : עלות ממוצעת למוצר </label></div>
       </div>
-        <div className="p-2 "><label className=""> : אחוז מבצע </label></div>
-    </div>
 
-    <div className="d-flex flex-row justify-content-center spacer">
-      <div className="p-1  selectoption-avg ">
-      <input
-            type='number'
-             onChange={text => this.setState({pcost: text.target.value})}
-             cols="40" rows="20"           
-             placeholder="עלות ממוצאת"  
-             required minLength={5} maxLength={50}
-           />
+
+
+
+
+      <div className="d-flex flex-row justify-content-center spacer">
+        <div className="p-1  selectoption-img ">
+        <input type="file" name="myImage" onChange={this.onImageChange} />
+        </div>
+          <div className="p-2 "><label className=""> :  העלאת תמונה </label></div>
       </div>
-        <div className="p-2 "><label className=""> : עלות ממוצעת למוצר </label></div>
-    </div>
 
+      <img src={this.state.image} />
 
-    <div className="d-flex flex-row justify-content-center spacer">
-      <div className="p-1  selectoption-desc ">
-          <textarea
-             className="input-desc "
-             type='textarea'
-             onChange={text => this.setState({description: text.target.value})}
-             cols="30" rows={3} placeholder="תיאור מבצע"
-             required minLength={5} maxLength={50}
-           />
-      </div>
-        <div className="p-2 "><label className=""> : תיאור מבצע </label></div>
-    </div>
-
-
-    <div className="d-flex flex-row justify-content-center spacer">
-      <div className="p-1  selectoption-img ">
-       <input type="file" name="myImage" onChange={this.onImageChange} />
-      </div>
-        <div className="p-2 "><label className=""> :  העלאת תמונה </label></div>
-    </div>
-
-    <img src={this.state.image} />
-
-    
-
-
-    
-
-    
-                
-        
-<input
-  type='submit'
-/>
-</form>
+  <input
+    type='submit'
+  />
+  </form>
+  </div>
 </div>
 
-
-/* </div>
-<div className="p-2 "><label className=""> </label></div>
-</div> */
+</div> 
+</div>
 
         );
       }
