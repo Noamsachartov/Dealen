@@ -701,11 +701,10 @@ public class DBServices
         try
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
-            String selectSTR = "SELECT Customer_2021.cust_id,Customer_2021.cust_fname, Customer_2021.cust_lname,Customer_2021.cust_address, Customer_2021.cust_mail, Customer_2021.cust_phone,  " +
-                "case when CONVERT(int, SUM(dealInbus_2021.discount * dealInbus_2021.Pcost))<>NULL then CONVERT(int, SUM(dealInbus_2021.discount * dealInbus_2021.Pcost)) else 0 end  AS Totalsave, " +
+            String selectSTR = "SELECT Customer_2021.cust_id,Customer_2021.cust_fname, Customer_2021.cust_lname,Customer_2021.cust_address, Customer_2021.cust_mail, Customer_2021.cust_phone, CONVERT(int, SUM((dealInbus_2021.discount/100 ) * dealInbus_2021.Pcost)) as Totalsave, " +
                 "Customer_2021.age,  Customer_2021.image " +
-                "FROM Customer_2021 left JOIN dealIncust_2021 ON Customer_2021.cust_id = dealIncust_2021.dealincust_id left JOIN dealInbus_2021 ON dealIncust_2021.dealinbus_id = dealInbus_2021.id WHERE (Customer_2021.cust_id = "+id+")  " +
-                "GROUP BY Customer_2021.cust_id, Customer_2021.cust_fname, Customer_2021.cust_address, Customer_2021.cust_phone, Customer_2021.age, Customer_2021.cust_mail, Customer_2021.image, Customer_2021.cust_lname; ";
+                "FROM Customer_2021 left JOIN dealIncust_2021 ON Customer_2021.cust_id = dealIncust_2021.dealincust_id left JOIN dealInbus_2021 ON dealIncust_2021.dealinbus_id = dealInbus_2021.id WHERE(Customer_2021.cust_id = "+id+") " +
+                "GROUP BY Customer_2021.cust_id, Customer_2021.cust_fname, Customer_2021.cust_address, Customer_2021.cust_phone, Customer_2021.age, Customer_2021.cust_mail, Customer_2021.image, Customer_2021.cust_lname ";
             SqlCommand cmd = new SqlCommand(selectSTR, con);
                 
             // get a reader
@@ -903,7 +902,7 @@ public class DBServices
                 d.Endtime = (TimeSpan)dr["endtime"];
                 d.Image = (string)dr["image"];
                 d.Description = (string)dr["description"];
-                d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
+                d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]));
                 b.Latitude = Convert.ToDouble(dr["latitude"]);
                 b.Longitude = Convert.ToDouble(dr["longitude"]);
                 d.Bus_rest = b;
@@ -974,7 +973,7 @@ public class DBServices
                 d.Endtime = (TimeSpan)dr["endtime"];
                 d.Image = (string)dr["image"];
                 d.Description = (string)dr["description"];
-                d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
+                d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) );
 
                 DateTime now = DateTime.Now;
 
@@ -1043,7 +1042,7 @@ public class DBServices
                 d.Endtime = (TimeSpan)dr["endtime"];
                 d.Image = (string)dr["image"];
                 d.Description = (string)dr["description"];
-                d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
+                d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]));
                 b.Latitude = Convert.ToDouble(dr["latitude"]);
                 b.Longitude = Convert.ToDouble(dr["longitude"]);
                 d.Bus_rest = b;
@@ -1115,7 +1114,7 @@ public class DBServices
                 d.Endtime = (TimeSpan)dr["endtime"];
                 d.Image = (string)dr["image"];
                 d.Description = (string)dr["description"];
-                d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
+                d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]));
 
                 DateTime now = DateTime.Now;
 
@@ -1182,7 +1181,7 @@ public class DBServices
                 d.Endtime = (TimeSpan)dr["endtime"];
                 d.Image = (string)dr["image"];
                 d.Description = (string)dr["description"];
-                d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
+                d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]));
                 d.Name = (string)dr["deal_name"];
                 d.Coupon = Convert.ToInt32(dr["coupon"]);
                 //string starttimeString24Hour = Convert.ToDateTime(context.Request.QueryString["starttime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
@@ -1268,7 +1267,7 @@ public class DBServices
                 d.Endtime = (TimeSpan)dr["endtime"];
                 d.Image = (string)dr["image"];
                 d.Description = (string)dr["description"];
-                d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
+                d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]));
 
                 DateTime now = DateTime.Now;
 
@@ -1384,7 +1383,7 @@ public class DBServices
                 d.Endtime = (TimeSpan)dr["endtime"];
                 d.Image = (string)dr["image"];
                 d.Description = (string)dr["description"];
-                d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
+                d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) );
 
                 DateTime now = DateTime.Now;
 
@@ -1453,7 +1452,7 @@ public class DBServices
     //        d.Endtime = (TimeSpan)dr["endtime"];
     //        d.Image = (string)dr["image"];
     //        d.Description = (string)dr["description"];
-    //        d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
+    //        d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) );
     //        d.Name = (string)dr["deal_name"];
     //        d.Coupon = Convert.ToInt32(dr["coupon"]);
     //        //string starttimeString24Hour = Convert.ToDateTime(context.Request.QueryString["starttime"]).ToString("HH:mm", CultureInfo.CurrentCulture);
@@ -1642,7 +1641,7 @@ public class DBServices
                 d.Endtime = (TimeSpan)dr["endtime"];
                 d.Image = (string)dr["image"];
                 d.Description = (string)dr["description"];
-                d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) * 100);
+                d.Discount = Convert.ToInt32(Convert.ToDouble(dr["discount"]) );
 
                 DateTime now = DateTime.Now;
 
@@ -2139,7 +2138,7 @@ public class DBServices
                     dis = "";
 
                 StringBuilder sb2 = new StringBuilder();
-                sb2.AppendFormat("select " + max_param + ", round(('6' * (COUNT( coupon) * 100 / (select COUNT(" + dis + " coupon) from DataOfCust_2021 where Id_Dealincust = '" + cust_id + "' )) / 100.0),0,0) AS SIT " +
+                sb2.AppendFormat("select " + max_param + ", round(('6' * (COUNT( coupon)  / (select COUNT(" + dis + " coupon) from DataOfCust_2021 where Id_Dealincust = '" + cust_id + "' )) / 100.0),0,0) AS SIT " +
                 "from(select "+dis+" (coupon), "+ max_param + " from DataOfCust_2021 where Id_Dealincust = '53') AS D "+
                 "group by " + max_param + " order by count(coupon) DESC");
 
@@ -2197,7 +2196,7 @@ public class DBServices
                     d.Endtime = (TimeSpan)dr2["endtime"];
                     d.Image = (string)dr2["image"];
                     d.Description = (string)dr2["description"];
-                    d.Discount = Convert.ToInt32(Convert.ToDouble(dr2["discount"]) * 100);
+                    d.Discount = Convert.ToInt32(Convert.ToDouble(dr2["discount"]));
                     d.Name = (string)dr2["deal_name"];
                     DateTime now = DateTime.Now;
                     DateTime end = DateTime.Now + d.Endtime;
