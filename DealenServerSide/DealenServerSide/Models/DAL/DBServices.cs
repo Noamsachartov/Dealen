@@ -868,7 +868,63 @@ public class DBServices
 
     }
 
+    public List<Businesses> getRes(int id)
+    {
+        SqlConnection con = null;
+        List<Businesses> blist = new List<Businesses>();
 
+        string selectSTR = null;
+        try
+        {
+            con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("SELECT B.bid, B.bname, B.baddress, B.bphone, B.opentime, B.closetime, B.bimage, B.bdescription" +
+                " FROM Businesses_2021 as b " +
+                " WHERE b.bid="+id);
+            selectSTR = sb.ToString();
+
+
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            // get a reader
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+            while (dr.Read())
+            {   // Read till the end of the data into a row
+                Businesses b = new Businesses();
+
+
+                b.Bid = Convert.ToInt32(dr["bid"]);
+                b.Bname = (string)dr["bname"];
+                b.Baddress = (string)dr["baddress"];
+                b.Bphone = (string)dr["bphone"];
+                b.Opentime = (TimeSpan)dr["opentime"];
+                b.Closetime = (TimeSpan)dr["closetime"];
+                b.Bimage = (string)dr["bimage"];
+                b.Bdescription = (string)dr["bdescription"];
+
+                blist.Add(b);
+
+            }
+
+            return blist;
+        }
+        catch (Exception ex)
+        {
+            // write to log
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+
+        }
+
+    }
     //קבלת המבצעים-Dealen
     public List<Deal> getDeals()
     {
@@ -882,7 +938,7 @@ public class DBServices
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat(" SELECT dealInbus_2021.id,dealInbus_2021.business_id, Businesses_2021.bname, dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount, Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name, Businesses_2021.latitude, Businesses_2021.longitude FROM Businesses_2021 INNER JOIN dealInbus_2021 ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id ");
+            sb.AppendFormat(" SELECT dealInbus_2021.id,dealInbus_2021.business_id, Businesses_2021.bname, dealInbus_2021.startime, dealInbus_2021.endtime, dealInbus_2021.discount, Deal_2021.image, Deal_2021.description, Deal_2021.name AS deal_name, Businesses_2021.latitude, Businesses_2021.longitude FROM Businesses_2021 INNER JOIN dealInbus_2021 ON Businesses_2021.bid = dealInbus_2021.business_id INNER JOIN Deal_2021 ON dealInbus_2021.deal_id = Deal_2021.id WHERE dealInbus_2021.date=CONVERT(date, GETDATE()) and CONVERT(time,GETDATE()) BETWEEN dealInbus_2021.startime and dealInbus_2021.endtime ");
                 selectSTR = sb.ToString(); 
         
 
@@ -1650,7 +1706,6 @@ public class DBServices
 
                 TimeSpan TimeToEndDeal = end - now;
                 d.MinutesToend = Convert.ToInt32(TimeToEndDeal.TotalMinutes);
-                d.MinutesToend = Convert.ToInt32(TimeToEndDeal.TotalMinutes);
                 dlist.Add(d);
 
             }
@@ -2140,7 +2195,7 @@ public class DBServices
 
                 StringBuilder sb2 = new StringBuilder();
                 sb2.AppendFormat("select " + max_param + ", round(('6' * (COUNT( coupon) * 100 / (select COUNT(" + dis + " coupon) from DataOfCust_2021 where Id_Dealincust = '" + cust_id + "' )) / 100.0),0,0) AS SIT " +
-                "from(select "+dis+" (coupon), "+ max_param + " from DataOfCust_2021 where Id_Dealincust = '53') AS D "+
+                "from(select "+dis+" (coupon), "+ max_param + " from DataOfCust_2021 where Id_Dealincust = "+cust_id+") AS D " +
                 "group by " + max_param + " order by count(coupon) DESC");
 
                 selectSTR = sb2.ToString();
@@ -2180,7 +2235,7 @@ public class DBServices
                 "AND b.btype =  '" + matrix[i, index_type]+ "' " +
                 "AND(SELECT geography::Point(" + latitude + ", " + longitude + ", 4326).STDistance(geography::Point(b.latitude, b.longitude, 4326))) < (select max from Distance_2021 where dist_id = '" + matrix[i, index_dist] + "') " +
                 //"AND(SELECT geography::Point(" + latitude + ", " + longitude + ", 4326).STDistance(geography::Point(b.latitude, b.longitude, 4326))) between(select min from Distance_2021 where dist_id = '" + matrix[i, index_dist] + "') AND(select max from Distance_2021 where dist_id = '" + matrix[i, index_dist] + "') " +
-                "--AND db.date = CONVERT(date, GETDATE()) and CONVERT(time, GETDATE()) BETWEEN db.startime and db.endtime " +
+                "AND db.date = CONVERT(date, GETDATE()) and CONVERT(time, GETDATE()) BETWEEN db.startime and db.endtime " +
                 "order by discount DESC");
 
                 selectSTR = sb3.ToString();

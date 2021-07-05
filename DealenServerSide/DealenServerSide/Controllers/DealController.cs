@@ -228,7 +228,7 @@ namespace DealenServerSide.Controllers
                 int count = deal.Insert();
                 return Created(new Uri(Request.RequestUri.AbsoluteUri + deal.Id), count);
 
-            }
+            }  
             catch (Exception e)
             {
 

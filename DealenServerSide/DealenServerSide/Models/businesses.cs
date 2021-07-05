@@ -77,6 +77,13 @@ namespace DealenServerSide.Models
             return bus;
         }
 
+        public List<Businesses> ReadRest(int id)
+        {
+            DBServices dbs = new DBServices();
+            List<Businesses> bus = dbs.getRes(id);
+            return bus;
+        }
+
 
 
     }
