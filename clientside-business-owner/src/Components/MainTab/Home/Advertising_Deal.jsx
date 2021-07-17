@@ -13,7 +13,7 @@ import Selectoptioncreate from './Selectoptioncreate';
 import CheckInput from './CheckInput';
 import TimePicker from 'react-time-picker';
 import Select from 'react-select';
-import { TransferWithinAStationRounded } from '@material-ui/icons';
+import { FreeBreakfastOutlined, TransferWithinAStationRounded } from '@material-ui/icons';
 
 // import { FaPercent } from "react-icons/Fa";
 
@@ -49,7 +49,9 @@ export default class MyForm extends React.Component {
         iscreatedprod:0
      };
      //this.onImageChange = this.onImageChange.bind(this);
-     this.apiUrl = 'http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal';
+    
+    this.apiUrl = 'http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal';
+    //  this.apiUrl = 'http://localhost:57075/api/Deal';
 
 
   }
@@ -154,13 +156,15 @@ getProducts=()=>{
         console.log("in post img function");
 
         //this.apiUrl = `http://localhost:54976/api/User/uploadedFiles`;
-
-        this.apiUrl = `http://localhost:57075/api/UploadedFiles/uploadedFiles`;
+        // http://localhost:57075/api/UploadedFiles/uploadedFiles
+         this.apiUrl = `http://proj.ruppin.ac.il/igroup49/test2/tar1/api/UploadedFiles/uploadedFiles`;
+        // this.apiUrl = `http://localhost:57075/api/UploadedFiles/uploadedFiles`;
 
         fetch(this.apiUrl,
             {
                 method: 'POST',
                 body: data,
+                // redirect: 'follow'
                 // headers: new Headers({
                 //   // 'Content-Type': 'application/json; charset=UTF-8',
                 //   // 'Accept': 'application/json; charset=UTF-8'
@@ -182,10 +186,13 @@ getProducts=()=>{
             })
             .then(
                 (result) => {
+                    debugger;
                     console.log("fetch btnFetchuploadedFile= ", result);
                     let imgNameInServer = result.split('\\').pop();
                     console.log(imgNameInServer);
-                    this.setState({ urlimg: result, selectedFile: imgNameInServer })
+                    var uri = result.split("\\")
+                    var new_result = "http://proj.ruppin.ac.il/igroup49/test2/tar1/uploadedFiles/" + uri[uri.length-1]
+                    this.setState({ urlimg: new_result, selectedFile: imgNameInServer })
 
                 },
                 (error) => {
@@ -210,6 +217,8 @@ getProducts=()=>{
     console.log(this.state.selectedcats);
     // const TagsToDB = this.state.Tags.filter(item=>item.checked).map((item)=>item.Id);
     console.log(this.state.selectedtags);
+    console.log("---------");
+    console.log(this.state.urlimg);
 
 
 
@@ -232,7 +241,7 @@ getProducts=()=>{
       endtime: this.state.end_time,
       discount: this.state.discount,
       description: this.state.description,
-      image: this.state.image,
+      image: this.state.urlimg,
       pcost: this.state.pcost
 
     })
@@ -250,7 +259,7 @@ getProducts=()=>{
         endtime: this.state.end_time,
         discount: this.state.discount,
         description: this.state.description,
-        image: this.state.image,
+        image: this.state.urlimg,
         pcost: this.state.pcost,
         product:  this.state.selectedprods
         
@@ -282,7 +291,7 @@ getProducts=()=>{
 
 
   AddProduct=()=>{
-    alert( this.state.selectedprods)
+    // alert( this.state.selectedprods)
 
     var is_logged = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
 
