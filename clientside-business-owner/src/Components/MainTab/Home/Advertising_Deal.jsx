@@ -186,7 +186,7 @@ getProducts=()=>{
             })
             .then(
                 (result) => {
-                    debugger;
+                    
                     console.log("fetch btnFetchuploadedFile= ", result);
                     let imgNameInServer = result.split('\\').pop();
                     console.log(imgNameInServer);
