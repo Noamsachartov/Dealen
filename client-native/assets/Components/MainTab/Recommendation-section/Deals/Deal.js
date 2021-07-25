@@ -24,11 +24,11 @@ export default class Deal extends React.Component {
         console.log("Location: from api", location)
         console.log("User data from api: " ,this.state.UserData.Id);
         // New algorithem call
-        //var apiUrl = `http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/RecommendDeal/${this.state.UserData.Id}/${location.latitude}/${location.longitude}/`
+        var apiUrl = `http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/RecommendDeal/${this.state.UserData.Id}/${location.latitude}/${location.longitude}/`
         //var apiUrl = `http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/RecommendDeal/53/${location.latitude}/${location.longitude}/`
         console.log("algorithem: ", apiUrl)
         //Old api call 
-        var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal";
+        //var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal";
         // var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/Active";
         return fetch(apiUrl)
         .then(response => response.json())
