@@ -2098,6 +2098,7 @@ public class DBServices
     public List<Deal> getRecommendSDeals(int cust_id, float latitude, float longitude)
     {
         List<Deal> dlist = new List<Deal>();
+        string id_list;
         SqlConnection con = null;
 
         var prametre = new List<string>() { "Type_Bus" , "Id_Cat", "Dist_id",  };
@@ -2107,12 +2108,26 @@ public class DBServices
         try
         {
             con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+            SqlCommand cmdproc = new SqlCommand("SP_Find_Similar_User", con);
+            cmdproc.CommandType = CommandType.StoredProcedure;
+            // cmdproc.Parameters.Add("@Cust_Id", SqlDbType.Int).Value = cust_id;
+            cmdproc.Parameters.AddWithValue("Cust_Id", cust_id);
+            //SqlDataReader dr_id = cmdproc.ExecuteReader();
+            id_list = (string)cmdproc.ExecuteScalar();
+
+            //while (dr_id.Read())
+            //{
+            //    id_list.Add((string)dr_id["cust_id"]);
+            //}
+
+            // dr_id.Close();
+
             foreach (string p in prametre)
             {
                 StringBuilder sb = new StringBuilder();
                 sb.AppendFormat("select top 1 count (distinct coupon) as num " +
                 "from DataOfCust_2021 " +
-                "where Id_Dealincust = '"+cust_id+"' "+
+                "where Id_Dealincust in ( "+id_list+" )"+
                 "group by " + p + " order by count(coupon) DESC; ");
 
                 selectSTR = sb.ToString();
@@ -2139,7 +2154,7 @@ public class DBServices
 
                 StringBuilder sb2 = new StringBuilder();
                 sb2.AppendFormat("select " + max_param + ", round(('6' * (COUNT( coupon)  / (select COUNT(" + dis + " coupon) from DataOfCust_2021 where Id_Dealincust = '" + cust_id + "' )) / 100.0),0,0) AS SIT " +
-                "from(select "+dis+" (coupon), "+ max_param + " from DataOfCust_2021 where Id_Dealincust = '53') AS D "+
+                "from(select "+dis+" (coupon), "+ max_param + " from DataOfCust_2021 where Id_Dealincust = '"+cust_id+"') AS D " +
                 "group by " + max_param + " order by count(coupon) DESC");
 
                 selectSTR = sb2.ToString();
@@ -2179,7 +2194,7 @@ public class DBServices
                 "AND b.btype =  '" + matrix[i, index_type]+ "' " +
                 "AND(SELECT geography::Point(" + latitude + ", " + longitude + ", 4326).STDistance(geography::Point(b.latitude, b.longitude, 4326))) < (select max from Distance_2021 where dist_id = '" + matrix[i, index_dist] + "') " +
                 //"AND(SELECT geography::Point(" + latitude + ", " + longitude + ", 4326).STDistance(geography::Point(b.latitude, b.longitude, 4326))) between(select min from Distance_2021 where dist_id = '" + matrix[i, index_dist] + "') AND(select max from Distance_2021 where dist_id = '" + matrix[i, index_dist] + "') " +
-                "--AND db.date = CONVERT(date, GETDATE()) and CONVERT(time, GETDATE()) BETWEEN db.startime and db.endtime " +
+                "AND db.date = CONVERT(date, GETDATE()) and CONVERT(time, GETDATE()) BETWEEN db.startime and db.endtime " +
                 "order by discount DESC");
 
                 selectSTR = sb3.ToString();
@@ -2204,8 +2219,51 @@ public class DBServices
                     d.MinutesToend = Convert.ToInt32(TimeToEndDeal.TotalMinutes);
                     if (!dlist.Where(p => p.Id == d.Id).Any())
                         dlist.Add(d);
+
                 }
+
                 dr2.Close();
+
+
+                if (dlist.Count<6)
+                {
+                    StringBuilder sb4 = new StringBuilder();
+
+                    sb4.AppendFormat("SELECT db.id, d.name AS deal_name, db.business_id, b.bname, db.startime, db.endtime, db.discount, " +
+                        "round ((SELECT geography::Point(" + latitude + ", " + longitude + ", 4326).STDistance(geography::Point(b.latitude, b.longitude, 4326))),0) AS Distance, " +
+                        "c.name AS catgeory_name, cd.cat_id as cat_id, d.image, d.description " +
+                        "FROM Businesses_2021 AS b INNER JOIN dealInbus_2021 AS db ON b.bid = db.business_id " +
+                        "INNER JOIN Deal_2021 AS d ON db.deal_id = d.id INNER JOIN CatInDeal_2021 AS cd ON cd.Deal_id = d.Id " +
+                        "INNER JOIN Category_2021 AS c ON cd.Cat_id = c.id " +
+                    " WHERE db.date=CONVERT(date, GETDATE()) and CONVERT(time, GETDATE()) BETWEEN db.startime and db.endtime");
+                    selectSTR = sb4.ToString();
+
+                    SqlCommand cmd1 = new SqlCommand(selectSTR, con);
+                    SqlDataReader dr4 = cmd1.ExecuteReader();
+                    while (dr4.Read())
+                    {
+                        Deal d = new Deal();
+                        d.Id = Convert.ToInt32(dr4["id"]);
+                        d.Business_Name = (string)dr4["bname"];
+                        d.Business_id = Convert.ToInt32(dr4["business_id"]);
+                        d.Category = (string)dr4["catgeory_name"];
+                        d.Startime = (TimeSpan)dr4["startime"];
+                        d.Endtime = (TimeSpan)dr4["endtime"];
+                        d.Image = (string)dr4["image"];
+                        d.Description = (string)dr4["description"];
+                        d.Discount = Convert.ToInt32(Convert.ToDouble(dr4["discount"]));
+                        d.Name = (string)dr4["deal_name"];
+                        DateTime now = DateTime.Now;
+                        DateTime end = DateTime.Now + d.Endtime;
+                        TimeSpan TimeToEndDeal = end - now;
+                        d.MinutesToend = Convert.ToInt32(TimeToEndDeal.TotalMinutes);
+                        if (!dlist.Where(p => p.Id == d.Id).Any())
+                            dlist.Add(d);
+
+                    }
+                    dr4.Close();
+
+                }
 
             }
 
@@ -2240,7 +2298,7 @@ public class DBServices
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat(" select  count(distinct dealInbus_id) AS 'Count deal', count(distinct coupon) / count(distinct dealInbus_id) AS  'Avg Redeem deal', "+
+            sb.AppendFormat(" select count(distinct dealInbus_id) AS 'Count deal', count(distinct coupon) / count(distinct dealInbus_id) AS  'Avg Redeem deal', "+
                            " round(SUM(Rate) * 1.0 / COUNT(dealInbus_id), 1) AS 'Avg Rate', "+
                            " (Select COUNT(Id_Dealincust)  from(Select count(Id_Dealincust) as c, Id_Dealincust "+
                            " from DataOfCust_2021 "+
@@ -2249,8 +2307,8 @@ public class DBServices
                            " ( select top 1 Deal.name from dealInbus_2021 AS B LEFT JOIN DataOfCust_2021 as D ON B.deal_id = D.dealInbus_id " +
                            " join Deal_2021 AS Deal ON deal.Id = b.deal_id where d.dealInbus_id is NULL AND B.business_id ="+ Bus_Id +
                            " order by b.deal_id DESC ) AS 'Non Redeemed Deal' " +
-                           " from DataOfCust_2021 "+
-                           "  where Id_Business = "+ Bus_Id);
+                           " from dealInbus_2021 AS B LEFT JOIN DataOfCust_2021 as D ON B.deal_id = D.dealInbus_id " +
+                           "  where Id_Business = "+ Bus_Id + "AND MONTH(B.date) = MONTH(GETDATE())");
 
             selectSTR = sb.ToString();
 
