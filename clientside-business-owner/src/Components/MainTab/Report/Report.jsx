@@ -5,7 +5,7 @@ export default class Report extends Component {
     render() {
         return (
             <div>
-                <h3>Report</h3>
+                <h3></h3>
                 <BlogOverview />
             </div>
         )

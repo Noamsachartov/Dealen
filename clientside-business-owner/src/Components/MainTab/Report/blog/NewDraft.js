@@ -141,7 +141,7 @@ UsersOverview.defaultProps = {
         label: "חודש נוכחי",
         fill: "start",
         data: [
-          500,
+   /**       500,
           800,
           320,
           180,
@@ -170,7 +170,7 @@ UsersOverview.defaultProps = {
           3400,
           2910,
           3100,
-          4250
+          4250 */
         ],
         backgroundColor: "rgba(0,123,255,0.1)",
         borderColor: "rgba(0,123,255,1)",
@@ -184,7 +184,7 @@ UsersOverview.defaultProps = {
         label: "חודש קודם",
         fill: "start",
         data: [
-          380, 
+    /*      380, 
           430, 
           120,
           230,
@@ -213,7 +213,7 @@ UsersOverview.defaultProps = {
           630,
           720,
           780,
-          1200
+          1200 */
         ],
         backgroundColor: "rgba(255,65,105,0.1)",
         borderColor: "rgba(255,65,105,1)",

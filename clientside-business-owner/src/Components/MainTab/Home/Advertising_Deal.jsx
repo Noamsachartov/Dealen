@@ -526,7 +526,7 @@ handleChangecats =(selectedOptions) => {
           <div className="desc-prev d-flex flex-row justify-content-start">
             <div className="p-2 "><label className="">{this.state.description}</label></div>
           </div>
-          <div className="percent-prev d-flex flex-row ">
+          <div style={{marginTop:'50px'}} className="percent-prev d-flex flex-row ">
             <div className="p-2 "><label className="percent-font"><FaPercent className="percent-icon"/>{this.state.discount}</label></div>
             <div className="p-2 "><label className="time-font"><GiSandsOfTime className=""/>30</label></div>
           </div>
