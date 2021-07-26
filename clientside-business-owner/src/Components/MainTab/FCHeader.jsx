@@ -17,12 +17,12 @@ import { Navbar, Container, Nav } from 'react-bootstrap';
     <Container>
     
     <Nav className="ml-auto my-2 my-lg-0"  style={{ direction:'rtl'}}>
-      <Nav.Link style={{ fontSize: '24px', fontWeight:'bold' }} href="/">בית</Nav.Link>
-      <Nav.Link style={{ fontSize: '24px' }} href="/Report">דוחות</Nav.Link>
-      <Nav.Link style={{ fontSize: '24px' }} href="/Coupon">קוד קופון</Nav.Link>
-      <Nav.Link style={{ fontSize: '24px' }} href="/Settings">הגדרות</Nav.Link>
-      <Nav.Link style={{ fontSize: '24px' }} href="/Login">התחברות</Nav.Link>
-      <Nav.Link style={{ fontSize: '24px' }} href="/SignUp">הרשמה</Nav.Link>
+      <Nav.Link style={{ fontSize: '24px', fontWeight:'bold' }} href="#/">בית</Nav.Link>
+      <Nav.Link style={{ fontSize: '24px' }} href="#Report">דוחות</Nav.Link>
+      <Nav.Link style={{ fontSize: '24px' }} href="#Coupon">קוד קופון</Nav.Link>
+      <Nav.Link style={{ fontSize: '24px' }} href="#Settings">הגדרות</Nav.Link>
+      <Nav.Link style={{ fontSize: '24px' }} href="#Login">התחברות</Nav.Link>
+      <Nav.Link style={{ fontSize: '24px' }} href="#SignUp">הרשמה</Nav.Link>
     </Nav>
     </Container>
   </Navbar>

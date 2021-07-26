@@ -61,14 +61,14 @@ mySubmitHandler = (event) => {
   event.preventDefault(); 
   
   
-  var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Businesses?bmail=" + this.state.email + "&password=" + this.state.password;
+  var apiUrl = "https://proj.ruppin.ac.il/igroup49/test2/tar1/api/Businesses?bmail=" + this.state.email + "&password=" + this.state.password;
   fetch(apiUrl)
     .then((response) => response.json())
     .then((responseJson) => {
       if (responseJson.length > 0){
         console.log(responseJson[0].Bid);
         localStorage.setItem("user_id", responseJson[0].Bid);
-        window.location = "/";
+        window.location = "#";
       }
     })
     .catch((error) => {

@@ -49,7 +49,7 @@ class UsersByDevice extends React.Component {
 
   get_results(period="w"){
     var Bus_Id = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
-    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/Product/" + Bus_Id + "/" + period;
+    var apiUrl = "https://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/Product/" + Bus_Id + "/" + period;
   
     fetch(apiUrl)
       .then((response) => response.json())

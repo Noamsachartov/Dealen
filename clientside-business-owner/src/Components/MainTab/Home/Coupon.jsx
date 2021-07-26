@@ -23,8 +23,13 @@ class Coupon extends React.Component {
 
   mySubmitHandler = (event) => {
     event.preventDefault(); 
+<<<<<<< Updated upstream
     
     var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/DealInCust/used/" + this.state.coupon_code;
+=======
+
+    var apiUrl = "https://proj.ruppin.ac.il/igroup49/test2/tar1/api/DealInCust/used/" + this.state.coupon_code;
+>>>>>>> Stashed changes
     fetch(apiUrl, {
       method: 'PUT',
       headers: {
@@ -40,7 +45,7 @@ class Coupon extends React.Component {
         // alert(JSON.stringify(error));
         console.error(error);
       });
-      window.location = "/";
+      window.location = "#";
 
     // alert("You are submitting " + this.state.coupon);
   }

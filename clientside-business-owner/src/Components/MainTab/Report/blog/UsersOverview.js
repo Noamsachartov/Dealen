@@ -201,7 +201,7 @@ class UsersOverview extends React.Component {
   
   get_results(){
     var Bus_Id = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
-    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/DealByDate/" + Bus_Id;
+    var apiUrl = "https://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/DealByDate/" + Bus_Id;
     var new_stats = null;
   
     fetch(apiUrl)

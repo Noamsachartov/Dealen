@@ -50,7 +50,7 @@ export default class MyForm extends React.Component {
      };
      //this.onImageChange = this.onImageChange.bind(this);
     
-    this.apiUrl = 'http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal';
+    this.apiUrl = 'https://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal';
     //  this.apiUrl = 'http://localhost:57075/api/Deal';
 
 
@@ -63,7 +63,7 @@ export default class MyForm extends React.Component {
 }
 getCategory=()=>{
     const cats = [];
-    const url ="http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Category"
+    const url ="https://proj.ruppin.ac.il/igroup49/test2/tar1/api/Category"
 
     fetch(url)
     .then(response => response.json())
@@ -82,7 +82,7 @@ getCategory=()=>{
 
 getTags=()=>{
   const tag = [];
-  const url ="http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/GetTags"
+  const url ="https://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/GetTags"
 
   fetch(url)
   .then(response => response.json())
@@ -101,7 +101,7 @@ getProducts=()=>{
   const tag = [];
   var is_logged = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
 
-  const url ="http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/Productlist/"+is_logged
+  const url ="https://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/Productlist/"+is_logged
 
   fetch(url)
   .then(response => response.json())
@@ -157,7 +157,7 @@ getProducts=()=>{
 
         //this.apiUrl = `http://localhost:54976/api/User/uploadedFiles`;
         // http://localhost:57075/api/UploadedFiles/uploadedFiles
-         this.apiUrl = `http://proj.ruppin.ac.il/igroup49/test2/tar1/api/UploadedFiles/uploadedFiles`;
+         this.apiUrl = `https://proj.ruppin.ac.il/igroup49/test2/tar1/api/UploadedFiles/uploadedFiles`;
         // this.apiUrl = `http://localhost:57075/api/UploadedFiles/uploadedFiles`;
 
         fetch(this.apiUrl,
@@ -191,7 +191,7 @@ getProducts=()=>{
                     let imgNameInServer = result.split('\\').pop();
                     console.log(imgNameInServer);
                     var uri = result.split("\\")
-                    var new_result = "http://proj.ruppin.ac.il/igroup49/test2/tar1/uploadedFiles/" + uri[uri.length-1]
+                    var new_result = "https://proj.ruppin.ac.il/igroup49/test2/tar1/uploadedFiles/" + uri[uri.length-1]
                     this.setState({ urlimg: new_result, selectedFile: imgNameInServer })
 
                 },
@@ -246,7 +246,7 @@ getProducts=()=>{
 
     })
 
-    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal"
+    var apiUrl = "https://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal"
     fetch(apiUrl, {
       method: 'POST',
       body: JSON.stringify({
@@ -274,7 +274,7 @@ getProducts=()=>{
 
       .then((responseJson) => {
 
-        window.location = "/";
+        window.location = "#";
       })
       .catch((error) => {
         alert(JSON.stringify(error));
@@ -295,7 +295,7 @@ getProducts=()=>{
 
     var is_logged = localStorage.getItem("user_id") ? localStorage.getItem("user_id") : 0;
 
-    var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/product"
+    var apiUrl = "https://proj.ruppin.ac.il/igroup49/test2/tar1/api/Deal/product"
     fetch(apiUrl, {
       method: 'POST',
       body: JSON.stringify({

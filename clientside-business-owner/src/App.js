@@ -11,7 +11,7 @@ import Coupon from "./Components/MainTab/Home/Coupon";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 
-import {Switch, Route, withRouter} from 'react-router-dom';
+import {Switch, Route, withRouter, HashRouter} from 'react-router-dom';
 import "./shards-dashboard/styles/shards-dashboards.1.1.0.min.css";
 import './App.css';
 import FCHeader from './Components/MainTab/FCHeader';
@@ -19,6 +19,7 @@ import FCHeader from './Components/MainTab/FCHeader';
 
 function App(){
     return(
+      <HashRouter basename="/igroup49/test2/reactnative">
       <div className="App">
         <FCHeader/>
         <Switch>
@@ -46,8 +47,10 @@ function App(){
           
         </Switch>
       </div>
+      </HashRouter>
 
     )
 }    
 
-export default withRouter(App);
+// export default withRouter(App);
+export default App;

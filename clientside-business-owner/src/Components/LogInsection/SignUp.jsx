@@ -114,7 +114,7 @@ class SignUp extends React.Component {
 
         //this.apiUrl = `http://localhost:54976/api/User/uploadedFiles`;
 
-        this.apiUrl = `http://proj.ruppin.ac.il/igroup49//test2/tar1/api/UploadedFiles/uploadedFiles`;
+        this.apiUrl = `https://proj.ruppin.ac.il/igroup49//test2/tar1/api/UploadedFiles/uploadedFiles`;
 
         fetch(this.apiUrl,
             {
@@ -175,11 +175,11 @@ class SignUp extends React.Component {
   }
   mySubmitHandler = (event) => {
     event.preventDefault(); 
-    this.convertaddress();
+    // this.convertaddress();
     
-    if(this.state.latitude && this.state.longitude){
+    // if(this.state.latitude && this.state.longitude){
     
-      var apiUrl = "http://proj.ruppin.ac.il/igroup49/test2/tar1/api/businesses"
+      var apiUrl = "https://proj.ruppin.ac.il/igroup49/test2/tar1/api/businesses"
       fetch(apiUrl, {
         method: 'POST',
         body: JSON.stringify({
@@ -205,9 +205,9 @@ class SignUp extends React.Component {
       })
         .then((response) => response.json())
         .then((responseJson) => {
-          alert()
+          // alert()
           console.log(responseJson);
-          window.location = "/Login";
+          window.location = "#/Login";
 
         })
         .catch((error) => {
@@ -218,7 +218,7 @@ class SignUp extends React.Component {
       //alert("You are submitting " + this.state.username);
    
     
-    }
+   // }
   }
 
   handleChange = (event) => {
@@ -239,7 +239,6 @@ class SignUp extends React.Component {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
         </Typography>
         <form className={classes.form} noValidate onSubmit={this.mySubmitHandler}>
           <Grid container spacing={2}>
