@@ -8,7 +8,7 @@ export default class Home extends Component {
             <div>
                 <h3></h3>
                 <ul>
-                    <li><Link to="/Advertising_Deal">פרסם מבצע חדש</Link></li>
+                    <li><Link to="/igroup49/test2/reactnative/Advertising_Deal">פרסם מבצע חדש</Link></li>
                 </ul>
             </div>
         )

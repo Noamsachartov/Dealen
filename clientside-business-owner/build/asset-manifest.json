@@ -1,5 +1,6 @@
 {
   "files": {
+<<<<<<< Updated upstream
     "main.css": "./static/css/main.8aed6da0.chunk.css",
     "main.js": "./static/js/main.fc35eb64.chunk.js",
     "main.js.map": "./static/js/main.fc35eb64.chunk.js.map",
@@ -14,13 +15,36 @@
     "static/css/2.32defced.chunk.css.map": "./static/css/2.32defced.chunk.css.map",
     "static/css/main.8aed6da0.chunk.css.map": "./static/css/main.8aed6da0.chunk.css.map",
     "static/js/2.203b1a25.chunk.js.LICENSE.txt": "./static/js/2.203b1a25.chunk.js.LICENSE.txt",
+=======
+    "main.css": "./static/css/main.64e2833b.chunk.css",
+    "main.js": "./static/js/main.0c72900e.chunk.js",
+    "main.js.map": "./static/js/main.0c72900e.chunk.js.map",
+    "runtime-main.js": "./static/js/runtime-main.9d258140.js",
+    "runtime-main.js.map": "./static/js/runtime-main.9d258140.js.map",
+    "static/css/2.6d334b39.chunk.css": "./static/css/2.6d334b39.chunk.css",
+    "static/js/2.5c5b0519.chunk.js": "./static/js/2.5c5b0519.chunk.js",
+    "static/js/2.5c5b0519.chunk.js.map": "./static/js/2.5c5b0519.chunk.js.map",
+    "static/js/3.e971d022.chunk.js": "./static/js/3.e971d022.chunk.js",
+    "static/js/3.e971d022.chunk.js.map": "./static/js/3.e971d022.chunk.js.map",
+    "index.html": "./index.html",
+    "static/css/2.6d334b39.chunk.css.map": "./static/css/2.6d334b39.chunk.css.map",
+    "static/css/main.64e2833b.chunk.css.map": "./static/css/main.64e2833b.chunk.css.map",
+    "static/js/2.5c5b0519.chunk.js.LICENSE.txt": "./static/js/2.5c5b0519.chunk.js.LICENSE.txt",
+>>>>>>> Stashed changes
     "static/media/logo.6ce24c58.svg": "./static/media/logo.6ce24c58.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.9d258140.js",
+<<<<<<< Updated upstream
     "static/css/2.32defced.chunk.css",
     "static/js/2.203b1a25.chunk.js",
     "static/css/main.8aed6da0.chunk.css",
     "static/js/main.fc35eb64.chunk.js"
+=======
+    "static/css/2.6d334b39.chunk.css",
+    "static/js/2.5c5b0519.chunk.js",
+    "static/css/main.64e2833b.chunk.css",
+    "static/js/main.0c72900e.chunk.js"
+>>>>>>> Stashed changes
   ]
 }
